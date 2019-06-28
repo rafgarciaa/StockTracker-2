@@ -1,0 +1,24 @@
+{
+  "name": "stock-tracker-2",
+  "version": "1.0.0",
+  "description": "Phase Two of the Stock Tracker Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raf-garcia/StockTracker-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raf-garcia/StockTracker-2/issues"
+  },
+  "homepage": "https://github.com/raf-garcia/StockTracker-2#readme",
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
