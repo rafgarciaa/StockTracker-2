@@ -4,7 +4,8 @@
   "description": "Phase Two of the Stock Tracker Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack --mode=development --watch"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,13 @@
   },
   "homepage": "https://github.com/raf-garcia/StockTracker-2#readme",
   "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
   }
 }
