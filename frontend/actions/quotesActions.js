@@ -1,12 +1,12 @@
 import * as actions from '../constants/actionTypes';
-import * as IexApi from '../constants/apiEndpoints';
 import {
   API_KEY,
+  iexApiSandboxUrl,
   companyInfoFilters,
   newsFilters,
   quoteFilters,
   statsFilters,
-} from '../util/apiUtil';
+} from '../utilities/apiUtil';
 
 const setCompanyInfo = companyInfo => ({
   type: actions.SET_COMPANY_INFO,
@@ -44,9 +44,7 @@ const setChartDataDay = chartData => ({
 });
 
 const makeUrl = (service, symbol, params = '') =>
-  `${
-    IexApi.iexApiSandboxUrl
-  }/stable/stock/${symbol}/${service}/?token=${API_KEY}&${params}`;
+  `${iexApiSandboxUrl}/stock/${symbol}/${service}/?token=${API_KEY}&${params}`;
 
 const createThunkAction = (service, symbol, success, params) => {
   return dispatch => {
