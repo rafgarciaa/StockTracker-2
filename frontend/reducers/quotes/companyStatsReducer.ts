@@ -1,31 +1,26 @@
-import {
-  SET_COMPANY_STATS,
-  SET_COMPANY_EPS,
-  SET_DIVIDENDYIELD,
-} from '../../constants/actionTypes';
+import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
+import { ActionsTypes } from '../../actions/quotesActions';
 
 const defaultState = {
   actualEPS: null,
   dividendYield: null,
 };
 
-const companyStatsReducer = (state = defaultState, action) => {
+const companyStatsReducer = (state = defaultState, action: ActionsTypes) => {
   switch (action.type) {
-    case SET_COMPANY_STATS:
-      return Object.assign({}, state, action.companyStats);
+    case QUOTES_ACTION_TYPES.SET_COMPANY_STATS:
+      return Object.assign({}, state, action.payload);
 
-    case SET_COMPANY_EPS:
-      if (typeof action.earningsPerShare === 'object') {
+    case QUOTES_ACTION_TYPES.SET_COMPANY_EPS:
+      if (typeof action.payload === 'object') {
         return Object.assign({}, state, {
-          actualEPS: action.earningsPerShare.earnings[0].actualEPS,
+          actualEPS: action.payload.earnings[0].actualEPS,
         });
       } else {
-        return Object.assign({}, state, { actualEPS: action.earningsPerShare });
+        return Object.assign({}, state, { actualEPS: action.payload });
       }
-
-    case SET_DIVIDENDYIELD:
-      return Object.assign({}, state, { dividendYield: action.dividendYield });
-
+    case QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD:
+      return Object.assign({}, state, { dividendYield: action.payload });
     default:
       return state;
   }

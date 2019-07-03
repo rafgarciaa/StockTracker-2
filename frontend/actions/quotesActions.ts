@@ -1,6 +1,4 @@
-// import * as actions from '../constants/actionTypes';
-
-import { TypesNames } from '../constants/actionTypes';
+import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
 
 import {
   API_KEY,
@@ -26,37 +24,22 @@ type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
 export const Actions = {
   setCompanyInfo: (companyInfo: any) =>
-    createAction(TypesNames.SET_COMPANY_INFO, companyInfo),
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
   setCompanyNews: (companyNews: any) =>
-    createAction(TypesNames.SET_COMPANY_NEWS, companyNews),
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
+  setCompanyStats: (companyStats: any) =>
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
+  setCompanyEPS: (earningsPerShare: number) =>
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
+  setDividendYield: ({ dividendYield }: any) =>
+    createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
+  setTopPeers: (topPeers: string[]) =>
+    createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
+  setChartDataDay: (chartData: any) =>
+    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
 };
 
 export type ActionsTypes = ActionsUnion<typeof Actions>;
-
-const setCompanyStats = companyStats => ({
-  type: TypesNames.SET_COMPANY_STATS,
-  companyStats,
-});
-
-const setCompanyEPS = earningsPerShare => ({
-  type: TypesNames.SET_COMPANY_EPS,
-  earningsPerShare,
-});
-
-const setDividendYield = ({ dividendYield }) => ({
-  type: TypesNames.SET_DIVIDENDYIELD,
-  dividendYield,
-});
-
-const setTopPeers = topPeers => ({
-  type: TypesNames.SET_TOP_PEERS,
-  topPeers,
-});
-
-const setChartDataDay = chartData => ({
-  type: TypesNames.SET_CHART_DATA_DAY,
-  chartData,
-});
 
 const makeUrl = (service, symbol, params = '') =>
   `${iexApiSandboxUrl}/stock/${symbol}/${service}/?token=${API_KEY}&${params}`;
