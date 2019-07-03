@@ -1,4 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
+import { ActionCreatorsMapObject } from 'redux';
 
 import {
   API_KEY,
@@ -18,8 +19,6 @@ function createAction<T, P>(type: T, payload: P): Action<T, P> {
   return { type, payload };
 }
 
-type FunctionType = (...args: any[]) => any;
-type ActionCreatorsMapObject = { [actionCreator: string]: FunctionType };
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
 export const Actions = {
