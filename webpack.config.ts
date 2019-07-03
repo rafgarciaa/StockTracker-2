@@ -1,6 +1,7 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = {
   entry: './frontend/stockTracker.js',
@@ -35,5 +36,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '*'],
   },
-  plugins: [new Dotenv(), new ForkTsCheckerWebpackPlugin()],
+  plugins: [
+    new Dotenv(),
+    new ForkTsCheckerWebpackPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
+  ],
 };
