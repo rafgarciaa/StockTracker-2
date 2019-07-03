@@ -1,7 +1,14 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ActionsTypes } from '../../actions/quotesActions';
 
-const companyNewsReducer = (state = [], action: ActionsTypes) => {
+interface News {
+  datetime: number;
+  headline: string;
+  source: string;
+  url: string;
+}
+
+const companyNewsReducer = (state: News[] = [], action: ActionsTypes) => {
   Object.freeze(state);
 
   switch (action.type) {

@@ -1,9 +1,23 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ActionsTypes } from '../../actions/quotesActions';
 
-export interface companyInfoState {}
+interface CompanyInfoState {
+  description: string;
+  exchange: string;
+  sector: string;
+  website: string;
+  symbol: string;
+  companyName: string;
+}
 
-const INITIAL_STATE: companyInfoState = {};
+const INITIAL_STATE: CompanyInfoState = {
+  description: '',
+  exchange: '',
+  sector: '',
+  website: '',
+  symbol: '',
+  companyName: '',
+};
 
 const companyInfoReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
   Object.freeze(state);
