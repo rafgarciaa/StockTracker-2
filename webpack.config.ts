@@ -1,5 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
   entry: './frontend/stockTracker.js',
@@ -15,8 +16,17 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           query: {
-            presets: ['@babel/env', '@babel/react'],
+            presets: ['@babel/preset-env', '@babel/preset-react'],
           },
+        },
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /(node_modules)/,
+        loader: 'ts-loader',
+        options: {
+          // disable type checker - let fork-ts-checker to the type checking
+          transpileOnly: true,
         },
       },
     ],
@@ -25,5 +35,5 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '*'],
   },
-  plugins: [new Dotenv()],
+  plugins: [new Dotenv(), new ForkTsCheckerWebpackPlugin()],
 };
