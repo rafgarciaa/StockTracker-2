@@ -1,4 +1,7 @@
-import * as actions from '../constants/actionTypes';
+// import * as actions from '../constants/actionTypes';
+
+import { TypesNames } from '../constants/actionTypes';
+
 import {
   API_KEY,
   iexApiSandboxUrl,
@@ -8,38 +11,50 @@ import {
   statsFilters,
 } from '../utilities/apiUtil';
 
-const setCompanyInfo = companyInfo => ({
-  type: actions.SET_COMPANY_INFO,
-  companyInfo,
-});
+export interface Action<T, P> {
+  type: T;
+  payload: P;
+}
 
-const setCompanyNews = companyNews => ({
-  type: actions.SET_COMPANY_NEWS,
-  companyNews,
-});
+function createAction<T, P>(type: T, payload: P): Action<T, P> {
+  return { type, payload };
+}
+
+type FunctionType = (...args: any[]) => any;
+type ActionCreatorsMapObject = { [actionCreator: string]: FunctionType };
+type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
+
+export const Actions = {
+  setCompanyInfo: (companyInfo: any) =>
+    createAction(TypesNames.SET_COMPANY_INFO, companyInfo),
+  setCompanyNews: (companyNews: any) =>
+    createAction(TypesNames.SET_COMPANY_NEWS, companyNews),
+};
+
+export type ActionsTypes = ActionsUnion<typeof Actions>;
 
 const setCompanyStats = companyStats => ({
-  type: actions.SET_COMPANY_STATS,
+  type: TypesNames.SET_COMPANY_STATS,
   companyStats,
 });
 
 const setCompanyEPS = earningsPerShare => ({
-  type: actions.SET_COMPANY_EPS,
+  type: TypesNames.SET_COMPANY_EPS,
   earningsPerShare,
 });
 
 const setDividendYield = ({ dividendYield }) => ({
-  type: actions.SET_DIVIDENDYIELD,
+  type: TypesNames.SET_DIVIDENDYIELD,
   dividendYield,
 });
 
 const setTopPeers = topPeers => ({
-  type: actions.SET_TOP_PEERS,
+  type: TypesNames.SET_TOP_PEERS,
   topPeers,
 });
 
 const setChartDataDay = chartData => ({
-  type: actions.SET_CHART_DATA_DAY,
+  type: TypesNames.SET_CHART_DATA_DAY,
   chartData,
 });
 
@@ -56,24 +71,25 @@ const createThunkAction = (service, symbol, success, params) => {
   };
 };
 
-const fetchCompanyInfo = symbol =>
+const fetchCompanyInfo = (symbol: string) =>
   createThunkAction('company', symbol, setCompanyInfo, companyInfoFilters);
 
-const fetchCompanyNews = symbol =>
+const fetchCompanyNews = (symbol: string) =>
   createThunkAction('news/last/5', symbol, setCompanyNews, newsFilters);
 
-const fetchCompanyStats = symbol =>
+const fetchCompanyStats = (symbol: string) =>
   createThunkAction('quote', symbol, setCompanyStats, quoteFilters);
 
-const fetchCompanyEPS = symbol =>
+const fetchCompanyEPS = (symbol: string) =>
   createThunkAction('earnings/1/actualEPS', symbol, setCompanyEPS);
 
-const fetchDividendYield = symbol =>
+const fetchDividendYield = (symbol: string) =>
   createThunkAction('stats', symbol, setDividendYield, statsFilters);
 
-const fetchTopPeers = symbol => createThunkAction('peers', symbol, setTopPeers);
+const fetchTopPeers = (symbol: string) =>
+  createThunkAction('peers', symbol, setTopPeers);
 
-export const searchAction = symbol => dispatch => {
+export const searchAction = (symbol: string) => dispatch => {
   dispatch(fetchCompanyInfo(symbol));
   dispatch(fetchCompanyNews(symbol));
   dispatch(fetchCompanyStats(symbol));

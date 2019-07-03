@@ -1,10 +1,15 @@
 {
-    "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+    "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier", "tslint-react-hooks"],
     "rules": {
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
         "ordered-imports": false,
         "object-literal-sort-keys": false,
         "no-console": false,
         "jsx-no-lambda": false,
-        "member-ordering": false
+        "member-ordering": false,
+        "no-duplicate-switch-case": true
     }
 }
