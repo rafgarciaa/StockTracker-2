@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import AdaptiveLogo from './adaptiveLogo';
 import Tabs from './tabs';
 
-const TabsLayout: FunctionComponent = () => {
+const TabsLogoLayout: FunctionComponent = () => {
   return (
     <div>
       <AdaptiveLogo />
@@ -11,4 +11,4 @@ const TabsLayout: FunctionComponent = () => {
   );
 };
 
-export default TabsLayout;
+export default TabsLogoLayout;

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import TabsLayout from './tabsLayout';
-import SearchLayout from './searchLayout';
-import TagsLayout from './tagsLayout';
+import TabsLogoLayout from './tabsLogoLayout';
+import SearchPriceLayout from './searchPriceLayout';
+import TagsMarketLayout from './tagsMarketLayout';
 import { HeaderProps } from '../../utilities/interfaces';
 
 const header: FunctionComponent<HeaderProps> = ({
@@ -14,13 +14,17 @@ const header: FunctionComponent<HeaderProps> = ({
 }) => {
   return (
     <div>
-      <TabsLayout />
-      <SearchLayout
+      <TabsLogoLayout />
+      <SearchPriceLayout
         latestPrice={latestPrice}
         change={change}
         changePercent={changePercent}
       />
-      <TagsLayout lastUpdate={lastUpdate} exchange={exchange} sector={sector} />
+      <TagsMarketLayout
+        lastUpdate={lastUpdate}
+        exchange={exchange}
+        sector={sector}
+      />
     </div>
   );
 };

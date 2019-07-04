@@ -3,7 +3,7 @@ import { HeaderProps } from '../../utilities/interfaces';
 import Tags from './tags';
 import MarketStatus from './marketStatus';
 
-const TagsLayout: FunctionComponent<HeaderProps> = ({
+const TagsMarketLayout: FunctionComponent<HeaderProps> = ({
   lastUpdate,
   exchange,
   sector,
@@ -16,4 +16,4 @@ const TagsLayout: FunctionComponent<HeaderProps> = ({
   );
 };
 
-export default TagsLayout;
+export default TagsMarketLayout;
