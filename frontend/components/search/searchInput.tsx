@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  FunctionComponent,
+  ChangeEvent,
+  FormEvent,
+} from 'react';
 
-const SearchInput = ({ searchAction }) => {
+type SearchInputProps = {
+  searchAction: any;
+};
+
+const SearchInput: FunctionComponent<SearchInputProps> = ({ searchAction }) => {
   const [searchText, setSearchText] = useState('');
 
-  const handleChange = e => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: FormEvent<EventTarget>) => {
     e.preventDefault();
     searchAction(searchText);
   };
