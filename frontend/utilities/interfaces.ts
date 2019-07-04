@@ -33,3 +33,12 @@ export interface CompanyStatsState {
   dividendYield: number | null;
   actualEPS: number | null;
 }
+
+export interface RootState {
+  quotes: {
+    companyInfo: CompanyInfoState;
+    companyStats: CompanyStatsState;
+    companyNews: News[];
+    topPeers: string[];
+  };
+}
