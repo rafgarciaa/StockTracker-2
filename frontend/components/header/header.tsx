@@ -4,7 +4,7 @@ import SearchPriceLayout from './searchPriceLayout';
 import TagsMarketLayout from './tagsMarketLayout';
 import { HeaderProps } from '../../utilities/interfaces';
 
-const header: FunctionComponent<HeaderProps> = ({
+const Header: FunctionComponent<HeaderProps> = ({
   latestPrice,
   change,
   changePercent,
@@ -29,4 +29,4 @@ const header: FunctionComponent<HeaderProps> = ({
   );
 };
 
-export default header;
+export default Header;
