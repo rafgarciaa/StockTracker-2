@@ -42,3 +42,12 @@ export interface RootState {
     topPeers: string[];
   };
 }
+
+export interface HeaderProps {
+  latestPrice?: number;
+  change?: number;
+  changePercent?: number;
+  exchange?: string;
+  sector?: string;
+  lastUpdate?: string;
+}

@@ -1,36 +1,26 @@
 import React, { FunctionComponent } from 'react';
-import SearchInputContainer from './searchInputContainer';
+import TabsLayout from './tabsLayout';
+import SearchLayout from './searchLayout';
+import TagsLayout from './tagsLayout';
+import { HeaderProps } from '../../utilities/interfaces';
 
-interface HeaderProps {
-  latestPrice: number;
-  change: number;
-  changePercent: number;
-  exchange: string;
-  sector: string;
-}
-
-const header: FunctionComponent<HeaderProps> = props => {
-  let priceOutput;
-  let companyTags;
-  priceOutput = (
-    <div>
-      <span>latestPrice: {props.latestPrice} </span>
-      <span>change: {props.change} </span>
-      <span>changePercent: {props.changePercent}</span>
-    </div>
-  );
-
-  companyTags = (
-    <div>
-      <span>exchange: {props.exchange}</span>{' '}
-      <span>sector: {props.sector}</span>
-    </div>
-  );
+const header: FunctionComponent<HeaderProps> = ({
+  latestPrice,
+  change,
+  changePercent,
+  exchange,
+  sector,
+  lastUpdate,
+}) => {
   return (
     <div>
-      <SearchInputContainer />
-      {priceOutput}
-      {companyTags}
+      <TabsLayout />
+      <SearchLayout
+        latestPrice={latestPrice}
+        change={change}
+        changePercent={changePercent}
+      />
+      <TagsLayout lastUpdate={lastUpdate} exchange={exchange} sector={sector} />
     </div>
   );
 };
