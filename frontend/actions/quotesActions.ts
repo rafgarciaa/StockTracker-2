@@ -6,7 +6,7 @@ import {
   CompanyInfoState,
   News,
   CompanyStatsState,
-  CompanyName,
+  CompanyNameState,
 } from '../utilities/interfaces';
 import {
   API_KEY,
@@ -44,7 +44,7 @@ export const Actions = {
     createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
   setChartDataDay: (chartData: any) =>
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
-  setCompanyNames: (companyNames: CompanyName[]) =>
+  setCompanyNames: (companyNames: CompanyNameState[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
 };
 
