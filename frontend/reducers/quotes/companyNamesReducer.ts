@@ -1,16 +1,19 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ActionsTypes } from '../../actions/quotesActions';
-import { News } from '../../utilities/interfaces';
+import { CompanyNameState } from '../../utilities/interfaces';
 
-const companyNewsReducer = (state: News[] = [], action: ActionsTypes) => {
+const companyNamesReducer = (
+  state: CompanyNameState[] = [],
+  action: ActionsTypes
+) => {
   Object.freeze(state);
 
   switch (action.type) {
-    case QUOTES_ACTION_TYPES.SET_COMPANY_NEWS:
+    case QUOTES_ACTION_TYPES.SET_COMPANY_NAMES:
       return action.payload;
     default:
       return state;
   }
 };
 
-export default companyNewsReducer;
+export default companyNamesReducer;
