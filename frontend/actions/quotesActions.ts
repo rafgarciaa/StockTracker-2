@@ -7,7 +7,6 @@ import {
   News,
   CompanyStatsState,
   CompanyNameState,
-  ChartDataTypes,
 } from '../utilities/interfaces';
 
 import {
