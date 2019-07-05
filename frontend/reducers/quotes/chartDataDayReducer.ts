@@ -1,19 +1,20 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ActionsTypes } from '../../actions/quotesActions';
-import { CompanyNameState } from '../../utilities/interfaces';
+import { ChartDataDay } from '../../utilities/interfaces';
 
-const companyNamesReducer = (
-  state: CompanyNameState[] = [],
+const chartDataDayReducer = (
+  state: ChartDataDay[] = [],
   action: ActionsTypes
 ) => {
   Object.freeze(state);
 
   switch (action.type) {
-    case QUOTES_ACTION_TYPES.SET_COMPANY_NAMES:
+    case QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY:
       return action.payload;
+
     default:
       return state;
   }
 };
 
-export default companyNamesReducer;
+export default chartDataDayReducer;

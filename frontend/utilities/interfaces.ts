@@ -1,4 +1,28 @@
-export interface CompanyName {
+export interface ChartDataDay {
+  date: string | null;
+  minute: string | null;
+  label: string | null;
+  high: number | null;
+  low: number | null;
+  average: number | null;
+  volume: number | null;
+  notional: number | null;
+  numberOfTrades: number | null;
+  marketHigh: number | null;
+  marketLow: number | null;
+  marketAverage: number | null;
+  marketVolume: number | null;
+  marketNotional: number | null;
+  marketNumberOfTrades: number | null;
+  open: number | null;
+  close: number | null;
+  marketOpen: number | null;
+  marketClose: number | null;
+  changeOverTime: number | null;
+  marketChangeOverTime: number | null;
+}
+
+export interface CompanyNameState {
   symbol: string;
   name: string;
 }
@@ -45,6 +69,7 @@ export interface RootState {
     companyStats: CompanyStatsState;
     companyNews: News[];
     topPeers: string[];
+    companyNames: CompanyNameState[];
   };
 }
 
