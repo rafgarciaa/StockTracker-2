@@ -1,12 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import NewsListItem from './newsListItem';
-
-interface News {
-  datetime: number;
-  headline: string;
-  source: string;
-  url: string;
-}
+import { News } from '../../utilities/interfaces';
 
 interface NewsListProps {
   newsList: News[];

@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { News } from '../../utilities/interfaces';
 
 const formatNewsTimeAgo = (timePublished: number) => {
   let timeAgo = Math.floor(timePublished / 1000 / 60);
@@ -10,13 +11,6 @@ const formatNewsTimeAgo = (timePublished: number) => {
     return timeAgo === 1 ? timeAgo + 'hr ago' : timeAgo + 'hrs ago';
   }
 };
-
-interface News {
-  datetime: number;
-  headline: string;
-  source: string;
-  url: string;
-}
 
 interface NewsListItemProps {
   news: News;

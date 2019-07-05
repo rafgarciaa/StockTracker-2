@@ -1,12 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import NewsList from './newsList';
-
-interface News {
-  datetime: number;
-  headline: string;
-  source: string;
-  url: string;
-}
+import { News } from '../../utilities/interfaces';
+import NewsListContainer from './newsListContainer';
+import { RootState } from '../../utilities/interfaces';
 
 interface NewsListProps {
   newsList: News[];
@@ -15,7 +10,7 @@ interface NewsListProps {
 const ChartNewsLayout: FunctionComponent<NewsListProps> = ({ newsList }) => {
   return (
     <div>
-      <NewsList newsList={newsList} />
+      <NewsListContainer newsList={newsList} />
     </div>
   );
 };
