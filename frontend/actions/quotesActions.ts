@@ -6,10 +6,12 @@ import {
   CompanyInfoState,
   News,
   CompanyStatsState,
+  CompanyName,
 } from '../utilities/interfaces';
 import {
   API_KEY,
   iexApiSandboxUrl,
+  iexApiFreeUrl,
   companyInfoFilters,
   newsFilters,
   quoteFilters,
@@ -42,6 +44,8 @@ export const Actions = {
     createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
   setChartDataDay: (chartData: any) =>
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
+  setCompanyNames: (companyNames: CompanyName[]) =>
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
 };
 
 export type ActionsTypes = ActionsUnion<typeof Actions>;
@@ -87,6 +91,19 @@ const fetchDividendYield = (symbol: string) =>
 const fetchTopPeers = (symbol: string) =>
   createThunkAction('peers', symbol, Actions.setTopPeers);
 
+export const fetchCompanyNames = () => {
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+    const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
+
+    return fetch(url)
+      .then(response => response.json())
+      .then(
+        payload => dispatch(Actions.setCompanyNames(payload)),
+        error => console.log(error)
+      );
+  };
+};
+
 export const searchAction = (symbol: string) => (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
@@ -99,3 +116,4 @@ export const searchAction = (symbol: string) => (
 };
 
 export type searchActionType = typeof searchAction;
+export type fetchActionType = typeof fetchCompanyNames;
