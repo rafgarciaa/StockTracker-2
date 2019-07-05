@@ -3,6 +3,11 @@ import { ActionCreatorsMapObject, AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import {
+  CompanyInfoState,
+  News,
+  CompanyStatsState,
+} from '../utilities/interfaces';
+import {
   API_KEY,
   iexApiSandboxUrl,
   companyInfoFilters,
@@ -23,11 +28,11 @@ function createAction<T, P>(type: T, payload: P): Action<T, P> {
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
 export const Actions = {
-  setCompanyInfo: (companyInfo: any) =>
+  setCompanyInfo: (companyInfo: CompanyInfoState) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
-  setCompanyNews: (companyNews: any) =>
+  setCompanyNews: (companyNews: News[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
-  setCompanyStats: (companyStats: any) =>
+  setCompanyStats: (companyStats: CompanyStatsState) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
   setCompanyEPS: (earningsPerShare: number) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
@@ -92,3 +97,5 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchDividendYield(symbol));
   dispatch(fetchTopPeers(symbol));
 };
+
+export type searchActionType = typeof searchAction;
