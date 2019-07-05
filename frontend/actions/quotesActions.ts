@@ -7,7 +7,9 @@ import {
   News,
   CompanyStatsState,
   CompanyNameState,
+  ChartDataTypes,
 } from '../utilities/interfaces';
+
 import {
   API_KEY,
   iexApiSandboxUrl,
@@ -46,6 +48,8 @@ export const Actions = {
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
+  setChartData: (chartData: object[], timeFrame: string) =>
+    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
 };
 
 export type ActionsTypes = ActionsUnion<typeof Actions>;
@@ -94,6 +98,11 @@ const fetchTopPeers = (symbol: string) =>
 const fetchChartDataDay = (symbol: string) =>
   createThunkAction('chart/1d', symbol, Actions.setChartDataDay);
 
+const fetchChartData = (symbol: string, timeFrame: string) =>
+  createThunkAction(`chart/${timeFrame}`, symbol, (chartData: object[]) =>
+    Actions.setChartData(chartData, timeFrame)
+  );
+
 export const fetchCompanyNames = () => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
@@ -117,6 +126,11 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchDividendYield(symbol));
   dispatch(fetchTopPeers(symbol));
   dispatch(fetchChartDataDay(symbol));
+  dispatch(fetchChartData(symbol, '5DM'));
+  dispatch(fetchChartData(symbol, '1M'));
+  dispatch(fetchChartData(symbol, '1Y'));
+  dispatch(fetchChartData(symbol, '5Y'));
+  dispatch(fetchChartData(symbol, 'MAX'));
 };
 
 export type searchActionType = typeof searchAction;
