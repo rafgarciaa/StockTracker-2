@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import NewsList from './newsList';
+import ChartNewsLayout from './chartNewsLayout';
 import { RootState } from '../../utilities/interfaces';
 
 const mapStateToProps = (state: RootState) => ({
@@ -9,4 +9,4 @@ const mapStateToProps = (state: RootState) => ({
 export default connect(
   mapStateToProps,
   null
-)(NewsList);
+)(ChartNewsLayout);
