@@ -97,3 +97,5 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchDividendYield(symbol));
   dispatch(fetchTopPeers(symbol));
 };
+
+export type searchActionType = typeof searchAction;
