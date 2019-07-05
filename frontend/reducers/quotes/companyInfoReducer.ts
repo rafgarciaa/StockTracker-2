@@ -1,14 +1,6 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ActionsTypes } from '../../actions/quotesActions';
-
-interface CompanyInfoState {
-  description: string;
-  exchange: string;
-  sector: string;
-  website: string;
-  symbol: string;
-  companyName: string;
-}
+import { CompanyInfoState } from '../../utilities/interfaces';
 
 const INITIAL_STATE: CompanyInfoState = {
   description: '',
@@ -22,7 +14,7 @@ const INITIAL_STATE: CompanyInfoState = {
 const companyInfoReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
   Object.freeze(state);
 
-  switch (action.payload) {
+  switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_INFO:
       return Object.assign({}, state, action.payload);
     default:

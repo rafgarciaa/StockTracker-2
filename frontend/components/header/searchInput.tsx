@@ -1,18 +1,27 @@
 import React, {
   useState,
+  useEffect,
   FunctionComponent,
   ChangeEvent,
   FormEvent,
 } from 'react';
 
-import { searchActionType } from '../../actions/quotesActions';
+import { searchActionType, fetchActionType } from '../../actions/quotesActions';
 
 interface SearchInputProps {
   searchAction: searchActionType;
+  fetchCompanyNames: fetchActionType;
 }
 
-const SearchInput: FunctionComponent<SearchInputProps> = ({ searchAction }) => {
+const SearchInput: FunctionComponent<SearchInputProps> = ({
+  searchAction,
+  fetchCompanyNames,
+}) => {
   const [searchText, setSearchText] = useState<string>('');
+
+  useEffect(() => {
+    fetchCompanyNames();
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);

@@ -1,3 +1,8 @@
+export interface CompanyName {
+  symbol: string;
+  name: string;
+}
+
 export interface CompanyInfoState {
   description: string;
   exchange: string;
