@@ -7,7 +7,7 @@ const PriceOutput: FunctionComponent<HeaderProps> = ({
   changePercent,
 }) => {
   const isNegative = change <= 0;
-  let headerClassName = isNegative
+  const headerClassName = isNegative
     ? 'header__price negative'
     : 'header__price positive';
   return (

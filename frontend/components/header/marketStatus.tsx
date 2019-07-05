@@ -9,15 +9,8 @@ const isMarketOpen = () => {
   return dateNow.getTime() > marketOpen && dateNow.getTime() < marketClose;
 };
 
-// const getLocalTimeZone = () => {
-//   const date = new Date().toString();
-//   let timeZone = date.match(/\(([^)]+)\)/)[1];
-//   timeZone = timeZone.split(' ').map(string => string[0]);
-//   return timeZone.join('');
-// };
-
 const MarketStatus: FunctionComponent<HeaderProps> = ({ lastUpdate }) => {
-  const localTimeZone = '';
+  const localTimeZone = new Date().toUTCString();
   const sun = <i className="far fa-sun" />;
   const moon = <i className="far fa-moon" />;
   return (
