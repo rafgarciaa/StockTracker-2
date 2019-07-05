@@ -91,6 +91,9 @@ const fetchDividendYield = (symbol: string) =>
 const fetchTopPeers = (symbol: string) =>
   createThunkAction('peers', symbol, Actions.setTopPeers);
 
+const fetchChartDataDay = (symbol: string) =>
+  createThunkAction('chart/1d', symbol, Actions.setChartDataDay);
+
 export const fetchCompanyNames = () => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
@@ -113,6 +116,7 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchCompanyEPS(symbol));
   dispatch(fetchDividendYield(symbol));
   dispatch(fetchTopPeers(symbol));
+  dispatch(fetchChartDataDay(symbol));
 };
 
 export type searchActionType = typeof searchAction;
