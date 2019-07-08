@@ -3,11 +3,13 @@ import { ActionCreatorsMapObject, AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import {
+  Action,
   CompanyInfoState,
   News,
   CompanyStatsState,
   CompanyNameState,
 } from '../utilities/interfaces';
+
 import {
   API_KEY,
   iexApiSandboxUrl,
@@ -18,10 +20,8 @@ import {
   statsFilters,
 } from '../utilities/apiUtil';
 
-export interface Action<T, P> {
-  type: T;
-  payload: P;
-}
+import { ErrorActions } from '../actions/errorActions';
+import APIError from '../utilities/apiErrorMessage';
 
 function createAction<T, P>(type: T, payload: P): Action<T, P> {
   return { type, payload };
@@ -46,12 +46,29 @@ export const Actions = {
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
+  setChartData: (chartData: object[], timeFrame: string) =>
+    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
 };
 
 export type ActionsTypes = ActionsUnion<typeof Actions>;
 
 const makeUrl = (service: string, symbol: string, params = '') =>
   `${iexApiSandboxUrl}/stock/${symbol}/${service}/?token=${API_KEY}&${params}`;
+
+const handleResponse = (response: {
+  json: any;
+  statusText: string;
+  status: number;
+}) => {
+  if (response.status === 404) {
+    throw new APIError('Company Not Found', response.status);
+  } else if (response.status === 402) {
+    throw new APIError('API Key Limit Reached', response.status);
+  } else if (response.status !== 200) {
+    throw new APIError(response.statusText, response.status);
+  }
+  return response.json();
+};
 
 const createThunkAction = (
   service: string,
@@ -62,9 +79,13 @@ const createThunkAction = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = makeUrl(service, symbol, params);
 
-    return fetch(url)
-      .then(response => response.json())
-      .then(payload => dispatch(success(payload)), error => console.log(error));
+    fetch(url)
+      .then(response => handleResponse(response))
+      .then(payload => {
+        dispatch(success(payload));
+        dispatch(ErrorActions.setApiErrors(''));
+      })
+      .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
   };
 };
 
@@ -94,16 +115,19 @@ const fetchTopPeers = (symbol: string) =>
 const fetchChartDataDay = (symbol: string) =>
   createThunkAction('chart/1d', symbol, Actions.setChartDataDay);
 
+const fetchChartData = (symbol: string, timeFrame: string) =>
+  createThunkAction(`chart/${timeFrame}`, symbol, (chartData: object[]) =>
+    Actions.setChartData(chartData, timeFrame)
+  );
+
 export const fetchCompanyNames = () => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
 
     return fetch(url)
       .then(response => response.json())
-      .then(
-        payload => dispatch(Actions.setCompanyNames(payload)),
-        error => console.log(error)
-      );
+      .then(payload => dispatch(Actions.setCompanyNames(payload)))
+      .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
   };
 };
 
@@ -117,6 +141,11 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchDividendYield(symbol));
   dispatch(fetchTopPeers(symbol));
   dispatch(fetchChartDataDay(symbol));
+  dispatch(fetchChartData(symbol, '5DM'));
+  dispatch(fetchChartData(symbol, '1M'));
+  dispatch(fetchChartData(symbol, '1Y'));
+  dispatch(fetchChartData(symbol, '5Y'));
+  dispatch(fetchChartData(symbol, 'MAX'));
 };
 
 export type searchActionType = typeof searchAction;

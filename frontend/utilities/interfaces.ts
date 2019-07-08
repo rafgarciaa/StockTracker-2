@@ -1,4 +1,19 @@
+export interface ChartDataTypes {
+  fiveDay: ChartDataDay[];
+  oneMonth: ChartData[];
+  oneYear: ChartData[];
+  fiveYear: ChartData[];
+  max: ChartData[];
+}
+
+interface ChartData {
+  date: number | null;
+  label: number | null;
+  close: number | null;
+}
+
 export interface ChartDataDay {
+  // both in oneDay & fiveDay data
   date: string | null;
   minute: string | null;
   label: string | null;
@@ -18,8 +33,10 @@ export interface ChartDataDay {
   close: number | null;
   marketOpen: number | null;
   marketClose: number | null;
-  changeOverTime: number | null;
-  marketChangeOverTime: number | null;
+
+  // only in oneDay data
+  changeOverTime?: number | null;
+  marketChangeOverTime?: number | null;
 }
 
 export interface CompanyNameState {
@@ -28,19 +45,19 @@ export interface CompanyNameState {
 }
 
 export interface CompanyInfoState {
-  description: string;
-  exchange: string;
-  sector: string;
-  website: string;
-  symbol: string;
-  companyName: string;
+  description: string | null;
+  exchange: string | null;
+  sector: string | null;
+  website: string | null;
+  symbol: string | null;
+  companyName: string | null;
 }
 
 export interface News {
-  datetime: number;
-  headline: string;
-  source: string;
-  url: string;
+  datetime: number | null;
+  headline: string | null;
+  source: string | null;
+  url: string | null;
 }
 
 export interface CompanyStatsState {
@@ -61,6 +78,11 @@ export interface CompanyStatsState {
   week52Low: number | null;
   dividendYield: number | null;
   actualEPS: number | null;
+}
+
+export interface Action<T, P> {
+  type: T;
+  payload: P;
 }
 
 export interface RootState {
