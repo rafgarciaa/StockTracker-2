@@ -87,6 +87,8 @@ export interface Action<T, P> {
 
 export interface RootState {
   quotes: {
+    chartData: ChartDataTypes;
+    chartDataDay: ChartDataDay;
     companyInfo: CompanyInfoState;
     companyStats: CompanyStatsState;
     companyNews: News[];
