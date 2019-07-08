@@ -1,4 +1,19 @@
+export interface ChartDataTypes {
+  fiveDay: ChartDataDay[];
+  oneMonth: ChartData[];
+  oneYear: ChartData[];
+  fiveYear: ChartData[];
+  max: ChartData[];
+}
+
+interface ChartData {
+  date: number | null;
+  label: number | null;
+  close: number | null;
+}
+
 export interface ChartDataDay {
+  // both in oneDay & fiveDay data
   date: string | null;
   minute: string | null;
   label: string | null;
@@ -18,8 +33,10 @@ export interface ChartDataDay {
   close: number | null;
   marketOpen: number | null;
   marketClose: number | null;
-  changeOverTime: number | null;
-  marketChangeOverTime: number | null;
+
+  // only in oneDay data
+  changeOverTime?: number | null;
+  marketChangeOverTime?: number | null;
 }
 
 export interface CompanyNameState {
