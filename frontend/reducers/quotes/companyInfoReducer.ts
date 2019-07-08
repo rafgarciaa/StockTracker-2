@@ -3,12 +3,12 @@ import { ActionsTypes } from '../../actions/quotesActions';
 import { CompanyInfoState } from '../../utilities/interfaces';
 
 const INITIAL_STATE: CompanyInfoState = {
-  description: '',
-  exchange: '',
-  sector: '',
-  website: '',
-  symbol: '',
-  companyName: '',
+  description: null,
+  exchange: null,
+  sector: null,
+  website: null,
+  symbol: null,
+  companyName: null,
 };
 
 const companyInfoReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
