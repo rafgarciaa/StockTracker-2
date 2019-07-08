@@ -3,6 +3,7 @@ import { ActionCreatorsMapObject, AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import {
+  Action,
   CompanyInfoState,
   News,
   CompanyStatsState,
@@ -19,10 +20,8 @@ import {
   statsFilters,
 } from '../utilities/apiUtil';
 
-export interface Action<T, P> {
-  type: T;
-  payload: P;
-}
+import { ErrorActions } from '../actions/errorActions';
+import APIError from '../utilities/apiErrorMessage';
 
 function createAction<T, P>(type: T, payload: P): Action<T, P> {
   return { type, payload };
@@ -56,6 +55,21 @@ export type ActionsTypes = ActionsUnion<typeof Actions>;
 const makeUrl = (service: string, symbol: string, params = '') =>
   `${iexApiSandboxUrl}/stock/${symbol}/${service}/?token=${API_KEY}&${params}`;
 
+const handleResponse = (response: {
+  json: any;
+  statusText: string;
+  status: number;
+}) => {
+  if (response.status === 404) {
+    throw new APIError('Company Not Found', response.status);
+  } else if (response.status === 402) {
+    throw new APIError('API Key Limit Reached', response.status);
+  } else if (response.status !== 200) {
+    throw new APIError(response.statusText, response.status);
+  }
+  return response.json();
+};
+
 const createThunkAction = (
   service: string,
   symbol: string,
@@ -66,8 +80,9 @@ const createThunkAction = (
     const url = makeUrl(service, symbol, params);
 
     return fetch(url)
-      .then(response => response.json())
-      .then(payload => dispatch(success(payload)), error => console.log(error));
+      .then(response => handleResponse(response))
+      .then(payload => dispatch(success(payload)))
+      .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
   };
 };
 
@@ -108,10 +123,8 @@ export const fetchCompanyNames = () => {
 
     return fetch(url)
       .then(response => response.json())
-      .then(
-        payload => dispatch(Actions.setCompanyNames(payload)),
-        error => console.log(error)
-      );
+      .then(payload => dispatch(Actions.setCompanyNames(payload)))
+      .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
   };
 };
 
