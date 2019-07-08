@@ -79,9 +79,12 @@ const createThunkAction = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = makeUrl(service, symbol, params);
 
-    return fetch(url)
+    fetch(url)
       .then(response => handleResponse(response))
-      .then(payload => dispatch(success(payload)))
+      .then(payload => {
+        dispatch(success(payload));
+        dispatch(ErrorActions.setApiErrors(''));
+      })
       .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
   };
 };
