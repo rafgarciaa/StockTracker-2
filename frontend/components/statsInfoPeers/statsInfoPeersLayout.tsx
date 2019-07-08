@@ -4,7 +4,6 @@ import CompanyInfo from './companyInfo';
 import {
   CompanyStatsProps,
   CompanyInfoState,
-  CompanyStat,
 } from '../../utilities/interfaces';
 import KeyStatsList from './keyStatsList';
 
