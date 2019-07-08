@@ -39,6 +39,6 @@ module.exports = {
   plugins: [
     new Dotenv(),
     new ForkTsCheckerWebpackPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
+    // new FriendlyErrorsWebpackPlugin(),
   ],
 };

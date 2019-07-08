@@ -60,6 +60,16 @@ export interface News {
   url: string | null;
 }
 
+export interface CompanyStat {
+  name: string | null;
+  value: number | number[] | null;
+}
+
+export interface CompanyStatsProps {
+  companyStatsLeft: CompanyStat[];
+  companyStatsRight: CompanyStat[];
+}
+
 export interface CompanyStatsState {
   avgTotalVolume: number | null;
   change: number | null;
