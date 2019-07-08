@@ -1,10 +1,15 @@
 import React, { FunctionComponent } from 'react';
 import TopPeers from './topPeers';
 import CompanyInfo from './companyInfo';
-import { CompanyInfoState } from '../../utilities/interfaces';
-import KeyStatsListContainer from './keyStatsListContainer';
+import {
+  CompanyStatsProps,
+  CompanyInfoState,
+  CompanyStat,
+} from '../../utilities/interfaces';
+import KeyStatsList from './keyStatsList';
 
 interface StatsInfoPeersProps {
+  companyStats: CompanyStatsProps;
   companyInfo: CompanyInfoState;
   topPeers: string[];
 }
@@ -12,11 +17,15 @@ interface StatsInfoPeersProps {
 const StatsInfoPeersLayout: FunctionComponent<StatsInfoPeersProps> = ({
   topPeers,
   companyInfo,
+  companyStats,
 }) => {
   return (
     <div>
       <div>
-        <KeyStatsListContainer />
+        <KeyStatsList
+          companyStatsLeft={companyStats.companyStatsLeft}
+          companyStatsRight={companyStats.companyStatsRight}
+        />
       </div>
       <div>
         <CompanyInfo companyInfo={companyInfo} />
