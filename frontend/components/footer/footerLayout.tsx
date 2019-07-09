@@ -1,11 +1,21 @@
 import React, { FunctionComponent } from 'react';
 import MarketFavorite from './marketFavorite';
+import { MarketFavoriteItemProps } from '../../utilities/interfaces';
 
-const FooterLayout: FunctionComponent = () => {
+interface FooterLayoutProps {
+  marketList: MarketFavoriteItemProps[];
+  favoriteList: MarketFavoriteItemProps[];
+}
+
+const FooterLayout: FunctionComponent<FooterLayoutProps> = ({
+  marketList,
+  favoriteList,
+}) => {
   return (
     <div>
-      <MarketFavorite sectionTitle={'us market'} />
-      <MarketFavorite sectionTitle={'favorites'} />
+      FOOTER
+      <MarketFavorite sectionTitle={'us market'} symbolsList={marketList} />
+      <MarketFavorite sectionTitle={'favorites'} symbolsList={favoriteList} />
     </div>
   );
 };

@@ -1,15 +1,24 @@
 import React, { FunctionComponent } from 'react';
 import PriceOutput from '../header/priceOutput';
+import { MarketFavoriteItemProps } from '../../utilities/interfaces';
 
-const MarketFavorite: FunctionComponent = (sectionTitle, symbolsList) => {
+interface MarketFavoriteProps {
+  sectionTitle: string;
+  symbolsList: MarketFavoriteItemProps[];
+}
+
+const MarketFavorite: FunctionComponent<MarketFavoriteProps> = ({
+  sectionTitle,
+  symbolsList,
+}) => {
   return (
     <div>
-      {symbolsList.prices.map((symbol, idx) => (
+      <span>{sectionTitle}</span>
+      {symbolsList.map(obj => (
         <PriceOutput
-          key={idx}
-          latestPrice={latestPrice}
-          change={change}
-          changePercent={changePercent}
+          latestPrice={obj.latestPrice}
+          change={obj.change}
+          changePercent={obj.changePercent}
         />
       ))}
     </div>

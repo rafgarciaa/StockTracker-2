@@ -115,3 +115,10 @@ export interface HeaderProps {
   sector?: string;
   lastUpdate?: string;
 }
+
+export interface MarketFavoriteItemProps {
+  symbol: string;
+  latestPrice: number;
+  change: number;
+  changePercent: number;
+}
