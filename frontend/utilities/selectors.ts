@@ -1,4 +1,4 @@
-import { CompanyStatsState } from './interfaces';
+import { CompanyStatsState, ChartDataDay } from './interfaces';
 
 export const selectCompanyStats = (companyStats: CompanyStatsState) => {
   return {
