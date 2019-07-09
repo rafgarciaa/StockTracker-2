@@ -4,13 +4,14 @@ import { RootState } from '../../utilities/interfaces';
 import * as selectors from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({
-  // oneDayData: selectors.selectChartDataDay(state.quotes.chartDataDay),
-  // fiveDayData: selectors.selectChartDataFiveDay(state.quotes.chartData.fiveDay),
+  oneDayData: selectors.selectChartDataDay(state.quotes.chartDataDay),
+  fiveDayData: selectors.selectChartDataFiveDay(state.quotes.chartData.fiveDay),
   oneMonthData: selectors.selectChartDataOneMonth(
     state.quotes.chartData.oneMonth
   ),
-  // oneYearData: selectors.selectChartDataYear(state.quotes.chartData.oneYear),
-  // maxData: selectors.selectChartDataYear(state.quotes.chartData.max),
+  oneYearData: selectors.selectChartDataYear(state.quotes.chartData.oneYear),
+  fiveYearData: selectors.selectChartDataYear(state.quotes.chartData.fiveYear),
+  maxData: selectors.selectChartDataYear(state.quotes.chartData.max),
 });
 
 export default connect(

@@ -8,14 +8,13 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-
-import { ChartDataTypes, ChartDataDay } from '../../utilities/interfaces';
-
+import { ChartData, ChartDataDay } from '../../utilities/interfaces';
 interface ChartProps {
   oneDayData: [];
   fiveDayData: [];
   oneMonthData: [];
   oneYearData: [];
+  fiveYearData: [];
   maxData: [];
 }
 
@@ -24,6 +23,7 @@ const Chart: FunctionComponent<ChartProps> = ({
   fiveDayData,
   oneMonthData,
   oneYearData,
+  fiveYearData,
   maxData,
 }) => {
   const [displayedChartData, setDisplayedChartData] = useState(oneDayData);
@@ -32,20 +32,23 @@ const Chart: FunctionComponent<ChartProps> = ({
     <div>
       <div className="chart">
         <div className="chart__select">
-          <a href="#"> 1D </a>
           <a href="#" onClick={() => setDisplayedChartData(oneDayData)}>
             {' '}
-            5D{' '}
+            1D{' '}
           </a>
           <a href="#" onClick={() => setDisplayedChartData(fiveDayData)}>
             {' '}
-            1M{' '}
+            5D{' '}
           </a>
           <a href="#" onClick={() => setDisplayedChartData(oneMonthData)}>
             {' '}
-            1Y{' '}
+            1M{' '}
           </a>
           <a href="#" onClick={() => setDisplayedChartData(oneYearData)}>
+            {' '}
+            1Y{' '}
+          </a>
+          <a href="#" onClick={() => setDisplayedChartData(fiveYearData)}>
             {' '}
             5Y{' '}
           </a>

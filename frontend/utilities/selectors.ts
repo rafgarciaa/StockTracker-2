@@ -22,7 +22,7 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
   };
 };
 
-export const selectChartDataDay = (chartDataDay: ChartDataDay[]) => {
+export const selectChartDataDay = (chartDataDay: any[]) => {
   return chartDataDay
     .filter(data => data.average)
     .map(data => ({ dateTime: data.label, price: data.average }));
@@ -48,17 +48,17 @@ const yearDateFormatter = (date: string) => {
   let dateYear = date.split(' ')[2];
   dateYear = dateYear ? dateYear.toString() : String(dateYearNow).slice(2);
 
-  if (dateYear > dateYearNow) {
+  if (+dateYear > dateYearNow) {
     return '19' + dateYear;
   } else {
     return '20' + dateYear;
   }
 };
 
-export const selectChartDataYear = (yearDataArray: ChartDataDay[]) =>
+export const selectChartDataYear = (yearDataArray: ChartData[]) =>
   yearDataArray
     .filter(data => data.close)
     .map(data => ({
-      dateTime: yearDateFormatter(data.label),
+      dateTime: yearDateFormatter(data.label.toString()),
       price: data.close,
     }));

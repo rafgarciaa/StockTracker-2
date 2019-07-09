@@ -13,25 +13,25 @@ export interface ChartData {
 
 export interface ChartDataDay {
   // both in oneDay & fiveDay data
-  date: string | null;
-  minute: string | null;
-  label: string | null;
-  high: number | null;
-  low: number | null;
-  average: number | null;
-  volume: number | null;
-  notional: number | null;
-  numberOfTrades: number | null;
-  marketHigh: number | null;
-  marketLow: number | null;
-  marketAverage: number | null;
-  marketVolume: number | null;
-  marketNotional: number | null;
-  marketNumberOfTrades: number | null;
-  open: number | null;
-  close: number | null;
-  marketOpen: number | null;
-  marketClose: number | null;
+  date?: string | null;
+  minute?: string | null;
+  label?: string | null;
+  high?: number | null;
+  low?: number | null;
+  average?: number | null;
+  volume?: number | null;
+  notional?: number | null;
+  numberOfTrades?: number | null;
+  marketHigh?: number | null;
+  marketLow?: number | null;
+  marketAverage?: number | null;
+  marketVolume?: number | null;
+  marketNotional?: number | null;
+  marketNumberOfTrades?: number | null;
+  open?: number | null;
+  close?: number | null;
+  marketOpen?: number | null;
+  marketClose?: number | null;
 
   // only in oneDay data
   changeOverTime?: number | null;
@@ -97,7 +97,7 @@ export interface Action<T, P> {
 export interface RootState {
   quotes: {
     chartData: ChartDataTypes;
-    chartDataDay: ChartDataDay;
+    chartDataDay: ChartDataDay[];
     companyInfo: CompanyInfoState;
     companyStats: CompanyStatsState;
     companyNews: News[];
