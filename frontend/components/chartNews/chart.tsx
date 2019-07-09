@@ -37,7 +37,6 @@ const Chart: FunctionComponent<ChartProps> = ({
   maxData,
 }) => {
   const [displayedChartData, setDisplayedChartData] = useState(undefined);
-  console.log({ oneYearData });
 
   const setOneDay = useCallback(() => setDisplayedChartData(oneDayData), [
     oneDayData,
@@ -59,7 +58,6 @@ const Chart: FunctionComponent<ChartProps> = ({
   useEffect(() => {
     if (!displayedChartData && oneDayData.length !== 0) {
       setDisplayedChartData(oneDayData);
-      console.log('ayyyyy');
     }
   });
 
