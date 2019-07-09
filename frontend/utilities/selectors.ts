@@ -22,7 +22,7 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
   };
 };
 
-export const selectChartDataDay = (chartDataDay: any[]) => {
+export const selectChartDataDay = (chartDataDay: ChartDataDay[]) => {
   return chartDataDay
     .filter(data => data.average)
     .map(data => ({ dateTime: data.label, price: data.average }));
@@ -40,7 +40,7 @@ export const selectChartDataFiveDay = (fiveDayDataArray: ChartDataDay[]) =>
 export const selectChartDataOneMonth = (oneMonthDataArray: ChartData[]) =>
   oneMonthDataArray
     .filter(data => data.close)
-    .map(data => ({ dateTime: data.label, price: data.close }));
+    .map(data => ({ dateTime: data.label.toString(), price: data.close }));
 
 const yearDateFormatter = (date: string) => {
   const dateYearNow = new Date().getFullYear();

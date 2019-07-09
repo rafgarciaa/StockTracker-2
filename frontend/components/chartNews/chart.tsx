@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, useCallback } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
 import {
   AreaChart,
   Area,
@@ -8,14 +13,19 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { ChartData, ChartDataDay } from '../../utilities/interfaces';
+
+interface Temp {
+  dateTime: string;
+  price: number;
+}
+
 interface ChartProps {
-  oneDayData: [];
-  fiveDayData: [];
-  oneMonthData: [];
-  oneYearData: [];
-  fiveYearData: [];
-  maxData: [];
+  oneDayData: Temp[];
+  fiveDayData: Temp[];
+  oneMonthData: Temp[];
+  oneYearData: Temp[];
+  fiveYearData: Temp[];
+  maxData: Temp[];
 }
 
 const Chart: FunctionComponent<ChartProps> = ({
@@ -26,33 +36,58 @@ const Chart: FunctionComponent<ChartProps> = ({
   fiveYearData,
   maxData,
 }) => {
-  const [displayedChartData, setDisplayedChartData] = useState(oneDayData);
+  const [displayedChartData, setDisplayedChartData] = useState(undefined);
+  console.log({ oneYearData });
+
+  const setOneDay = useCallback(() => setDisplayedChartData(oneDayData), [
+    oneDayData,
+  ]);
+  const setFiveDay = useCallback(() => setDisplayedChartData(fiveDayData), [
+    fiveDayData,
+  ]);
+  const setOneMonth = useCallback(() => setDisplayedChartData(oneMonthData), [
+    oneMonthData,
+  ]);
+  const setOneYear = useCallback(() => setDisplayedChartData(oneYearData), [
+    oneYearData,
+  ]);
+  const setFiveYear = useCallback(() => setDisplayedChartData(fiveYearData), [
+    fiveYearData,
+  ]);
+  const setMax = useCallback(() => setDisplayedChartData(maxData), [maxData]);
+
+  useEffect(() => {
+    if (!displayedChartData && oneDayData.length !== 0) {
+      setDisplayedChartData(oneDayData);
+      console.log('ayyyyy');
+    }
+  });
 
   return (
     <div>
       <div className="chart">
         <div className="chart__select">
-          <a href="#" onClick={() => setDisplayedChartData(oneDayData)}>
+          <a href="#" onClick={setOneDay}>
             {' '}
             1D{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(fiveDayData)}>
+          <a href="#" onClick={setFiveDay}>
             {' '}
             5D{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(oneMonthData)}>
+          <a href="#" onClick={setOneMonth}>
             {' '}
             1M{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(oneYearData)}>
+          <a href="#" onClick={setOneYear}>
             {' '}
             1Y{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(fiveYearData)}>
+          <a href="#" onClick={setFiveYear}>
             {' '}
             5Y{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(maxData)}>
+          <a href="#" onClick={setMax}>
             {' '}
             MAX{' '}
           </a>
