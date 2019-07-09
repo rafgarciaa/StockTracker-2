@@ -12,36 +12,44 @@ import {
 import { ChartDataTypes, ChartDataDay } from '../../utilities/interfaces';
 
 interface ChartProps {
-  chartDayData: ChartDataDay;
-  chartData: ChartDataTypes;
+  oneDayData: [];
+  fiveDayData: [];
+  oneMonthData: [];
+  oneYearData: [];
+  maxData: [];
 }
 
-const Chart: FunctionComponent<ChartProps> = ({ chartDayData, chartData }) => {
-  const { fiveDay, oneMonth, oneYear, fiveYear, max } = chartData;
-  const [displayedChartData, setDisplayedChartData] = useState(undefined);
+const Chart: FunctionComponent<ChartProps> = ({
+  oneDayData,
+  fiveDayData,
+  oneMonthData,
+  oneYearData,
+  maxData,
+}) => {
+  const [displayedChartData, setDisplayedChartData] = useState(oneDayData);
 
   return (
     <div>
       <div className="chart">
         <div className="chart__select">
           <a href="#"> 1D </a>
-          <a href="#" onClick={() => setDisplayedChartData(chartDayData)}>
+          <a href="#" onClick={() => setDisplayedChartData(oneDayData)}>
             {' '}
             5D{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(fiveDay)}>
+          <a href="#" onClick={() => setDisplayedChartData(fiveDayData)}>
             {' '}
             1M{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(oneMonth)}>
+          <a href="#" onClick={() => setDisplayedChartData(oneMonthData)}>
             {' '}
             1Y{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(oneYear)}>
+          <a href="#" onClick={() => setDisplayedChartData(oneYearData)}>
             {' '}
             5Y{' '}
           </a>
-          <a href="#" onClick={() => setDisplayedChartData(max)}>
+          <a href="#" onClick={() => setDisplayedChartData(maxData)}>
             {' '}
             MAX{' '}
           </a>

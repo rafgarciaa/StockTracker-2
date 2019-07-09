@@ -5,8 +5,7 @@ export interface ChartDataTypes {
   fiveYear: ChartData[];
   max: ChartData[];
 }
-
-interface ChartData {
+export interface ChartData {
   date: number | null;
   label: number | null;
   close: number | null;
