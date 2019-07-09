@@ -104,6 +104,7 @@ export interface RootState {
     companyNews: News[];
     topPeers: string[];
     companyNames: CompanyNameState[];
+    favorites: FavoriteState[];
   };
 }
 
@@ -116,9 +117,9 @@ export interface HeaderProps {
   lastUpdate?: string;
 }
 
-export interface MarketFavoriteItemProps {
+export interface FavoriteState {
   symbol: string;
-  latestPrice: number;
   change: number;
+  latestPrice: number;
   changePercent: number;
 }

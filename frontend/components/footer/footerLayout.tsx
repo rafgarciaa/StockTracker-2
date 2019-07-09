@@ -1,16 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import MarketFavorite from './marketFavorite';
-import { MarketFavoriteItemProps } from '../../utilities/interfaces';
+import { FavoriteState } from '../../utilities/interfaces';
 
 interface FooterLayoutProps {
-  marketList: MarketFavoriteItemProps[];
-  favoriteList: MarketFavoriteItemProps[];
+  marketList: FavoriteState[];
+  favoriteList: FavoriteState[];
 }
 
-const FooterLayout: FunctionComponent<FooterLayoutProps> = ({
-  marketList,
-  favoriteList,
-}) => {
+const FooterLayout: FunctionComponent<any> = ({ marketList, favoriteList }) => {
   return (
     <div>
       FOOTER
