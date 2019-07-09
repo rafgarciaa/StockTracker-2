@@ -9,7 +9,7 @@ const SearchPriceLayout: FunctionComponent<HeaderProps> = ({
   changePercent,
 }) => {
   return (
-    <div>
+    <div className="header__top-search-area">
       <SearchInputContainer />
       <PriceOutput
         latestPrice={latestPrice}
