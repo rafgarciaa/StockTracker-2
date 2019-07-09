@@ -6,7 +6,6 @@ import StatsInfoPeersContainer from './statsInfoPeers/statsInfoPeersContainer';
 
 const App = ({ store }) => (
   <Provider store={store}>
-    <h1>Stock Tracker App: Phase Two</h1>
     <HeaderContainer />
     <ChartNewsContainer />
     <StatsInfoPeersContainer />
