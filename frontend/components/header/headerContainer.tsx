@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Header from './header';
 import { RootState } from '../../utilities/interfaces';
+import { selectFetchingStatus } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => {
   const { companyStats, companyInfo } = state.quotes;
@@ -12,6 +13,8 @@ const mapStateToProps = (state: RootState) => {
     change: companyStats.change,
     changePercent: companyStats.changePercent,
     updateTime: state.updateTime,
+    fetchStatusPrices: selectFetchingStatus(state, 'companyStats'),
+    fetchStatusTags: selectFetchingStatus(state, 'companyInfo'),
   };
 };
 

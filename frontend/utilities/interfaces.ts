@@ -117,6 +117,8 @@ export interface HeaderProps {
   exchange?: string;
   sector?: string;
   updateTime?: string;
+  fetchStatusPrices?: FetchStatusElement;
+  fetchStatusTags?: FetchStatusElement;
 }
 
 export interface FavoriteState {

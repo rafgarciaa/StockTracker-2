@@ -11,20 +11,26 @@ const Header: FunctionComponent<HeaderProps> = ({
   exchange,
   sector,
   updateTime,
+  fetchStatusPrices,
+  fetchStatusTags,
 }) => {
   return (
     <div className="header">
       <TabsLogoLayout />
-      <SearchPriceLayout
-        latestPrice={latestPrice}
-        change={change}
-        changePercent={changePercent}
-      />
-      <TagsMarketLayout
-        updateTime={updateTime}
-        exchange={exchange}
-        sector={sector}
-      />
+      {fetchStatusPrices.startFetching && (
+        <SearchPriceLayout
+          latestPrice={latestPrice}
+          change={change}
+          changePercent={changePercent}
+        />
+      )}
+      {fetchStatusTags && (
+        <TagsMarketLayout
+          updateTime={updateTime}
+          exchange={exchange}
+          sector={sector}
+        />
+      )}
     </div>
   );
 };
