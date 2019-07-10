@@ -61,7 +61,7 @@ export interface News {
 
 export interface CompanyStat {
   name: string | null;
-  value: number | number[] | null;
+  value: number | string | null;
 }
 
 export interface CompanyStatsProps {
