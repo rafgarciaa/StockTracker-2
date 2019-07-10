@@ -1,23 +1,33 @@
 import { CompanyStatsState, ChartDataDay, ChartData } from './interfaces';
+import { changeToPercent } from './numberFormatters';
 
 export const selectCompanyStats = (companyStats: CompanyStatsState) => {
   return {
     companyStatsLeft: [
       { name: 'Previous Close', value: companyStats.close },
-      { name: 'Day Range', value: [companyStats.high, companyStats.low] },
-      { name: 'Volume', value: companyStats.latestVolume },
-      { name: 'Market Cap', value: companyStats.marketCap },
+      {
+        name: 'Day Range',
+        value: `${companyStats.high} - ${companyStats.low}`,
+      },
+      { name: 'Volume', value: companyStats.latestVolume.toLocaleString() },
+      { name: 'Market Cap', value: companyStats.marketCap.toLocaleString() },
       { name: 'P/E Ratio', value: companyStats.peRatio },
     ],
     companyStatsRight: [
       { name: 'Open', value: companyStats.open },
       {
         name: '52 Week Range',
-        value: [companyStats.week52High, companyStats.week52Low],
+        value: `${companyStats.week52High} - ${companyStats.week52Low}`,
       },
-      { name: 'Total Avg. Volume', value: companyStats.avgTotalVolume },
+      {
+        name: 'Total Avg. Volume',
+        value: companyStats.avgTotalVolume.toLocaleString(),
+      },
       { name: 'Earnings Per Share', value: companyStats.actualEPS },
-      { name: 'Dividend & Yield', value: companyStats.dividendYield },
+      {
+        name: 'Dividend & Yield',
+        value: `${changeToPercent(companyStats.dividendYield)}%`,
+      },
     ],
   };
 };

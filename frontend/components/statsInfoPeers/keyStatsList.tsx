@@ -13,8 +13,8 @@ const KeyStatsList: FunctionComponent<CompanyStatsProps> = ({
 }) => {
   return (
     <div>
-      <h2>Key Stats</h2>
-      <div>
+      <h2 className="heading-section">Key Stats</h2>
+      <div className="section-stats__list">
         <ul>
           {companyStatsLeft.map(({ name, value }: CompanyStat) => (
             <KeyStatsListItem key={name} name={name} value={value} />

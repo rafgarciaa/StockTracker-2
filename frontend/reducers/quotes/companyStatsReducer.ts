@@ -3,16 +3,16 @@ import { ActionsTypes } from '../../actions/quotesActions';
 import { CompanyStatsState } from '../../utilities/interfaces';
 
 const INITIAL_STATE: CompanyStatsState = {
-  avgTotalVolume: null,
+  avgTotalVolume: 0,
   change: null,
   changePercent: null,
   close: null,
   companyName: null,
   high: null,
-  latestPrice: null,
-  latestVolume: null,
+  latestPrice: 0,
+  latestVolume: 0,
   low: null,
-  marketCap: null,
+  marketCap: 0,
   open: null,
   peRatio: null,
   symbol: null,

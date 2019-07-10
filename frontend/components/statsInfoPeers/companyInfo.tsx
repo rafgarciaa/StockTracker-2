@@ -11,14 +11,14 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({ companyInfo }) => {
     url == null ? null : url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
   return (
-    <div>
-      <h2>Company Overview</h2>
+    <div className="section-info">
+      <h2 className="heading-section">Company Overview</h2>
       <h2>
-        {companyName} {symbol ? symbol : ''}
+        {companyName} {symbol ? `(${symbol})` : ''}
       </h2>
-      <span>
-        <a href={website}>{urlFormatter(website)}</a>
-      </span>
+      <a href={website} className="section-info__link">
+        {urlFormatter(website)}
+      </a>
       <p>{description}</p>
     </div>
   );
