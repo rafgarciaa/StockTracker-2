@@ -1,4 +1,4 @@
-import { ERROR_ACTION_TYPE } from '../constants/errorTypes';
+import { ERROR_ACTION_TYPE } from '../constants/fetchStatusTypes';
 import { ActionCreatorsMapObject } from 'redux';
 
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;

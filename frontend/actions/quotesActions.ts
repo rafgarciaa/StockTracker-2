@@ -21,7 +21,7 @@ import {
   favoritesQuoteFilters,
 } from '../utilities/apiUtil';
 
-import { ErrorActions } from '../actions/errorActions';
+import { ErrorActions } from './fetchStatusActions';
 import APIError from '../utilities/apiErrorMessage';
 
 function createAction<T, P>(type: T, payload: P): Action<T, P> {

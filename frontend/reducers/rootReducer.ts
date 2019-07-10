@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import quotes from './quotes/quotesReducer';
-import errors from './errors/errorsReducer';
+import fetchStatus from './errors/fetchStatusReducer';
 
 const rootReducer = combineReducers({
   quotes,
-  errors,
+  fetchStatus,
 });
 
 export default rootReducer;
