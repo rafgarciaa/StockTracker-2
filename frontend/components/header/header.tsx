@@ -13,7 +13,7 @@ const Header: FunctionComponent<HeaderProps> = ({
   lastUpdate,
 }) => {
   return (
-    <div>
+    <div className="header">
       <TabsLogoLayout />
       <SearchPriceLayout
         latestPrice={latestPrice}

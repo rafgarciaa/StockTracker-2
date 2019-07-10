@@ -9,7 +9,7 @@ const TagsMarketLayout: FunctionComponent<HeaderProps> = ({
   sector,
 }) => {
   return (
-    <div>
+    <div className="header__bottom">
       <Tags exchange={exchange} sector={sector} />
       <MarketStatus lastUpdate={lastUpdate} />
     </div>
