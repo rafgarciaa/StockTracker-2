@@ -16,9 +16,9 @@ const getLocalTimeZone = () => {
   return timeZone.join('');
 };
 
-const MarketStatus: FunctionComponent<HeaderProps> = ({ lastUpdate }) => {
+const MarketStatus: FunctionComponent<HeaderProps> = ({ updateTime }) => {
   const localTimeZone =
-    getLocalTimeZone() && lastUpdate
+    getLocalTimeZone() && updateTime
       ? getLocalTimeZone()
       : new Date().toUTCString();
   const sun = <i className="far fa-sun" />;
@@ -27,7 +27,7 @@ const MarketStatus: FunctionComponent<HeaderProps> = ({ lastUpdate }) => {
   return (
     <div className="header__bottom-status">
       <span>
-        Real-Time Price as of {lastUpdate} {localTimeZone}
+        Real-Time Price as of {updateTime} {localTimeZone}
       </span>
       <span>{` `}</span>
       <span>

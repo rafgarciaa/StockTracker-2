@@ -24,6 +24,9 @@ import {
 import { FetchStatusActions } from '../actions/fetchStatusActions';
 import APIError from '../utilities/apiErrorMessage';
 
+import { UpdateActions } from '../actions/updateActions';
+import { getCurrentDate } from '../utilities/getCurrentDate';
+
 function createAction<T, P>(type: T, payload: P): Action<T, P> {
   return { type, payload };
 }
@@ -90,6 +93,7 @@ const createThunkAction = (
         dispatch(success(payload));
         // dispatch(FetchStatusActions.setApiErrors(''));
         dispatch(FetchStatusActions.setApiSuccess(section));
+        dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
       .catch(event =>
         // dispatch(FetchStatusActions.setApiErrors(event.toString()))

@@ -111,6 +111,8 @@ export interface RootState {
       fetchSuccess: boolean;
     };
   };
+  errors: string;
+  updateTime: string;
 }
 
 export interface HeaderProps {
@@ -119,7 +121,7 @@ export interface HeaderProps {
   changePercent?: number;
   exchange?: string;
   sector?: string;
-  lastUpdate?: string;
+  updateTime?: string;
 }
 
 export interface FavoriteState {

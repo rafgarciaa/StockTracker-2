@@ -21,7 +21,7 @@ const ChartNewsLayout: FunctionComponent<ChartNewsProps> = ({
 }) => {
   console.log(isFetchSuccessCompanyNews);
   return (
-    <div>
+    <div className="section-chart-news">
       {isFetchSuccessCompanyNews && (
         <NewsList newsList={newsList} isFetching={isFetchingCompanyNews} />
       )}

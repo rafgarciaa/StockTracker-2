@@ -12,12 +12,12 @@ const NewsList: FunctionComponent<NewsListProps> = ({
   isFetching,
 }) => {
   return (
-    <div className="section-news__list">
+    <div className="section-news">
       <h2 className="heading-section">Latest News</h2>
       {isFetching ? (
         'LOADING...'
       ) : (
-        <ul>
+        <ul className="section-news__list">
           {newsList.map((news, idx) => (
             <NewsListItem key={idx} news={news} />
           ))}
