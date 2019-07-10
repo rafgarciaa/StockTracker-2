@@ -8,9 +8,9 @@ interface NewsListProps {
 
 const NewsList: FunctionComponent<NewsListProps> = ({ newsList }) => {
   return (
-    <div className="section-news__list">
+    <div className="section-news">
       <h2 className="heading-section">Latest News</h2>
-      <ul>
+      <ul className="section-news__list">
         {newsList.map((news, idx) => (
           <NewsListItem key={idx} news={news} />
         ))}

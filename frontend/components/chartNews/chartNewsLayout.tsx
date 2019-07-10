@@ -9,9 +9,9 @@ interface ChartNewsProps {
 
 const ChartNewsLayout: FunctionComponent<ChartNewsProps> = ({ newsList }) => {
   return (
-    <div>
-      <NewsList newsList={newsList} />
+    <div className="section-chart-news">
       <ChartContainer />
+      <NewsList newsList={newsList} />
     </div>
   );
 };

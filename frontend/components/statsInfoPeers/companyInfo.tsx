@@ -12,7 +12,7 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({ companyInfo }) => {
 
   return (
     <div>
-      <h2>Company Overview</h2>
+      <h2 className="heading-section">Company Overview</h2>
       <h2>
         {companyName} {symbol ? symbol : ''}
       </h2>
