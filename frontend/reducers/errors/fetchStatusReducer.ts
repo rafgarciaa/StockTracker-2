@@ -1,5 +1,5 @@
 import { FETCH_STATUS_ACTION_TYPE } from '../../constants/fetchStatusTypes';
-import { ErrorTypes } from '../../actions/fetchStatusActions';
+import { FetchStatusType } from '../../actions/fetchStatusActions';
 import { FetchStatusState } from '../../utilities/interfaces';
 
 const INITIAL_STATE: FetchStatusState = {
@@ -37,7 +37,7 @@ const INITIAL_STATE: FetchStatusState = {
   },
 };
 
-const fetchStatusReducer = (state = INITIAL_STATE, action: ErrorTypes) => {
+const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
   switch (action.type) {
     case FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
       return Object.assign({}, state, {

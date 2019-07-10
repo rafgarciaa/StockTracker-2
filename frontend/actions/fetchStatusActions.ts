@@ -3,7 +3,7 @@ import { ActionCreatorsMapObject } from 'redux';
 
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
-export const ErrorActions = {
+export const FetchStatusActions = {
   setApiErrors: (section: string) => ({
     type: FETCH_STATUS_ACTION_TYPE.SET_API_ERROR,
     section,
@@ -18,4 +18,4 @@ export const ErrorActions = {
   }),
 };
 
-export type ErrorTypes = ActionsUnion<typeof ErrorActions>;
+export type FetchStatusType = ActionsUnion<typeof FetchStatusActions>;

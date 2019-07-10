@@ -21,7 +21,7 @@ import {
   favoritesQuoteFilters,
 } from '../utilities/apiUtil';
 
-import { ErrorActions } from './fetchStatusActions';
+import { FetchStatusActions } from '../actions/fetchStatusActions';
 import APIError from '../utilities/apiErrorMessage';
 
 function createAction<T, P>(type: T, payload: P): Action<T, P> {
@@ -74,6 +74,7 @@ const handleResponse = (response: {
 };
 
 const createThunkAction = (
+  section: string,
   service: string,
   symbol: string,
   success: any,
@@ -82,18 +83,24 @@ const createThunkAction = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = makeUrl(service, symbol, params);
 
+    dispatch(FetchStatusActions.setApiStart(section));
     fetch(url)
       .then(response => handleResponse(response))
       .then(payload => {
         dispatch(success(payload));
-        dispatch(ErrorActions.setApiErrors(''));
+        // dispatch(FetchStatusActions.setApiErrors(''));
+        dispatch(FetchStatusActions.setApiSuccess(section));
       })
-      .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
+      .catch(event =>
+        // dispatch(FetchStatusActions.setApiErrors(event.toString()))
+        dispatch(FetchStatusActions.setApiErrors(section))
+      );
   };
 };
 
 const fetchCompanyInfo = (symbol: string) =>
   createThunkAction(
+    'companyInfo',
     'company',
     symbol,
     Actions.setCompanyInfo,
@@ -101,30 +108,57 @@ const fetchCompanyInfo = (symbol: string) =>
   );
 
 const fetchCompanyNews = (symbol: string) =>
-  createThunkAction('news/last/5', symbol, Actions.setCompanyNews, newsFilters);
+  createThunkAction(
+    'companyNews',
+    'news/last/5',
+    symbol,
+    Actions.setCompanyNews,
+    newsFilters
+  );
 
 const fetchCompanyStats = (symbol: string) =>
-  createThunkAction('quote', symbol, Actions.setCompanyStats, quoteFilters);
+  createThunkAction(
+    'companyStats',
+    'quote',
+    symbol,
+    Actions.setCompanyStats,
+    quoteFilters
+  );
 
 const fetchCompanyEPS = (symbol: string) =>
-  createThunkAction('earnings/1/actualEPS', symbol, Actions.setCompanyEPS);
+  createThunkAction(
+    'companyEPS',
+    'earnings/1/actualEPS',
+    symbol,
+    Actions.setCompanyEPS
+  );
 
 const fetchDividendYield = (symbol: string) =>
-  createThunkAction('stats', symbol, Actions.setDividendYield, statsFilters);
+  createThunkAction(
+    'dividendYield',
+    'stats',
+    symbol,
+    Actions.setDividendYield,
+    statsFilters
+  );
 
 const fetchTopPeers = (symbol: string) =>
-  createThunkAction('peers', symbol, Actions.setTopPeers);
+  createThunkAction('topPeers', 'peers', symbol, Actions.setTopPeers);
 
 const fetchChartDataDay = (symbol: string) =>
-  createThunkAction('chart/1d', symbol, Actions.setChartDataDay);
+  createThunkAction('chartData', 'chart/1d', symbol, Actions.setChartDataDay);
 
 const fetchChartData = (symbol: string, timeFrame: string) =>
-  createThunkAction(`chart/${timeFrame}`, symbol, (chartData: object[]) =>
-    Actions.setChartData(chartData, timeFrame)
+  createThunkAction(
+    'chartData',
+    `chart/${timeFrame}`,
+    symbol,
+    (chartData: object[]) => Actions.setChartData(chartData, timeFrame)
   );
 
 const fetchFavoritePrices = (symbol: string) =>
   createThunkAction(
+    'favoritePrices',
     'quote',
     symbol,
     Actions.setFavorites,
@@ -138,7 +172,9 @@ export const fetchCompanyNames = () => {
     return fetch(url)
       .then(response => response.json())
       .then(payload => dispatch(Actions.setCompanyNames(payload)))
-      .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
+      .catch(event =>
+        dispatch(FetchStatusActions.setApiErrors(event.toString()))
+      );
   };
 };
 
