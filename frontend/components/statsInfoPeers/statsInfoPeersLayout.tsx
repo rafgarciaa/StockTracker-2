@@ -1,34 +1,17 @@
 import React, { FunctionComponent } from 'react';
-import TopPeers from './topPeers';
-import CompanyInfo from './companyInfo';
-import {
-  CompanyStatsProps,
-  CompanyInfoState,
-} from '../../utilities/interfaces';
-import KeyStatsList from './keyStatsList';
+import TopPeersContainer from './topPeersContainer';
+import CompanyInfoContainer from './companyInfoContainer';
+import KeyStatsListContainer from './keyStatsListContainer';
 
-interface StatsInfoPeersProps {
-  companyStats: CompanyStatsProps;
-  companyInfo: CompanyInfoState;
-  topPeers: string[];
-}
-
-const StatsInfoPeersLayout: FunctionComponent<StatsInfoPeersProps> = ({
-  topPeers,
-  companyInfo,
-  companyStats,
-}) => {
+const StatsInfoPeersLayout: FunctionComponent = () => {
   return (
     <div className="section-stats-info-peers">
       <div className="section-stats">
-        <KeyStatsList
-          companyStatsLeft={companyStats.companyStatsLeft}
-          companyStatsRight={companyStats.companyStatsRight}
-        />
+        <KeyStatsListContainer />
       </div>
       <div className="section-info-peers">
-        <CompanyInfo companyInfo={companyInfo} />
-        <TopPeers topPeers={topPeers} />
+        <CompanyInfoContainer />
+        <TopPeersContainer />
       </div>
     </div>
   );

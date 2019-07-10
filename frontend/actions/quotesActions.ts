@@ -14,11 +14,7 @@ import {
   API_KEY,
   iexApiSandboxUrl,
   iexApiFreeUrl,
-  companyInfoFilters,
-  newsFilters,
-  quoteFilters,
-  statsFilters,
-  favoritesQuoteFilters,
+  Filters,
 } from '../utilities/apiUtil';
 
 import { ErrorActions } from '../actions/errorActions';
@@ -101,20 +97,35 @@ const fetchCompanyInfo = (symbol: string) =>
     'company',
     symbol,
     Actions.setCompanyInfo,
-    companyInfoFilters
+    Filters.companyInfoFilters
   );
 
 const fetchCompanyNews = (symbol: string) =>
-  createThunkAction('news/last/5', symbol, Actions.setCompanyNews, newsFilters);
+  createThunkAction(
+    'news/last/5',
+    symbol,
+    Actions.setCompanyNews,
+    Filters.newsFilters
+  );
 
 const fetchCompanyStats = (symbol: string) =>
-  createThunkAction('quote', symbol, Actions.setCompanyStats, quoteFilters);
+  createThunkAction(
+    'quote',
+    symbol,
+    Actions.setCompanyStats,
+    Filters.quoteFilters
+  );
 
 const fetchCompanyEPS = (symbol: string) =>
   createThunkAction('earnings/1/actualEPS', symbol, Actions.setCompanyEPS);
 
 const fetchDividendYield = (symbol: string) =>
-  createThunkAction('stats', symbol, Actions.setDividendYield, statsFilters);
+  createThunkAction(
+    'stats',
+    symbol,
+    Actions.setDividendYield,
+    Filters.statsFilters
+  );
 
 const fetchTopPeers = (symbol: string) =>
   createThunkAction('peers', symbol, Actions.setTopPeers);
@@ -132,7 +143,7 @@ const fetchFavoritePrices = (symbol: string) =>
     'quote',
     symbol,
     Actions.setFavorites,
-    favoritesQuoteFilters
+    Filters.favoritesQuoteFilters
   );
 
 export const fetchCompanyNames = () => {

@@ -2,14 +2,8 @@ import React, { FunctionComponent } from 'react';
 import { News } from '../../utilities/interfaces';
 
 const formatNewsTimeAgo = (timePublished: number) => {
-  let timeAgo = Math.floor(timePublished / 1000 / 60);
-
-  if (timeAgo < 60) {
-    return timeAgo + 'min ago';
-  } else {
-    timeAgo = Math.floor(timeAgo / 60);
-    return timeAgo === 1 ? timeAgo + 'hr ago' : timeAgo + 'hrs ago';
-  }
+  const timeAgo: Date = new Date(timePublished);
+  return timeAgo.getHours() + 'hr' + timeAgo.getMinutes() + 'min ago';
 };
 
 interface NewsListItemProps {

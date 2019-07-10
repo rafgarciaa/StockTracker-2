@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import ChartNewsLayout from './chartNewsLayout';
+import TopPeers from './topPeers';
 import { RootState } from '../../utilities/interfaces';
 
 const mapStateToProps = (state: RootState) => ({
-  newsList: state.quotes.companyNews,
+  topPeers: state.quotes.topPeers,
 });
 
 export default connect(
   mapStateToProps,
   null
-)(ChartNewsLayout);
+)(TopPeers);
