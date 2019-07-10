@@ -1,45 +1,17 @@
 import React, { FunctionComponent } from 'react';
-import TopPeers from './topPeers';
-import CompanyInfo from './companyInfo';
-import {
-  CompanyStatsProps,
-  CompanyInfoState,
-  FetchStatusElement,
-} from '../../utilities/interfaces';
-import KeyStatsList from './keyStatsList';
+import TopPeersContainer from './topPeersContainer';
+import CompanyInfoContainer from './companyInfoContainer';
+import KeyStatsListContainer from './keyStatsListContainer';
 
-interface StatsInfoPeersProps {
-  companyStats: CompanyStatsProps;
-  companyInfo: CompanyInfoState;
-  topPeers: string[];
-  fetchStatusCompanyStats: FetchStatusElement;
-  fetchStatusCompanyInfo: FetchStatusElement;
-  fetchStatusTopPeers: FetchStatusElement;
-}
-
-const StatsInfoPeersLayout: FunctionComponent<StatsInfoPeersProps> = ({
-  topPeers,
-  companyInfo,
-  companyStats,
-  fetchStatusCompanyStats,
-  fetchStatusCompanyInfo,
-  fetchStatusTopPeers,
-}) => {
+const StatsInfoPeersLayout: FunctionComponent = () => {
   return (
-    <div>
-      <div>
-        {fetchStatusCompanyStats.startFetching && (
-          <KeyStatsList
-            companyStatsLeft={companyStats.companyStatsLeft}
-            companyStatsRight={companyStats.companyStatsRight}
-          />
-        )}
+    <div className="section-stats-info-peers">
+      <div className="section-stats">
+        <KeyStatsListContainer />
       </div>
-      <div>
-        {fetchStatusCompanyInfo.startFetching && (
-          <CompanyInfo companyInfo={companyInfo} />
-        )}
-        {fetchStatusTopPeers.startFetching && <TopPeers topPeers={topPeers} />}
+      <div className="section-info-peers">
+        <CompanyInfoContainer />
+        <TopPeersContainer />
       </div>
     </div>
   );

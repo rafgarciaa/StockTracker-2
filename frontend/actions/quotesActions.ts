@@ -14,11 +14,7 @@ import {
   API_KEY,
   iexApiSandboxUrl,
   iexApiFreeUrl,
-  companyInfoFilters,
-  newsFilters,
-  quoteFilters,
-  statsFilters,
-  favoritesQuoteFilters,
+  Filters,
 } from '../utilities/apiUtil';
 
 import { FetchStatusActions } from '../actions/fetchStatusActions';
@@ -108,7 +104,7 @@ const fetchCompanyInfo = (symbol: string) =>
     'company',
     symbol,
     Actions.setCompanyInfo,
-    companyInfoFilters
+    Filters.companyInfoFilters
   );
 
 const fetchCompanyNews = (symbol: string) =>
@@ -117,7 +113,7 @@ const fetchCompanyNews = (symbol: string) =>
     'news/last/5',
     symbol,
     Actions.setCompanyNews,
-    newsFilters
+    Filters.newsFilters
   );
 
 const fetchCompanyStats = (symbol: string) =>
@@ -126,7 +122,7 @@ const fetchCompanyStats = (symbol: string) =>
     'quote',
     symbol,
     Actions.setCompanyStats,
-    quoteFilters
+    Filters.quoteFilters
   );
 
 const fetchCompanyEPS = (symbol: string) =>
@@ -143,7 +139,7 @@ const fetchDividendYield = (symbol: string) =>
     'stats',
     symbol,
     Actions.setDividendYield,
-    statsFilters
+    Filters.statsFilters
   );
 
 const fetchTopPeers = (symbol: string) =>
@@ -166,7 +162,7 @@ const fetchFavoritePrices = (symbol: string) =>
     'quote',
     symbol,
     Actions.setFavorites,
-    favoritesQuoteFilters
+    Filters.favoritesQuoteFilters
   );
 
 export const fetchCompanyNames = () => {

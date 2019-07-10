@@ -1,30 +1,21 @@
 import React, { FunctionComponent } from 'react';
 import { News, FetchStatusElement } from '../../utilities/interfaces';
-import NewsList from './newsList';
+import NewsListContainer from './newsListContainer';
 import ChartContainer from './chartContainer';
 
 interface ChartNewsProps {
   newsList: News[];
-  fetchingStatusCompanyNews: FetchStatusElement;
-  fetchingStatusChart: FetchStatusElement;
+  // fetchingStatusCompanyNews: FetchStatusElement;
+  // fetchingStatusChart: FetchStatusElement;
 }
 
 const tempLoader = {};
 
-const ChartNewsLayout: FunctionComponent<ChartNewsProps> = ({
-  newsList,
-  fetchingStatusCompanyNews,
-  fetchingStatusChart,
-}) => {
+const ChartNewsLayout: FunctionComponent = () => {
   return (
     <div className="section-chart-news">
       <ChartContainer />
-      {fetchingStatusCompanyNews.startFetching && (
-        <NewsList
-          newsList={newsList}
-          fetchingStatus={fetchingStatusCompanyNews}
-        />
-      )}
+      <NewsListContainer />
     </div>
   );
 };

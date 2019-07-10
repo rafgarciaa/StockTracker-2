@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import StatsInfoPeersLayout from './statsInfoPeersLayout';
+import KeyStatsList from './keyStatsList';
 import { RootState } from '../../utilities/interfaces';
 import {
   selectCompanyStats,
@@ -7,9 +7,10 @@ import {
 } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({
-  companyStats: selectCompanyStats(state.quotes.companyStats),
-  companyInfo: state.quotes.companyInfo,
-  topPeers: state.quotes.topPeers,
+  companyStatsLeft: selectCompanyStats(state.quotes.companyStats)
+    .companyStatsLeft,
+  companyStatsRight: selectCompanyStats(state.quotes.companyStats)
+    .companyStatsRight,
   fetchStatusCompanyStats: selectFetchingStatus(state, 'companyStats'),
   fetchStatusCompanyInfo: selectFetchingStatus(state, 'companyInfo'),
   fetchStatusTopPeers: selectFetchingStatus(state, 'topPeers'),
@@ -18,4 +19,4 @@ const mapStateToProps = (state: RootState) => ({
 export default connect(
   mapStateToProps,
   null
-)(StatsInfoPeersLayout);
+)(KeyStatsList);

@@ -14,15 +14,15 @@ const NewsList: FunctionComponent<NewsListProps> = ({
   return (
     <div className="section-news">
       <h2 className="heading-section">Latest News</h2>
-      {fetchingStatus.doneFetching ? (
-        <ul className="section-news__list">
-          {newsList.map((news, idx) => (
-            <NewsListItem key={idx} news={news} />
-          ))}
-        </ul>
-      ) : (
-        'LOADING...'
-      )}
+      {/* {fetchingStatus.doneFetching ? ( */}
+      <ul className="section-news__list">
+        {newsList.map((news, idx) => (
+          <NewsListItem key={idx} news={news} />
+        ))}
+      </ul>
+      {/* ) : ( */}
+      {/* 'LOADING...' */}
+      {/* )} */}
     </div>
   );
 };

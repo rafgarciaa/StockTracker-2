@@ -61,7 +61,7 @@ export interface News {
 
 export interface CompanyStat {
   name: string | null;
-  value: number | number[] | null;
+  value: number | string | null;
 }
 
 export interface CompanyStatsProps {
@@ -111,14 +111,14 @@ export interface RootState {
 }
 
 export interface HeaderProps {
-  latestPrice?: number;
-  change?: number;
-  changePercent?: number;
   exchange?: string;
   sector?: string;
   updateTime?: string;
   fetchStatusPrices?: FetchStatusElement;
   fetchStatusTags?: FetchStatusElement;
+  latestPrice: number;
+  change: number;
+  changePercent: number;
 }
 
 export interface FavoriteState {
