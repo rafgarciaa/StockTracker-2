@@ -11,21 +11,20 @@ const MarketFavorite: FunctionComponent<MarketFavoriteProps> = ({
   sectionTitle,
   symbolsList,
 }) => {
-  console.log(Object.keys(symbolsList));
-  Object.keys(symbolsList).map((idx, symbol) => {
-    console.log(symbol);
-  });
   return (
     <div>
       <span>{sectionTitle}</span>
-      {!symbolsList &&
-        symbolsList.map(obj => (
+      {Object.keys(symbolsList).map((symbol, idx) => {
+        const market = symbolsList[symbol];
+        return (
           <PriceOutput
-            latestPrice={obj.latestPrice}
-            change={obj.change}
-            changePercent={obj.changePercent}
+            key={idx}
+            latestPrice={market.latestPrice}
+            change={market.change}
+            changePercent={market.changePercent}
           />
-        ))}
+        );
+      })}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ActionsTypes } from '../../actions/quotesActions';
 import { FavoriteState } from '../../utilities/interfaces';
 
-const favoriteReducer = (state: FavoriteState[] = [], action: ActionsTypes) => {
+const favoriteReducer = (state: FavoriteState = {}, action: ActionsTypes) => {
   Object.freeze(state);
 
   switch (action.type) {

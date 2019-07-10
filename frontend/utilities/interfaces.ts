@@ -117,8 +117,10 @@ export interface HeaderProps {
 }
 
 export interface FavoriteState {
-  symbol: string;
-  change: number;
-  latestPrice: number;
-  changePercent: number;
+  [k: string]: {
+    symbol: string;
+    change: number;
+    latestPrice: number;
+    changePercent: number;
+  };
 }
