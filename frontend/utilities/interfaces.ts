@@ -119,9 +119,6 @@ export interface HeaderProps {
   updateTime?: string;
   fetchStatusPrices?: FetchStatusElement;
   fetchStatusTags?: FetchStatusElement;
-  latestPrice: number;
-  change: number;
-  changePercent: number;
 }
 
 export interface FavoriteState {
