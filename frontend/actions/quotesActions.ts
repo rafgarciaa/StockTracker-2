@@ -24,6 +24,9 @@ import {
 import { ErrorActions } from '../actions/errorActions';
 import APIError from '../utilities/apiErrorMessage';
 
+import { UpdateActions } from '../actions/updateActions';
+import { getCurrentDate } from '../utilities/getCurrentDate';
+
 function createAction<T, P>(type: T, payload: P): Action<T, P> {
   return { type, payload };
 }
@@ -87,6 +90,7 @@ const createThunkAction = (
       .then(payload => {
         dispatch(success(payload));
         dispatch(ErrorActions.setApiErrors(''));
+        dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
       .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
   };

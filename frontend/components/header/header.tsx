@@ -10,7 +10,7 @@ const Header: FunctionComponent<HeaderProps> = ({
   changePercent,
   exchange,
   sector,
-  lastUpdate,
+  updateTime,
 }) => {
   return (
     <div className="header">
@@ -21,7 +21,7 @@ const Header: FunctionComponent<HeaderProps> = ({
         changePercent={changePercent}
       />
       <TagsMarketLayout
-        lastUpdate={lastUpdate}
+        updateTime={updateTime}
         exchange={exchange}
         sector={sector}
       />
