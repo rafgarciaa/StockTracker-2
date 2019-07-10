@@ -4,17 +4,25 @@ import { News } from '../../utilities/interfaces';
 
 interface NewsListProps {
   newsList: News[];
+  isFetching: boolean;
 }
 
-const NewsList: FunctionComponent<NewsListProps> = ({ newsList }) => {
+const NewsList: FunctionComponent<NewsListProps> = ({
+  newsList,
+  isFetching,
+}) => {
   return (
     <div className="section-news__list">
       <h2 className="heading-section">Latest News</h2>
-      <ul>
-        {newsList.map((news, idx) => (
-          <NewsListItem key={idx} news={news} />
-        ))}
-      </ul>
+      {isFetching ? (
+        'LOADING...'
+      ) : (
+        <ul>
+          {newsList.map((news, idx) => (
+            <NewsListItem key={idx} news={news} />
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

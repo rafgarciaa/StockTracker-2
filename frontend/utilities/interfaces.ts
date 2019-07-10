@@ -105,6 +105,12 @@ export interface RootState {
     companyNames: CompanyNameState[];
     favorites: FavoriteState[];
   };
+  fetchStatus: {
+    [k: string]: {
+      isFetching: boolean;
+      fetchSuccess: boolean;
+    };
+  };
 }
 
 export interface HeaderProps {

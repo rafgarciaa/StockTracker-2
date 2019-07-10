@@ -5,13 +5,27 @@ import ChartContainer from './chartContainer';
 
 interface ChartNewsProps {
   newsList: News[];
+  isFetchingCompanyNews: boolean;
+  isFetchSuccessCompanyNews: boolean;
+  isFetchingChart: boolean;
+  isFetchSuccessChart: boolean;
 }
 
-const ChartNewsLayout: FunctionComponent<ChartNewsProps> = ({ newsList }) => {
+const tempLoader = {};
+
+const ChartNewsLayout: FunctionComponent<ChartNewsProps> = ({
+  newsList,
+  isFetchSuccessCompanyNews,
+  isFetchingCompanyNews,
+  isFetchSuccessChart,
+}) => {
+  console.log(isFetchSuccessCompanyNews);
   return (
     <div>
-      <NewsList newsList={newsList} />
-      <ChartContainer />
+      {isFetchSuccessCompanyNews && (
+        <NewsList newsList={newsList} isFetching={isFetchingCompanyNews} />
+      )}
+      {isFetchSuccessChart && <ChartContainer />}
     </div>
   );
 };
