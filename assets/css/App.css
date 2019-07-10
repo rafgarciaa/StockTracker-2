@@ -334,6 +334,10 @@ body {
 }
 
 /* PEERS STYLING */
+.section-peers {
+  margin-top: 1rem;
+}
+
 .section-peers__peer:not(:last-child) {
   margin-right: 1rem;
 }
