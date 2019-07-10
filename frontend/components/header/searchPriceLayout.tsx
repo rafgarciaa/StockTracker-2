@@ -1,21 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { HeaderProps } from '../../utilities/interfaces';
 import SearchInputContainer from './searchInputContainer';
-import PriceOutput from './priceOutput';
+import PriceOutputContainer from './priceOutputContainer';
 
-const SearchPriceLayout: FunctionComponent<HeaderProps> = ({
-  latestPrice,
-  change,
-  changePercent,
-}) => {
+const SearchPriceLayout: FunctionComponent = () => {
   return (
     <div className="header__top-search-area">
       <SearchInputContainer />
-      <PriceOutput
-        latestPrice={latestPrice}
-        change={change}
-        changePercent={changePercent}
-      />
+      <PriceOutputContainer />
     </div>
   );
 };

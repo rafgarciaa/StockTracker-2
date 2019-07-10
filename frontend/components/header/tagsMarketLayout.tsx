@@ -1,17 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { HeaderProps } from '../../utilities/interfaces';
-import Tags from './tags';
-import MarketStatus from './marketStatus';
+import TagsContainer from './tagsContainer';
+import MarketStatusContainer from './marketStatusContainer';
 
-const TagsMarketLayout: FunctionComponent<HeaderProps> = ({
-  updateTime,
-  exchange,
-  sector,
-}) => {
+const TagsMarketLayout: FunctionComponent = () => {
   return (
     <div className="header__bottom">
-      <Tags exchange={exchange} sector={sector} />
-      <MarketStatus updateTime={updateTime} />
+      <TagsContainer />
+      <MarketStatusContainer />
     </div>
   );
 };
