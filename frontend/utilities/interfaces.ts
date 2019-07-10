@@ -124,3 +124,10 @@ export interface FavoriteState {
     changePercent: number;
   };
 }
+
+export interface FetchStatusState {
+  [k: string]: {
+    isFetching: boolean;
+    fetchSuccess: boolean;
+  };
+}
