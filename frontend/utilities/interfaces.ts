@@ -105,6 +105,8 @@ export interface RootState {
     companyNames: CompanyNameState[];
     favorites: FavoriteState[];
   };
+  errors: string;
+  updateTime: string;
 }
 
 export interface HeaderProps {
@@ -113,7 +115,7 @@ export interface HeaderProps {
   changePercent?: number;
   exchange?: string;
   sector?: string;
-  lastUpdate?: string;
+  updateTime?: string;
 }
 
 export interface FavoriteState {

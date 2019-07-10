@@ -144,12 +144,12 @@ body {
 }
 
 .header__top-price--change > span:last-child {
-  padding-left: 1rem;
+  padding-left: 0.5rem;
 }
 
 .header__top-price--change > span:first-child {
   border-right: solid rgba(178, 37, 46, 0.45) 2px;
-  padding-right: 1rem;
+  padding-right: 0.5rem;
 }
 
 .header__top-price--change.positive > span:first-child {
