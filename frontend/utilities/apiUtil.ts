@@ -30,6 +30,13 @@ export const quoteFilters = [
   'changePercent',
 ].join(',');
 
+export const favoritesQuoteFilters = [
+  'filter=symbol',
+  'latestPrice',
+  'change',
+  'changePercent',
+].join(',');
+
 export const statsFilters = ['filter=dividendYield'].join(',');
 
 export const companyInfoFilters = [
