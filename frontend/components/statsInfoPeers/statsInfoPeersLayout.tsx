@@ -19,14 +19,14 @@ const StatsInfoPeersLayout: FunctionComponent<StatsInfoPeersProps> = ({
   companyStats,
 }) => {
   return (
-    <div>
-      <div>
+    <div className="section-stats-info-peers">
+      <div className="section-stats">
         <KeyStatsList
           companyStatsLeft={companyStats.companyStatsLeft}
           companyStatsRight={companyStats.companyStatsRight}
         />
       </div>
-      <div>
+      <div className="section-info-peers">
         <CompanyInfo companyInfo={companyInfo} />
         <TopPeers topPeers={topPeers} />
       </div>
