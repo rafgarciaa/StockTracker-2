@@ -1,9 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { HeaderProps } from '../../utilities/interfaces';
-
-const changeToPercent = (num: number) => {
-  return num ? (num * 100).toFixed(2) : null;
-};
+import { changeToPercent } from '../../utilities/numberFormatters';
 
 const PriceOutput: FunctionComponent<HeaderProps> = ({
   latestPrice,
