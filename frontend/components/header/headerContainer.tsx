@@ -11,6 +11,7 @@ const mapStateToProps = (state: RootState) => {
     latestPrice: companyStats.latestPrice,
     change: companyStats.change,
     changePercent: companyStats.changePercent,
+    updateTime: state.updateTime,
   };
 };
 

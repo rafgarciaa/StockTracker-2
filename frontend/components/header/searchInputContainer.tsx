@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 import SearchInput from './searchInput';
-
 import { searchAction, fetchCompanyNames } from '../../actions/quotesActions';
+import { RootState } from '../../utilities/interfaces';
+
+const mapStateToProps = ({ quotes }: RootState) => ({
+  companyName: quotes.companyInfo.companyName,
+  companySymbol: quotes.companyInfo.symbol,
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   searchAction: (symbol: string) => dispatch(searchAction(symbol)),
@@ -9,6 +14,6 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SearchInput);

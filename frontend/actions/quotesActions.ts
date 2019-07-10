@@ -18,10 +18,14 @@ import {
   newsFilters,
   quoteFilters,
   statsFilters,
+  favoritesQuoteFilters,
 } from '../utilities/apiUtil';
 
 import { ErrorActions } from '../actions/errorActions';
 import APIError from '../utilities/apiErrorMessage';
+
+import { UpdateActions } from '../actions/updateActions';
+import { getCurrentDate } from '../utilities/getCurrentDate';
 
 function createAction<T, P>(type: T, payload: P): Action<T, P> {
   return { type, payload };
@@ -48,6 +52,8 @@ export const Actions = {
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
   setChartData: (chartData: object[], timeFrame: string) =>
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
+  setFavorites: (favoritesData: any) =>
+    createAction(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
 
 export type ActionsTypes = ActionsUnion<typeof Actions>;
@@ -84,6 +90,7 @@ const createThunkAction = (
       .then(payload => {
         dispatch(success(payload));
         dispatch(ErrorActions.setApiErrors(''));
+        dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
       .catch(event => dispatch(ErrorActions.setApiErrors(event.toString())));
   };
@@ -120,6 +127,14 @@ const fetchChartData = (symbol: string, timeFrame: string) =>
     Actions.setChartData(chartData, timeFrame)
   );
 
+const fetchFavoritePrices = (symbol: string) =>
+  createThunkAction(
+    'quote',
+    symbol,
+    Actions.setFavorites,
+    favoritesQuoteFilters
+  );
+
 export const fetchCompanyNames = () => {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
@@ -146,6 +161,9 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchChartData(symbol, '1Y'));
   dispatch(fetchChartData(symbol, '5Y'));
   dispatch(fetchChartData(symbol, 'MAX'));
+  dispatch(fetchFavoritePrices('aapl'));
+  dispatch(fetchFavoritePrices('msft'));
+  dispatch(fetchFavoritePrices('goog'));
 };
 
 export type searchActionType = typeof searchAction;

@@ -21,27 +21,29 @@
     },
     "homepage": "https://github.com/raf-garcia/StockTracker-2#readme",
     "dependencies": {
-        "@babel/core": "^7.5.0",
-        "@babel/preset-env": "^7.5.0",
+        "@babel/core": "^7.5.4",
+        "@babel/preset-env": "^7.5.4",
         "@babel/preset-react": "^7.0.0",
         "@types/reach__router": "^1.2.4",
         "@types/react": "^16.8.23",
         "@types/react-dom": "^16.8.4",
+        "@types/recharts": "^1.1.17",
         "@types/redux-logger": "^3.0.7",
         "babel-loader": "^8.0.6",
         "dotenv-webpack": "^1.7.0",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "react-redux": "^7.1.0",
-        "redux": "^4.0.1",
+        "recharts": "^1.6.2",
+        "redux": "^4.0.3",
         "redux-logger": "^3.0.6",
         "redux-thunk": "^2.3.0",
         "ts-loader": "^6.0.4",
-        "webpack": "^4.35.2",
+        "webpack": "^4.35.3",
         "webpack-cli": "^3.3.5"
     },
     "devDependencies": {
-        "@types/node": "^12.0.12",
+        "@types/node": "^12.6.2",
         "@types/react-redux": "^7.1.1",
         "@types/webpack": "^4.4.34",
         "css-loader": "^3.0.0",
@@ -53,6 +55,6 @@
         "tslint": "^5.18.0",
         "tslint-config-prettier": "^1.18.0",
         "tslint-react": "^4.0.0",
-        "typescript": "^3.5.2"
+        "typescript": "^3.5.3"
     }
 }

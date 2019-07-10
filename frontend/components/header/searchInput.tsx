@@ -9,11 +9,15 @@ import React, {
 import { searchActionType, fetchActionType } from '../../actions/quotesActions';
 
 interface SearchInputProps {
+  companyName: string;
+  companySymbol: string;
   searchAction: searchActionType;
   fetchCompanyNames: fetchActionType;
 }
 
 const SearchInput: FunctionComponent<SearchInputProps> = ({
+  companyName,
+  companySymbol,
   searchAction,
   fetchCompanyNames,
 }) => {
@@ -34,8 +38,23 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" onChange={handleChange} value={searchText} />
-      <button onClick={handleSubmit}>CLICK ME</button>
+      <i className="fas fa-search" />
+      <div className="input__placeholder-wrap">
+        <input
+          type="text"
+          onChange={handleChange}
+          value={searchText}
+          required={true}
+        />
+        <span className="input__placeholder-wrap--name">
+          {companyName ? companyName : 'Search...'}
+          {companyName && companySymbol ? (
+            <b className="input__placeholder-wrap--symbol">{` (${companySymbol})`}</b>
+          ) : (
+            ''
+          )}
+        </span>
+      </div>
     </form>
   );
 };

@@ -6,12 +6,13 @@
   --color-primary: #1d3c62;
   --color-secondary: #102238;
   --color-white: #f4f6f9;
-  --color-light-grey: #8e939f;
   --color-heading-primary: #5193fd;
-  --color-hover-primary: #ffb828;
-  --width-left-side: 60%;
-  --width-right-side: 35%;
-  --margin-component-top: 1.5rem;
+  --color-heading-secondary: #a8c9fe;
+  --color-hover-yellow: #ffb828;
+  --color-hover-blue: #1351b5;
+  --color-red: #cc2a34;
+  --color-green: #00cd82;
+  --tags-color: #476088;
 }
 
 html {
@@ -36,4 +37,158 @@ body {
   color: var(--color-white);
   font-family: 'Lato', sans-serif;
   padding: 2rem 5rem;
+}
+
+/* HEADER STYLES */
+.header {
+  margin-bottom: 2rem;
+}
+
+.header__top {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+}
+
+/* QUOTES MARKETS WATCHLISTS */
+.header__top-tabs > a {
+  color: inherit;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  font-weight: 300;
+}
+
+.header__top-tabs > a.active,
+.header__top-tabs > a:hover {
+  background-color: var(--color-hover-blue);
+}
+
+.header__top-tabs > a:not(:last-child) {
+  margin-right: 1.5rem;
+}
+
+/* SEARCH BAR AREA */
+.header__top-search-area {
+  font-size: 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid var(--color-heading-primary) 1px;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.header__top-search-area form {
+  width: 65%;
+}
+
+/* SEARCH ICON */
+.header__top-search-area i {
+  margin-right: 0.5rem;
+  color: var(--color-heading-secondary);
+}
+
+/* INPUT */
+.input__placeholder-wrap {
+  display: inline-block;
+  position: relative;
+  width: 90%;
+}
+
+.input__placeholder-wrap input {
+  position: relative;
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.75rem;
+  font-weight: 200;
+  width: 100%;
+  z-index: 3;
+}
+
+.input__placeholder-wrap--name {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  font-weight: 300;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.input__placeholder-wrap--symbol {
+  font-weight: 200;
+}
+
+.input__placeholder-wrap input:focus + .input__placeholder-wrap--name,
+.input__placeholder-wrap
+  input[required]:valid
+  + .input__placeholder-wrap--name {
+  display: none;
+}
+
+/* PRICE & CHANGE & PERCENT CHANGE */
+
+.header__top-price .icon--small {
+  padding: 0;
+  font-size: 0.65em;
+  display: inline-block;
+  transform: translateY(-30%);
+}
+
+.header__top-price > span:first-child {
+  margin-right: 1rem;
+}
+
+.header__top-price--change > span:last-child {
+  padding-left: 0.5rem;
+}
+
+.header__top-price--change > span:first-child {
+  border-right: solid rgba(178, 37, 46, 0.45) 2px;
+  padding-right: 0.5rem;
+}
+
+.header__top-price--change.positive > span:first-child {
+  border-right: solid rgba(37, 178, 112, 0.45) 2px;
+}
+
+.header__top-price--change.positive {
+  color: var(--color-green);
+}
+
+.header__top-price--change.negative {
+  color: var(--color-red);
+}
+
+.header__top-price--change {
+  display: inline-block;
+}
+
+/* TAGS MARKET-STATUS STYLES*/
+.header__bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__bottom-tags > span {
+  background-color: var(--tags-color);
+  margin-right: 1rem;
+  padding: 0.25rem 1rem;
+}
+
+.header__bottom-status > span:first-child {
+  font-weight: 200;
+  margin-right: 0.5rem;
+}
+
+.header__bottom-status i.fa-sun {
+  color: var(--color-hover-yellow);
+}
+
+.header__bottom-status i.fa-moon {
+  color: var(--color-hover-blue);
 }

@@ -6,6 +6,7 @@ import topPeers from './topPeersReducer';
 import companyNames from './companyNamesReducer';
 import chartDataDay from './chartDataDayReducer';
 import chartData from './chartDataReducer';
+import favorites from './favoritesReducer';
 
 const quotesReducer = combineReducers({
   companyInfo,
@@ -15,6 +16,7 @@ const quotesReducer = combineReducers({
   chartDataDay,
   chartData,
   companyNames,
+  favorites,
 });
 
 export default quotesReducer;

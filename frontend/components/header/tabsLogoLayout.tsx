@@ -4,7 +4,7 @@ import Tabs from './tabs';
 
 const TabsLogoLayout: FunctionComponent = () => {
   return (
-    <div>
+    <div className="header__top">
       <AdaptiveLogo />
       <Tabs />
     </div>

@@ -4,14 +4,14 @@ import Tags from './tags';
 import MarketStatus from './marketStatus';
 
 const TagsMarketLayout: FunctionComponent<HeaderProps> = ({
-  lastUpdate,
+  updateTime,
   exchange,
   sector,
 }) => {
   return (
-    <div>
+    <div className="header__bottom">
       <Tags exchange={exchange} sector={sector} />
-      <MarketStatus lastUpdate={lastUpdate} />
+      <MarketStatus updateTime={updateTime} />
     </div>
   );
 };
