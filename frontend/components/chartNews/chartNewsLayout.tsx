@@ -1,17 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { News } from '../../utilities/interfaces';
-import NewsList from './newsList';
+import NewsListContainer from './newsListContainer';
 import ChartContainer from './chartContainer';
 
-interface ChartNewsProps {
-  newsList: News[];
-}
-
-const ChartNewsLayout: FunctionComponent<ChartNewsProps> = ({ newsList }) => {
+const ChartNewsLayout: FunctionComponent = () => {
   return (
     <div className="section-chart-news">
       <ChartContainer />
-      <NewsList newsList={newsList} />
+      <NewsListContainer />
     </div>
   );
 };
