@@ -110,6 +110,9 @@ export interface RootState {
 }
 
 export interface HeaderProps {
+  latestPrice?: number;
+  change?: number;
+  changePercent?: number;
   exchange?: string;
   sector?: string;
   updateTime?: string;
