@@ -7,9 +7,11 @@ import FooterContainer from './footer/footerContainer';
 
 const App = ({ store }) => (
   <Provider store={store}>
-    <HeaderLayout />
-    <ChartNewsLayout />
-    <StatsInfoPeersLayout />
+    <div className="section-main">
+      <HeaderLayout />
+      <ChartNewsLayout />
+      <StatsInfoPeersLayout />
+    </div>
     <FooterContainer />
   </Provider>
 );

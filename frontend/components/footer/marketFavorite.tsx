@@ -12,8 +12,8 @@ const MarketFavorite: FunctionComponent<MarketFavoriteProps> = ({
   symbolsList,
 }) => {
   return (
-    <div>
-      <span>{sectionTitle}</span>
+    <div className="section-footer__slice">
+      <h4 className="section-footer__heading">{sectionTitle}</h4>
       {Object.keys(symbolsList).map((symbol, idx) => {
         const market = symbolsList[symbol];
         return (
