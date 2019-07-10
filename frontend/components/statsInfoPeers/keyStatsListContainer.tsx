@@ -12,8 +12,6 @@ const mapStateToProps = (state: RootState) => ({
   companyStatsRight: selectCompanyStats(state.quotes.companyStats)
     .companyStatsRight,
   fetchStatusCompanyStats: selectFetchingStatus(state, 'companyStats'),
-  fetchStatusCompanyInfo: selectFetchingStatus(state, 'companyInfo'),
-  fetchStatusTopPeers: selectFetchingStatus(state, 'topPeers'),
 });
 
 export default connect(
