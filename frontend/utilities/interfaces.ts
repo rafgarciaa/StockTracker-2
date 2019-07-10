@@ -105,12 +105,7 @@ export interface RootState {
     companyNames: CompanyNameState[];
     favorites: FavoriteState[];
   };
-  fetchStatus: {
-    [k: string]: {
-      isFetching: boolean;
-      fetchSuccess: boolean;
-    };
-  };
+  fetchStatus: FetchStatusState;
   errors: string;
   updateTime: string;
 }
@@ -135,7 +130,14 @@ export interface FavoriteState {
 
 export interface FetchStatusState {
   [k: string]: {
-    isFetching: boolean;
+    startFetching: boolean;
+    doneFetching: boolean;
     fetchSuccess: boolean;
   };
+}
+
+export interface FetchStatusElement {
+  startFetching: boolean;
+  doneFetching: boolean;
+  fetchSuccess: boolean;
 }

@@ -1,30 +1,29 @@
 import React, { FunctionComponent } from 'react';
-import { News } from '../../utilities/interfaces';
+import { News, FetchStatusElement } from '../../utilities/interfaces';
 import NewsList from './newsList';
 import ChartContainer from './chartContainer';
 
 interface ChartNewsProps {
   newsList: News[];
-  isFetchingCompanyNews: boolean;
-  isFetchSuccessCompanyNews: boolean;
-  isFetchingChart: boolean;
-  isFetchSuccessChart: boolean;
+  fetchingStatusCompanyNews: FetchStatusElement;
+  fetchingStatusChart: FetchStatusElement;
 }
 
 const tempLoader = {};
 
 const ChartNewsLayout: FunctionComponent<ChartNewsProps> = ({
   newsList,
-  isFetchSuccessCompanyNews,
-  isFetchingCompanyNews,
-  isFetchSuccessChart,
+  fetchingStatusCompanyNews,
+  fetchingStatusChart,
 }) => {
-  console.log(isFetchSuccessCompanyNews);
   return (
     <div className="section-chart-news">
-      {isFetchSuccessChart && <ChartContainer />}
-      {isFetchSuccessCompanyNews && (
-        <NewsList newsList={newsList} isFetching={isFetchingCompanyNews} />
+      <ChartContainer />
+      {fetchingStatusCompanyNews.startFetching && (
+        <NewsList
+          newsList={newsList}
+          fetchingStatus={fetchingStatusCompanyNews}
+        />
       )}
     </div>
   );

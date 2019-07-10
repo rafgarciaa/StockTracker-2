@@ -1,4 +1,9 @@
-import { CompanyStatsState, ChartDataDay, ChartData } from './interfaces';
+import {
+  CompanyStatsState,
+  ChartDataDay,
+  ChartData,
+  RootState,
+} from './interfaces';
 
 export const selectCompanyStats = (companyStats: CompanyStatsState) => {
   return {
@@ -62,3 +67,13 @@ export const selectChartDataYear = (yearDataArray: ChartData[]) =>
       dateTime: yearDateFormatter(data.label.toString()),
       price: data.close,
     }));
+
+export const selectFetchingStatus = (state: RootState, section: string) => {
+  const status = {
+    startFetching: state.fetchStatus[section].startFetching,
+    doneFetching: state.fetchStatus[section].doneFetching,
+    fetchSuccess: state.fetchStatus[section].fetchSuccess,
+  };
+
+  return status;
+};

@@ -4,6 +4,7 @@ import CompanyInfo from './companyInfo';
 import {
   CompanyStatsProps,
   CompanyInfoState,
+  FetchStatusElement,
 } from '../../utilities/interfaces';
 import KeyStatsList from './keyStatsList';
 
@@ -11,24 +12,34 @@ interface StatsInfoPeersProps {
   companyStats: CompanyStatsProps;
   companyInfo: CompanyInfoState;
   topPeers: string[];
+  fetchStatusCompanyStats: FetchStatusElement;
+  fetchStatusCompanyInfo: FetchStatusElement;
+  fetchStatusTopPeers: FetchStatusElement;
 }
 
 const StatsInfoPeersLayout: FunctionComponent<StatsInfoPeersProps> = ({
   topPeers,
   companyInfo,
   companyStats,
+  fetchStatusCompanyStats,
+  fetchStatusCompanyInfo,
+  fetchStatusTopPeers,
 }) => {
   return (
     <div>
       <div>
-        <KeyStatsList
-          companyStatsLeft={companyStats.companyStatsLeft}
-          companyStatsRight={companyStats.companyStatsRight}
-        />
+        {fetchStatusCompanyStats.startFetching && (
+          <KeyStatsList
+            companyStatsLeft={companyStats.companyStatsLeft}
+            companyStatsRight={companyStats.companyStatsRight}
+          />
+        )}
       </div>
       <div>
-        <CompanyInfo companyInfo={companyInfo} />
-        <TopPeers topPeers={topPeers} />
+        {fetchStatusCompanyInfo.startFetching && (
+          <CompanyInfo companyInfo={companyInfo} />
+        )}
+        {fetchStatusTopPeers.startFetching && <TopPeers topPeers={topPeers} />}
       </div>
     </div>
   );

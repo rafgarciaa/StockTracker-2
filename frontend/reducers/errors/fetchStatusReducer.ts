@@ -4,35 +4,43 @@ import { FetchStatusState } from '../../utilities/interfaces';
 
 const INITIAL_STATE: FetchStatusState = {
   companyInfo: {
-    isFetching: false,
+    startFetching: false,
+    doneFetching: false,
     fetchSuccess: undefined,
   },
   companyNews: {
-    isFetching: false,
+    doneFetching: false,
+    startFetching: false,
     fetchSuccess: undefined,
   },
   companyStats: {
-    isFetching: false,
+    startFetching: false,
+    doneFetching: false,
     fetchSuccess: undefined,
   },
   companyEPS: {
-    isFetching: false,
+    startFetching: false,
+    doneFetching: false,
     fetchSuccess: undefined,
   },
   dividendYield: {
-    isFetching: false,
+    startFetching: false,
+    doneFetching: false,
     fetchSuccess: undefined,
   },
   topPeers: {
-    isFetching: false,
+    startFetching: false,
+    doneFetching: false,
     fetchSuccess: undefined,
   },
   chartData: {
-    isFetching: false,
+    startFetching: false,
+    doneFetching: false,
     fetchSuccess: undefined,
   },
   favoritePrices: {
-    isFetching: false,
+    startFetching: false,
+    doneFetching: false,
     fetchSuccess: undefined,
   },
 };
@@ -41,15 +49,27 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
   switch (action.type) {
     case FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
       return Object.assign({}, state, {
-        [action.section]: { isFetching: false, fetchSuccess: false },
+        [action.section]: {
+          startFetching: false,
+          doneFetching: true,
+          fetchSuccess: false,
+        },
       });
     case FETCH_STATUS_ACTION_TYPE.SET_API_START:
       return Object.assign({}, state, {
-        [action.section]: { isFetching: true },
+        [action.section]: {
+          startFetching: true,
+          doneFetching: false,
+          fetchSuccess: undefined,
+        },
       });
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
       return Object.assign({}, state, {
-        [action.section]: { isFetching: false, fetchSuccess: true },
+        [action.section]: {
+          startFetching: true,
+          doneFetching: true,
+          fetchSuccess: true,
+        },
       });
     default:
       return state;

@@ -14,6 +14,8 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+import { FetchStatusElement } from '../../utilities/interfaces';
+
 interface Temp {
   dateTime: string;
   price: number;
@@ -26,7 +28,7 @@ interface ChartProps {
   oneYearData: Temp[];
   fiveYearData: Temp[];
   maxData: Temp[];
-  isFetchingChart: boolean;
+  fetchStatusChart: FetchStatusElement;
 }
 
 const Chart: FunctionComponent<ChartProps> = ({
@@ -36,7 +38,7 @@ const Chart: FunctionComponent<ChartProps> = ({
   oneYearData,
   fiveYearData,
   maxData,
-  isFetchingChart,
+  fetchStatusChart,
 }) => {
   const [displayedChartData, setDisplayedChartData] = useState(undefined);
 
@@ -65,36 +67,36 @@ const Chart: FunctionComponent<ChartProps> = ({
 
   return (
     <div className="section-chart">
-      <div className="section-chart__timelines">
-        <a href="#" onClick={setOneDay}>
-          {' '}
-          1D{' '}
-        </a>
-        <a href="#" onClick={setFiveDay}>
-          {' '}
-          5D{' '}
-        </a>
-        <a href="#" onClick={setOneMonth}>
-          {' '}
-          1M{' '}
-        </a>
-        <a href="#" onClick={setOneYear}>
-          {' '}
-          1Y{' '}
-        </a>
-        <a href="#" onClick={setFiveYear}>
-          {' '}
-          5Y{' '}
-        </a>
-        <a href="#" onClick={setMax}>
-          {' '}
-          MAX{' '}
-        </a>
-      </div>
+      {fetchStatusChart.startFetching && (
+        <div className="section-chart__timelines">
+          <a href="#" onClick={setOneDay}>
+            {' '}
+            1D{' '}
+          </a>
+          <a href="#" onClick={setFiveDay}>
+            {' '}
+            5D{' '}
+          </a>
+          <a href="#" onClick={setOneMonth}>
+            {' '}
+            1M{' '}
+          </a>
+          <a href="#" onClick={setOneYear}>
+            {' '}
+            1Y{' '}
+          </a>
+          <a href="#" onClick={setFiveYear}>
+            {' '}
+            5Y{' '}
+          </a>
+          <a href="#" onClick={setMax}>
+            {' '}
+            MAX{' '}
+          </a>
+        </div>
+      )}
 
-      {isFetchingChart ? (
-        'LOADING...'
-      ) : (
+      {fetchStatusChart.startFetching && (
         <ResponsiveContainer width="100%" aspect={2}>
           <AreaChart
             data={displayedChartData}

@@ -12,7 +12,7 @@ const mapStateToProps = (state: RootState) => ({
   oneYearData: selectors.selectChartDataYear(state.quotes.chartData.oneYear),
   fiveYearData: selectors.selectChartDataYear(state.quotes.chartData.fiveYear),
   maxData: selectors.selectChartDataYear(state.quotes.chartData.max),
-  isFetchingChart: state.fetchStatus.chartData.isFetching,
+  fetchStatusChart: selectors.selectFetchingStatus(state, 'chartData'),
 });
 
 export default connect(
