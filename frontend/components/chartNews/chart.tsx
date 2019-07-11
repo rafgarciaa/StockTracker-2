@@ -62,7 +62,7 @@ const Chart: FunctionComponent<ChartProps> = ({
   const setMax = useCallback(() => setDisplayedChartData(maxData), [maxData]);
 
   useEffect(() => {
-    if (!displayedChartData && oneDayData.length !== 0) {
+    if (displayedChartData && oneDayData.length !== 0) {
       setDisplayedChartData(oneDayData);
     }
   });
