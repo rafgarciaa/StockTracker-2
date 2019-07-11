@@ -1,4 +1,9 @@
-import { CompanyStatsState, ChartDataDay, ChartData } from './interfaces';
+import {
+  CompanyStatsState,
+  ChartDataDay,
+  ChartData,
+  RootState,
+} from './interfaces';
 import { changeToPercent } from './numberFormatters';
 
 export const selectCompanyStats = (companyStats: CompanyStatsState) => {
