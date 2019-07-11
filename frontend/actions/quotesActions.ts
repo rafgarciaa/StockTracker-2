@@ -131,11 +131,19 @@ const fetchTopPeers = (symbol: string) =>
   createThunkAction('peers', symbol, Actions.setTopPeers);
 
 const fetchChartDataDay = (symbol: string) =>
-  createThunkAction('chart/1d', symbol, Actions.setChartDataDay);
+  createThunkAction(
+    'chart/1d',
+    symbol,
+    Actions.setChartDataDay,
+    Filters.chartDataFilters
+  );
 
 const fetchChartData = (symbol: string, timeFrame: string) =>
-  createThunkAction(`chart/${timeFrame}`, symbol, (chartData: object[]) =>
-    Actions.setChartData(chartData, timeFrame)
+  createThunkAction(
+    `chart/${timeFrame}`,
+    symbol,
+    (chartData: object[]) => Actions.setChartData(chartData, timeFrame),
+    Filters.chartDataFilters
   );
 
 const fetchFavoritePrices = (symbol: string) =>
