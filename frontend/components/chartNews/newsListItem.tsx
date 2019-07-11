@@ -12,11 +12,11 @@ interface NewsListItemProps {
 
 const NewsListItem: FunctionComponent<NewsListItemProps> = ({ news }) => {
   const { datetime, url, headline, source } = news;
-  const timeAgo = formatNewsTimeAgo(Date.now() - datetime);
+  const timeAgo = formatNewsTimeAgo(Date.now() - (datetime ? datetime : 0));
 
   return (
     <li>
-      <a href={url} className="section-news__list-link">
+      <a href={url ? url : undefined} className="section-news__list-link">
         {headline}
         <span className="section-news__list-timestamp">
           {timeAgo} - {source}

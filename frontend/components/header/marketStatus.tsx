@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { HeaderProps } from '../../utilities/interfaces';
 
 const isMarketOpen = () => {
   const dateNow: Date = new Date();
@@ -11,12 +10,16 @@ const isMarketOpen = () => {
 
 const getLocalTimeZone = () => {
   const date: string = new Date().toString();
-  let timeZone: string | string[] = date.match(/\(([^)]+)\)/)[1];
+  let timeZone: string | string[] = date.match(/\(([^)]+)\)/)![1];
   timeZone = timeZone.split(' ').map((el: string) => el[0]);
   return timeZone.join('');
 };
 
-const MarketStatus: FunctionComponent<HeaderProps> = ({ updateTime }) => {
+interface MarketStatusProps {
+  updateTime: string | null;
+}
+
+const MarketStatus: FunctionComponent<MarketStatusProps> = ({ updateTime }) => {
   const localTimeZone =
     getLocalTimeZone() && updateTime
       ? getLocalTimeZone()

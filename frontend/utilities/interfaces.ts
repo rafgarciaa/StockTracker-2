@@ -5,37 +5,38 @@ export interface ChartDataTypes {
   fiveYear: ChartData[];
   max: ChartData[];
 }
+
+// 1m, 1y, 5y, max
 export interface ChartData {
-  date: number | null;
-  label: number | null;
+  date: string | null;
+  label: string | null;
   close: number | null;
 }
 
+// 1d && 5dm
 export interface ChartDataDay {
-  // both in oneDay & fiveDay data
-  date?: string | null;
-  minute?: string | null;
-  label?: string | null;
+  // 1d
+  average: number | null;
+  close: number | null;
+  date: string | null;
+  label: string | null;
+  minute: string | null;
+
+  // 5dm only
   high?: number | null;
   low?: number | null;
-  average?: number | null;
-  volume?: number | null;
-  notional?: number | null;
-  numberOfTrades?: number | null;
+  marketAverage?: number | null;
+  marketClose?: number | null;
   marketHigh?: number | null;
   marketLow?: number | null;
-  marketAverage?: number | null;
-  marketVolume?: number | null;
   marketNotional?: number | null;
   marketNumberOfTrades?: number | null;
-  open?: number | null;
-  close?: number | null;
   marketOpen?: number | null;
-  marketClose?: number | null;
-
-  // only in oneDay data
-  changeOverTime?: number | null;
-  marketChangeOverTime?: number | null;
+  marketVolume?: number | null;
+  notional?: number | null;
+  numberOfTrades?: number | null;
+  open?: number | null;
+  volume?: number | null;
 }
 
 export interface CompanyNameState {
@@ -107,15 +108,6 @@ export interface RootState {
   };
   errors: string;
   updateTime: string;
-}
-
-export interface HeaderProps {
-  latestPrice?: number;
-  change?: number;
-  changePercent?: number;
-  exchange?: string;
-  sector?: string;
-  updateTime?: string;
 }
 
 export interface FavoriteState {
