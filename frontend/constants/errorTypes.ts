@@ -1,0 +1,3 @@
+export enum ERROR_ACTION_TYPE {
+  SET_API_ERROR = 'SET_API_ERROR',
+}

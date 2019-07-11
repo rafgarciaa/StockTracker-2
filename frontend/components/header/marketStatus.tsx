@@ -16,10 +16,7 @@ const getLocalTimeZone = () => {
   return timeZone.join('');
 };
 
-const MarketStatus: FunctionComponent<HeaderProps> = ({
-  updateTime,
-  fetchingStatus,
-}) => {
+const MarketStatus: FunctionComponent<HeaderProps> = ({ updateTime }) => {
   const localTimeZone =
     getLocalTimeZone() && updateTime
       ? getLocalTimeZone()
@@ -28,19 +25,15 @@ const MarketStatus: FunctionComponent<HeaderProps> = ({
   const moon = <i className="far fa-moon" />;
 
   return (
-    <div>
-      {fetchingStatus.startFetching && (
-        <div className="header__bottom-status">
-          <span>
-            Real-Time Price as of {updateTime} {localTimeZone}
-          </span>
-          <span>{` `}</span>
-          <span>
-            {isMarketOpen() ? sun : moon} Market{' '}
-            {isMarketOpen() ? 'Open' : 'Closed'}
-          </span>
-        </div>
-      )}
+    <div className="header__bottom-status">
+      <span>
+        Real-Time Price as of {updateTime} {localTimeZone}
+      </span>
+      <span>{` `}</span>
+      <span>
+        {isMarketOpen() ? sun : moon} Market{' '}
+        {isMarketOpen() ? 'Open' : 'Closed'}
+      </span>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import FooterLayout from './footerLayout';
 import { RootState } from '../../utilities/interfaces';
-import { selectFetchingStatus } from '../../utilities/selectors';
 
 const harcodedData = {
   nasdaq: {
@@ -27,7 +26,6 @@ const harcodedData = {
 const mapStateToProps = (state: RootState) => ({
   marketList: harcodedData,
   favoriteList: state.quotes.favorites,
-  fetchStatus: selectFetchingStatus(state, 'favoritePrices'),
 });
 
 export default connect(
