@@ -30,7 +30,10 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
               <h2>
                 {companyName} {symbol ? `(${symbol})` : ''}
               </h2>
-              <a href={website} className="section-info__link">
+              <a
+                href={website ? website : undefined}
+                className="section-info__link"
+              >
                 {urlFormatter(website)}
               </a>
               <p>{description}</p>
