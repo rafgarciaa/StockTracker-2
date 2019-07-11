@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import NewsListItem from './newsListItem';
 import { News, FetchStatusElement } from '../../utilities/interfaces';
+import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface NewsListProps {
   newsList: News[];
@@ -18,7 +19,7 @@ const NewsList: FunctionComponent<NewsListProps> = ({
       )}
       {!fetchingStatusCompanyNews.doneFetching &&
       fetchingStatusCompanyNews.startFetching ? (
-        'LOADING...'
+        <AdaptiveLoader />
       ) : (
         <ul className="section-news__list">
           {newsList.map((news, idx) => (

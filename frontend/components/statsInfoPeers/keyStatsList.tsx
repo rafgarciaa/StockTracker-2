@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { CompanyStat, FetchStatusElement } from '../../utilities/interfaces';
 import KeyStatsListItem from './keyStatsListItem';
+import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface CompanyStatsProps {
   companyStatsLeft: CompanyStat[];
@@ -19,7 +20,7 @@ const KeyStatsList: FunctionComponent<CompanyStatsProps> = ({
         <div>
           <h2 className="heading-section">Key Stats</h2>
           {!fetchStatusCompanyStats.doneFetching ? (
-            'LOADING...'
+            <AdaptiveLoader />
           ) : (
             <div className="section-stats__list">
               <ul>

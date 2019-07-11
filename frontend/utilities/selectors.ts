@@ -14,11 +14,8 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
         name: 'Day Range',
         value: `${companyStats.high} - ${companyStats.low}`,
       },
-      // { name: 'Volume', value: companyStats.latestVolume.toLocaleString() },
-      // { name: 'Market Cap', value: companyStats.marketCap.toLocaleString() },
-      // { name: 'P/E Ratio', value: companyStats.peRatio },
-      { name: 'Volume', value: companyStats.latestVolume },
-      { name: 'Market Cap', value: companyStats.marketCap },
+      { name: 'Volume', value: companyStats.latestVolume.toLocaleString() },
+      { name: 'Market Cap', value: companyStats.marketCap.toLocaleString() },
       { name: 'P/E Ratio', value: companyStats.peRatio },
     ],
     companyStatsRight: [
@@ -29,8 +26,7 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
       },
       {
         name: 'Total Avg. Volume',
-        // value: companyStats.avgTotalVolume.toLocaleString(),
-        value: companyStats.avgTotalVolume,
+        value: companyStats.avgTotalVolume.toLocaleString(),
       },
       { name: 'Earnings Per Share', value: companyStats.actualEPS },
       {

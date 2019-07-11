@@ -3,6 +3,7 @@ import {
   CompanyInfoState,
   FetchStatusElement,
 } from '../../utilities/interfaces';
+import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface CompanyInfoProps {
   companyInfo: CompanyInfoState;
@@ -23,7 +24,7 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
         <div>
           <h2 className="heading-section">Company Overview</h2>
           {!fetchingStatus.doneFetching ? (
-            'LOADING...'
+            <AdaptiveLoader />
           ) : (
             <div>
               <h2>
