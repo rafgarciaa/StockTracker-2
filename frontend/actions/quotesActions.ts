@@ -149,7 +149,8 @@ const fetchChartData = (symbol: string, timeFrame: string) =>
     'chartData',
     `chart/${timeFrame}`,
     symbol,
-    (chartData: object[]) => Actions.setChartData(chartData, timeFrame)
+    (chartData: object[]) => Actions.setChartData(chartData, timeFrame),
+    Filters.chartDataFilters
   );
 
 const fetchFavoritePrices = (symbol: string) =>

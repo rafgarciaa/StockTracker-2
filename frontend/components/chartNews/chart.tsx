@@ -13,21 +13,20 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-
 import { FetchStatusElement } from '../../utilities/interfaces';
 
-interface Temp {
-  dateTime: string;
-  price: number;
+interface ChartDataProps {
+  dateTime: string | null;
+  price: number | null;
 }
 
 interface ChartProps {
-  oneDayData: Temp[];
-  fiveDayData: Temp[];
-  oneMonthData: Temp[];
-  oneYearData: Temp[];
-  fiveYearData: Temp[];
-  maxData: Temp[];
+  oneDayData: ChartDataProps[];
+  fiveDayData: ChartDataProps[];
+  oneMonthData: ChartDataProps[];
+  oneYearData: ChartDataProps[];
+  fiveYearData: ChartDataProps[];
+  maxData: ChartDataProps[];
   fetchStatusChart: FetchStatusElement;
 }
 
@@ -40,7 +39,9 @@ const Chart: FunctionComponent<ChartProps> = ({
   maxData,
   fetchStatusChart,
 }) => {
-  const [displayedChartData, setDisplayedChartData] = useState(undefined);
+  const [displayedChartData, setDisplayedChartData] = useState<
+    ChartDataProps[]
+  >([]);
 
   const setOneDay = useCallback(() => setDisplayedChartData(oneDayData), [
     oneDayData,

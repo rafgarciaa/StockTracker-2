@@ -15,7 +15,7 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
   fetchingStatus,
 }) => {
   const { description, website, symbol, companyName } = companyInfo;
-  const urlFormatter = (url: string) =>
+  const urlFormatter = (url: string | null) =>
     url == null ? null : url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
   return (

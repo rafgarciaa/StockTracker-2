@@ -8,7 +8,7 @@ interface FooterLayoutProps {
   fetchStatus: FetchStatusElement;
 }
 
-const FooterLayout: FunctionComponent<any> = ({
+const FooterLayout: FunctionComponent<FooterLayoutProps> = ({
   marketList,
   favoriteList,
   fetchStatus,

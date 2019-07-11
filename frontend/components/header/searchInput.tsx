@@ -9,8 +9,8 @@ import React, {
 import { searchActionType, fetchActionType } from '../../actions/quotesActions';
 
 interface SearchInputProps {
-  companyName: string;
-  companySymbol: string;
+  companyName: string | null;
+  companySymbol: string | null;
   searchAction: searchActionType;
   fetchCompanyNames: fetchActionType;
 }

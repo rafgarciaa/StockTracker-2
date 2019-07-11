@@ -1,7 +1,13 @@
 import React, { FunctionComponent } from 'react';
-import { HeaderProps } from '../../utilities/interfaces';
+import { FetchStatusState } from '../../utilities/interfaces';
 
-const Tags: FunctionComponent<HeaderProps> = ({
+interface TagsProps {
+  exchange: string | null;
+  sector: string | null;
+  fetchingStatus: FetchStatusState;
+}
+
+const Tags: FunctionComponent<TagsProps> = ({
   exchange,
   sector,
   fetchingStatus,

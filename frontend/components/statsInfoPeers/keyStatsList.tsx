@@ -24,15 +24,27 @@ const KeyStatsList: FunctionComponent<CompanyStatsProps> = ({
           ) : (
             <div className="section-stats__list">
               <ul>
-                {companyStatsLeft.map(({ name, value }: CompanyStat) => (
-                  <KeyStatsListItem key={name} name={name} value={value} />
-                ))}
+                {companyStatsLeft.map(
+                  ({ name, value }: CompanyStat, index: number) => (
+                    <KeyStatsListItem
+                      key={name ? name : index}
+                      name={name}
+                      value={value}
+                    />
+                  )
+                )}
               </ul>
 
               <ul>
-                {companyStatsRight.map(({ name, value }: CompanyStat) => (
-                  <KeyStatsListItem key={name} name={name} value={value} />
-                ))}
+                {companyStatsRight.map(
+                  ({ name, value }: CompanyStat, index: number) => (
+                    <KeyStatsListItem
+                      key={name ? name : index}
+                      name={name}
+                      value={value}
+                    />
+                  )
+                )}
               </ul>
             </div>
           )}
