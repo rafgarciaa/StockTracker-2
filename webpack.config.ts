@@ -45,4 +45,9 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new FriendlyErrorsWebpackPlugin(),
   ],
+  devServer: {
+    host: process.env.HOST,
+    port: process.env.PORT,
+    open: true,
+  }
 };
