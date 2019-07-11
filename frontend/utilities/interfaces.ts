@@ -105,7 +105,6 @@ export interface RootState {
     companyNames: CompanyNameState[];
     favorites: FavoriteState[];
   };
-  fetchStatus: FetchStatusState;
   errors: string;
   updateTime: string;
 }
@@ -117,9 +116,6 @@ export interface HeaderProps {
   exchange?: string;
   sector?: string;
   updateTime?: string;
-  fetchStatusPrices?: FetchStatusElement;
-  fetchStatusTags?: FetchStatusElement;
-  fetchingStatus?: FetchStatusElement;
 }
 
 export interface FavoriteState {
@@ -129,18 +125,4 @@ export interface FavoriteState {
     latestPrice: number;
     changePercent: number;
   };
-}
-
-export interface FetchStatusState {
-  [k: string]: {
-    startFetching: boolean;
-    doneFetching: boolean;
-    fetchSuccess: boolean;
-  };
-}
-
-export interface FetchStatusElement {
-  startFetching: boolean;
-  doneFetching: boolean;
-  fetchSuccess: boolean;
 }
