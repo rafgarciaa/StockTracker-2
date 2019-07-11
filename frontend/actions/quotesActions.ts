@@ -87,14 +87,10 @@ const createThunkAction = (
       .then(response => handleResponse(response))
       .then(payload => {
         dispatch(success(payload));
-        // dispatch(FetchStatusActions.setApiErrors(''));
         dispatch(FetchStatusActions.setApiSuccess(section));
         dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
-      .catch(event =>
-        // dispatch(FetchStatusActions.setApiErrors(event.toString()))
-        dispatch(FetchStatusActions.setApiErrors(section))
-      );
+      .catch(event => dispatch(FetchStatusActions.setApiErrors(section)));
   };
 };
 
