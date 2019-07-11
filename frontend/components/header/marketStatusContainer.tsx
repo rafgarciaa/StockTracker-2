@@ -1,9 +1,11 @@
 import { connect } from 'react-redux';
 import MarketStatus from './marketStatus';
 import { RootState } from '../../utilities/interfaces';
+import { selectFetchingStatus } from '../../utilities/selectors';
 
-const mapStateToProps = ({ updateTime }: RootState) => ({
-  updateTime,
+const mapStateToProps = (state: RootState) => ({
+  updateTime: state.updateTime,
+  fetchingStatus: selectFetchingStatus(state, 'favoritePrices'),
 });
 
 export default connect(mapStateToProps)(MarketStatus);
