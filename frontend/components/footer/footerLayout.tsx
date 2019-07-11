@@ -7,7 +7,10 @@ interface FooterLayoutProps {
   favoriteList: FavoriteState[];
 }
 
-const FooterLayout: FunctionComponent<any> = ({ marketList, favoriteList }) => {
+const FooterLayout: FunctionComponent<FooterLayoutProps> = ({
+  marketList,
+  favoriteList,
+}) => {
   return (
     <div>
       FOOTER
