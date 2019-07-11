@@ -3,7 +3,8 @@ import MarketFavorite from './marketFavorite';
 import { FavoriteState, FetchStatusElement } from '../../utilities/interfaces';
 
 interface FooterLayoutProps {
-  marketList: FavoriteState[];
+  // TEMPORARY: any type should be changed; marketList is currently hardcoded
+  marketList: any;
   favoriteList: FavoriteState[];
   fetchStatus: FetchStatusElement;
 }
