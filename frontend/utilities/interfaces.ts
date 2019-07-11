@@ -110,15 +110,6 @@ export interface RootState {
   updateTime: string;
 }
 
-export interface HeaderProps {
-  latestPrice?: number;
-  change?: number;
-  changePercent?: number;
-  exchange?: string;
-  sector?: string;
-  updateTime?: string;
-}
-
 export interface FavoriteState {
   [k: string]: {
     symbol: string;

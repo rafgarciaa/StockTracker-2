@@ -1,7 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import { HeaderProps } from '../../utilities/interfaces';
 
-const Tags: FunctionComponent<HeaderProps> = ({ exchange, sector }) => {
+interface TagsProps {
+  exchange: string | null;
+  sector: string | null;
+}
+
+const Tags: FunctionComponent<TagsProps> = ({ exchange, sector }) => {
   return (
     <div className="header__bottom-tags">
       <span>{exchange}</span>
