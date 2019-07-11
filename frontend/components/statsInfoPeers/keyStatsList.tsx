@@ -1,32 +1,42 @@
 import React, { FunctionComponent } from 'react';
-import { CompanyStat } from '../../utilities/interfaces';
+import { CompanyStat, FetchStatusElement } from '../../utilities/interfaces';
 import KeyStatsListItem from './keyStatsListItem';
 
 interface CompanyStatsProps {
   companyStatsLeft: CompanyStat[];
   companyStatsRight: CompanyStat[];
+  fetchStatusCompanyStats: FetchStatusElement;
 }
 
 const KeyStatsList: FunctionComponent<CompanyStatsProps> = ({
   companyStatsLeft,
   companyStatsRight,
+  fetchStatusCompanyStats,
 }) => {
   return (
     <div>
-      <h2 className="heading-section">Key Stats</h2>
-      <div className="section-stats__list">
-        <ul>
-          {companyStatsLeft.map(({ name, value }: CompanyStat) => (
-            <KeyStatsListItem key={name} name={name} value={value} />
-          ))}
-        </ul>
+      {fetchStatusCompanyStats.startFetching && (
+        <div>
+          <h2 className="heading-section">Key Stats</h2>
+          {!fetchStatusCompanyStats.doneFetching ? (
+            'LOADING...'
+          ) : (
+            <div className="section-stats__list">
+              <ul>
+                {companyStatsLeft.map(({ name, value }: CompanyStat) => (
+                  <KeyStatsListItem key={name} name={name} value={value} />
+                ))}
+              </ul>
 
-        <ul>
-          {companyStatsRight.map(({ name, value }: CompanyStat) => (
-            <KeyStatsListItem key={name} name={name} value={value} />
-          ))}
-        </ul>
-      </div>
+              <ul>
+                {companyStatsRight.map(({ name, value }: CompanyStat) => (
+                  <KeyStatsListItem key={name} name={name} value={value} />
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
