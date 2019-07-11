@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { FetchStatusState } from '../../utilities/interfaces';
+import { FetchStatusElement } from '../../utilities/interfaces';
 
 const isMarketOpen = () => {
   const dateNow: Date = new Date();
@@ -18,7 +18,7 @@ const getLocalTimeZone = () => {
 
 interface MarketStatusProps {
   updateTime: string | null;
-  fetchingStatus: FetchStatusState;
+  fetchingStatus: FetchStatusElement;
 }
 
 const MarketStatus: FunctionComponent<MarketStatusProps> = ({
