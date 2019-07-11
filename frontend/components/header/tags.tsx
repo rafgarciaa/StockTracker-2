@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
-import { FetchStatusState } from '../../utilities/interfaces';
+import { FetchStatusElement } from '../../utilities/interfaces';
 
 interface TagsProps {
   exchange: string | null;
   sector: string | null;
-  fetchingStatus: FetchStatusState;
+  fetchingStatus: FetchStatusElement;
 }
 
 const Tags: FunctionComponent<TagsProps> = ({
