@@ -13,7 +13,7 @@ const SearchPriceLayout: FunctionComponent<FetchStatusState> = ({
       <SearchInputContainer />
       {fetchStatus.startFetching ? (
         !fetchStatus.fetchSuccess ? (
-          'ERROR'
+          'N/A'
         ) : (
           <PriceOutputContainer />
         )

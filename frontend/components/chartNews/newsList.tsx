@@ -20,7 +20,7 @@ const NewsList: FunctionComponent<NewsListProps> = ({
       {!fetchStatus.doneFetching && fetchStatus.startFetching ? (
         <AdaptiveLoader />
       ) : fetchStatus.startFetching && !fetchStatus.fetchSuccess ? (
-        'ERROR'
+        'ERROR: Cannot display news'
       ) : (
         <ul className="section-news__list">
           {newsList.map((news, idx) => (

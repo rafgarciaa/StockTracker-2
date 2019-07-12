@@ -15,9 +15,7 @@ const Tags: FunctionComponent<TagsProps> = ({
   return (
     <div>
       {fetchStatus.startFetching ? (
-        !fetchStatus.fetchSuccess ? (
-          'ERROR'
-        ) : (
+        !fetchStatus.fetchSuccess ? null : (
           <div className="header__bottom-tags">
             <span>{exchange}</span>
             <span>{sector}</span>

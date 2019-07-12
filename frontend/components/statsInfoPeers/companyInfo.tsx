@@ -26,7 +26,7 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
           {!fetchStatus.doneFetching ? (
             <AdaptiveLoader />
           ) : !fetchStatus.fetchSuccess ? (
-            'ERROR'
+            'ERROR: Cannot display company info'
           ) : (
             <div>
               <h2>

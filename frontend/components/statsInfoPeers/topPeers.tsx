@@ -19,7 +19,7 @@ const TopPeers: FunctionComponent<TopPeersProps> = ({
           {!fetchStatus.doneFetching ? (
             <AdaptiveLoader />
           ) : !fetchStatus.fetchSuccess ? (
-            'ERROR'
+            'ERROR: Cannot display top peers'
           ) : (
             <div>
               {topPeers.map((peer, idx) => (
