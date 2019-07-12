@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { FetchStatusElement } from '../../utilities/interfaces';
 
 const isMarketOpen = () => {
   const dateNow: Date = new Date();
@@ -17,9 +18,13 @@ const getLocalTimeZone = () => {
 
 interface MarketStatusProps {
   updateTime: string | null;
+  fetchingStatus: FetchStatusElement;
 }
 
-const MarketStatus: FunctionComponent<MarketStatusProps> = ({ updateTime }) => {
+const MarketStatus: FunctionComponent<MarketStatusProps> = ({
+  updateTime,
+  fetchingStatus,
+}) => {
   const localTimeZone =
     getLocalTimeZone() && updateTime
       ? getLocalTimeZone()
@@ -28,15 +33,19 @@ const MarketStatus: FunctionComponent<MarketStatusProps> = ({ updateTime }) => {
   const moon = <i className="far fa-moon" />;
 
   return (
-    <div className="header__bottom-status">
-      <span>
-        Real-Time Price as of {updateTime} {localTimeZone}
-      </span>
-      <span>{` `}</span>
-      <span>
-        {isMarketOpen() ? sun : moon} Market{' '}
-        {isMarketOpen() ? 'Open' : 'Closed'}
-      </span>
+    <div>
+      {fetchingStatus.startFetching && (
+        <div className="header__bottom-status">
+          <span>
+            Real-Time Price as of {updateTime} {localTimeZone}
+          </span>
+          <span>{` `}</span>
+          <span>
+            {isMarketOpen() ? sun : moon} Market{' '}
+            {isMarketOpen() ? 'Open' : 'Closed'}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
