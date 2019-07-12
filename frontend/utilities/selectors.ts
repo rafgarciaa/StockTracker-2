@@ -1,4 +1,9 @@
-import { CompanyStatsState, ChartDataDay, ChartData } from './interfaces';
+import {
+  CompanyStatsState,
+  ChartDataDay,
+  ChartData,
+  RootState,
+} from './interfaces';
 import { changeToPercent } from './numberFormatters';
 
 export const selectCompanyStats = (companyStats: CompanyStatsState) => {
@@ -9,8 +14,18 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
         name: 'Day Range',
         value: `${companyStats.high} - ${companyStats.low}`,
       },
-      { name: 'Volume', value: companyStats.latestVolume.toLocaleString() },
-      { name: 'Market Cap', value: companyStats.marketCap.toLocaleString() },
+      {
+        name: 'Volume',
+        value: companyStats.latestVolume
+          ? companyStats.latestVolume.toLocaleString()
+          : companyStats.latestVolume,
+      },
+      {
+        name: 'Market Cap',
+        value: companyStats.marketCap
+          ? companyStats.marketCap.toLocaleString()
+          : companyStats.marketCap,
+      },
       { name: 'P/E Ratio', value: companyStats.peRatio },
     ],
     companyStatsRight: [
@@ -21,7 +36,9 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
       },
       {
         name: 'Total Avg. Volume',
-        value: companyStats.avgTotalVolume.toLocaleString(),
+        value: companyStats.avgTotalVolume
+          ? companyStats.avgTotalVolume.toLocaleString()
+          : companyStats.avgTotalVolume,
       },
       { name: 'Earnings Per Share', value: companyStats.actualEPS },
       {
@@ -38,8 +55,13 @@ export const selectChartDataDay = (chartDataDay: ChartDataDay[]) => {
     .map(data => ({ dateTime: data.label, price: data.average }));
 };
 
-const dateFormatter = (date: string) =>
-  date.split('-')[1] + '-' + date.split('-')[2];
+const dateFormatter = (date: string | null) => {
+  if (date === null) {
+    return null;
+  } else {
+    return date.split('-')[1] + '-' + date.split('-')[2];
+  }
+};
 
 export const selectChartDataFiveDay = (fiveDayDataArray: ChartDataDay[]) =>
   fiveDayDataArray
@@ -50,9 +72,12 @@ export const selectChartDataFiveDay = (fiveDayDataArray: ChartDataDay[]) =>
 export const selectChartDataOneMonth = (oneMonthDataArray: ChartData[]) =>
   oneMonthDataArray
     .filter(data => data.close)
-    .map(data => ({ dateTime: data.label.toString(), price: data.close }));
+    .map(data => ({ dateTime: data.label, price: data.close }));
 
-const yearDateFormatter = (date: string) => {
+const yearDateFormatter = (date: string | null) => {
+  if (date === null) {
+    return null;
+  }
   const dateYearNow = new Date().getFullYear();
 
   let dateYear = date.split(' ')[2];
@@ -69,6 +94,16 @@ export const selectChartDataYear = (yearDataArray: ChartData[]) =>
   yearDataArray
     .filter(data => data.close)
     .map(data => ({
-      dateTime: yearDateFormatter(data.label.toString()),
+      dateTime: yearDateFormatter(data.label),
       price: data.close,
     }));
+
+export const selectFetchingStatus = (state: RootState, section: string) => {
+  const status = {
+    startFetching: state.fetchStatus[section].startFetching,
+    doneFetching: state.fetchStatus[section].doneFetching,
+    fetchSuccess: state.fetchStatus[section].fetchSuccess,
+  };
+
+  return status;
+};
