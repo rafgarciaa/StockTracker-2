@@ -6,21 +6,23 @@ import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 interface CompanyStatsProps {
   companyStatsLeft: CompanyStat[];
   companyStatsRight: CompanyStat[];
-  fetchStatusCompanyStats: FetchStatusElement;
+  fetchStatus: FetchStatusElement;
 }
 
 const KeyStatsList: FunctionComponent<CompanyStatsProps> = ({
   companyStatsLeft,
   companyStatsRight,
-  fetchStatusCompanyStats,
+  fetchStatus,
 }) => {
   return (
     <div>
-      {fetchStatusCompanyStats.startFetching && (
+      {fetchStatus.startFetching && (
         <div>
           <h2 className="heading-section">Key Stats</h2>
-          {!fetchStatusCompanyStats.doneFetching ? (
+          {!fetchStatus.doneFetching ? (
             <AdaptiveLoader />
+          ) : !fetchStatus.fetchSuccess ? (
+            'ERROR: Cannot display key stats'
           ) : (
             <div className="section-stats__list">
               <ul>

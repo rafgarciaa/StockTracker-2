@@ -18,12 +18,12 @@ const getLocalTimeZone = () => {
 
 interface MarketStatusProps {
   updateTime: string | null;
-  fetchingStatus: FetchStatusElement;
+  fetchStatus: FetchStatusElement;
 }
 
 const MarketStatus: FunctionComponent<MarketStatusProps> = ({
   updateTime,
-  fetchingStatus,
+  fetchStatus,
 }) => {
   const localTimeZone =
     getLocalTimeZone() && updateTime
@@ -34,18 +34,20 @@ const MarketStatus: FunctionComponent<MarketStatusProps> = ({
 
   return (
     <div>
-      {fetchingStatus.startFetching && (
-        <div className="header__bottom-status">
-          <span>
-            Real-Time Price as of {updateTime} {localTimeZone}
-          </span>
-          <span>{` `}</span>
-          <span>
-            {isMarketOpen() ? sun : moon} Market{' '}
-            {isMarketOpen() ? 'Open' : 'Closed'}
-          </span>
-        </div>
-      )}
+      {fetchStatus.startFetching ? (
+        !fetchStatus.fetchSuccess ? null : (
+          <div className="header__bottom-status">
+            <span>
+              Real-Time Price as of {updateTime} {localTimeZone}
+            </span>
+            <span>{` `}</span>
+            <span>
+              {isMarketOpen() ? sun : moon} Market{' '}
+              {isMarketOpen() ? 'Open' : 'Closed'}
+            </span>
+          </div>
+        )
+      ) : null}
     </div>
   );
 };

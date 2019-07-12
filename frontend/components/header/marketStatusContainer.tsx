@@ -5,7 +5,7 @@ import { selectFetchingStatus } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({
   updateTime: state.updateTime,
-  fetchingStatus: selectFetchingStatus(state, 'companyInfo'),
+  fetchStatus: selectFetchingStatus(state, 'companyInfo'),
 });
 
 export default connect(mapStateToProps)(MarketStatus);

@@ -5,7 +5,7 @@ import { selectFetchingStatus } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({
   topPeers: state.quotes.topPeers,
-  fetchingStatus: selectFetchingStatus(state, 'topPeers'),
+  fetchStatus: selectFetchingStatus(state, 'topPeers'),
 });
 
 export default connect(

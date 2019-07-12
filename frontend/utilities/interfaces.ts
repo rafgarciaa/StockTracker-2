@@ -134,14 +134,14 @@ export interface FavoriteState {
 
 export interface FetchStatusState {
   [k: string]: {
-    startFetching: boolean | null;
-    doneFetching: boolean | null;
-    fetchSuccess: boolean | null;
+    startFetching: boolean;
+    doneFetching: boolean;
+    fetchSuccess: boolean;
   };
 }
 
 export interface FetchStatusElement {
-  startFetching: boolean | null;
-  doneFetching: boolean | null;
-  fetchSuccess: boolean | null;
+  startFetching: boolean;
+  doneFetching: boolean;
+  fetchSuccess: boolean;
 }

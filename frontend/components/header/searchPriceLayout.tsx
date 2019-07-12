@@ -6,18 +6,24 @@ import { RootState, FetchStatusState } from '../../utilities/interfaces';
 import { selectFetchingStatus } from '../../utilities/selectors';
 
 const SearchPriceLayout: FunctionComponent<FetchStatusState> = ({
-  fetchingStatus,
+  fetchStatus,
 }) => {
   return (
     <div className="header__top-search-area">
       <SearchInputContainer />
-      {fetchingStatus.startFetching && <PriceOutputContainer />}
+      {fetchStatus.startFetching ? (
+        !fetchStatus.fetchSuccess ? (
+          'N/A'
+        ) : (
+          <PriceOutputContainer />
+        )
+      ) : null}
     </div>
   );
 };
 
 const mapStateToProps = (state: RootState) => ({
-  fetchingStatus: selectFetchingStatus(state, 'companyStats'),
+  fetchStatus: selectFetchingStatus(state, 'companyStats'),
 });
 
 export default connect(mapStateToProps)(SearchPriceLayout);

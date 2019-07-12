@@ -9,7 +9,7 @@ const mapStateToProps = (state: RootState) => {
   return {
     exchange: companyInfo.exchange,
     sector: companyInfo.sector,
-    fetchingStatus: selectFetchingStatus(state, 'companyInfo'),
+    fetchStatus: selectFetchingStatus(state, 'companyInfo'),
   };
 };
 
