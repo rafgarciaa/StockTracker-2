@@ -360,6 +360,7 @@ body {
 
 /* FOOTER STYLING */
 .section-footer {
+  min-width: 70rem;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -369,14 +370,25 @@ body {
 }
 
 .section-footer__slice {
+  width: 50%;
   padding: 1rem;
 }
 
-.section-footer__slice div.header__top-price {
+.section-footer__slice:first-child {
+  border-right: 1px solid #1d3c62;
+}
+
+.section-footer__slice div {
   display: inline-block;
   margin-right: 1rem;
 }
 
 .section-footer__heading {
   text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.section-market-favorite > span {
+  text-transform: uppercase;
+  margin-right: 0.5rem;
 }

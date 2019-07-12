@@ -17,8 +17,8 @@ const MarketFavorite: FunctionComponent<MarketFavoriteProps> = ({
       {Object.keys(symbolsList).map((symbol, idx) => {
         const market = symbolsList[symbol];
         return (
-          <div key={idx}>
-            {market.symbol}
+          <div className="section-market-favorite" key={idx}>
+            <span>{market.symbol}</span>
             <PriceOutput
               latestPrice={market.latestPrice}
               change={market.change}
