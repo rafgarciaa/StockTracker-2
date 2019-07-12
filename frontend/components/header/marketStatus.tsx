@@ -34,18 +34,22 @@ const MarketStatus: FunctionComponent<MarketStatusProps> = ({
 
   return (
     <div>
-      {fetchStatus.startFetching && (
-        <div className="header__bottom-status">
-          <span>
-            Real-Time Price as of {updateTime} {localTimeZone}
-          </span>
-          <span>{` `}</span>
-          <span>
-            {isMarketOpen() ? sun : moon} Market{' '}
-            {isMarketOpen() ? 'Open' : 'Closed'}
-          </span>
-        </div>
-      )}
+      {fetchStatus.startFetching ? (
+        !fetchStatus.fetchSuccess ? (
+          'ERROR'
+        ) : (
+          <div className="header__bottom-status">
+            <span>
+              Real-Time Price as of {updateTime} {localTimeZone}
+            </span>
+            <span>{` `}</span>
+            <span>
+              {isMarketOpen() ? sun : moon} Market{' '}
+              {isMarketOpen() ? 'Open' : 'Closed'}
+            </span>
+          </div>
+        )
+      ) : null}
     </div>
   );
 };

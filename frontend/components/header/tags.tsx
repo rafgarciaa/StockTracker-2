@@ -14,12 +14,18 @@ const Tags: FunctionComponent<TagsProps> = ({
 }) => {
   return (
     <div>
-      {fetchStatus.startFetching && (
-        <div className="header__bottom-tags">
-          <span>{exchange}</span>
-          <span>{sector}</span>
-          <span>USD</span>
-        </div>
+      {fetchStatus.startFetching ? (
+        !fetchStatus.fetchSuccess ? (
+          'ERROR'
+        ) : (
+          <div className="header__bottom-tags">
+            <span>{exchange}</span>
+            <span>{sector}</span>
+            <span>USD</span>
+          </div>
+        )
+      ) : (
+        ''
       )}
     </div>
   );

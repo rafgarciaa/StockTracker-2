@@ -16,12 +16,19 @@ const FooterLayout: FunctionComponent<FooterLayoutProps> = ({
 }) => {
   return (
     <div className="section-footer">
-      {fetchStatus.startFetching && (
-        <MarketFavorite sectionTitle={'us market'} symbolsList={marketList} />
-      )}
-      {fetchStatus.startFetching && (
-        <MarketFavorite sectionTitle={'favorites'} symbolsList={favoriteList} />
-      )}
+      {fetchStatus.startFetching ? (
+        !fetchStatus.fetchSuccess ? null : (
+          <MarketFavorite sectionTitle={'us market'} symbolsList={marketList} />
+        )
+      ) : null}
+      {fetchStatus.startFetching ? (
+        !fetchStatus.fetchSuccess ? null : (
+          <MarketFavorite
+            sectionTitle={'favorites'}
+            symbolsList={favoriteList}
+          />
+        )
+      ) : null}
     </div>
   );
 };

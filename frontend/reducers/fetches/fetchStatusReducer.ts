@@ -6,42 +6,42 @@ const INITIAL_STATE: FetchStatusState = {
   companyInfo: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
   companyNews: {
     doneFetching: false,
     startFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
   companyStats: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
   companyEPS: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
   dividendYield: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
   topPeers: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
   chartData: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
   favoritePrices: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: false,
   },
 };
 
@@ -60,7 +60,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
         [action.section]: {
           startFetching: true,
           doneFetching: false,
-          fetchSuccess: null,
+          fetchSuccess: false,
         },
       });
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
