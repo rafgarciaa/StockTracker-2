@@ -18,6 +18,7 @@
 
 #root {
     position: relative;
+    min-height: 100vh;
 }
 
 html {
@@ -28,10 +29,11 @@ html {
 }
 
 body {
-    background-image: linear-gradient( to bottom right, var(--color-primary), var(--color-secondary));
+    background-image: linear-gradient(to bottom right, var(--color-primary), var(--color-secondary));
     background-repeat: no-repeat;
     color: var(--color-white);
     font-family: 'Lato', sans-serif;
+    min-height: 100vh;
 }
 
 .section-main {
@@ -381,7 +383,7 @@ body {
     background-color: #082a61;
     display: flex;
     justify-content: space-between;
-    position: relative;
+    position: absolute;
     --webkit-transform: translateY(100%);
     transform: translateY(100%);
 }
