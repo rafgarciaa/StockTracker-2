@@ -1,13 +1,18 @@
 import React, { FunctionComponent } from 'react';
-import { HeaderProps } from '../../utilities/interfaces';
 import { changeToPercent } from '../../utilities/numberFormatters';
 
-const PriceOutput: FunctionComponent<HeaderProps> = ({
+interface PriceOutputProps {
+  latestPrice: number | null;
+  change: number | null;
+  changePercent: number | null;
+}
+
+const PriceOutput: FunctionComponent<PriceOutputProps> = ({
   latestPrice,
   change,
   changePercent,
 }) => {
-  const isNegative = change <= 0;
+  const isNegative = change ? change <= 0 : false;
   const headerClassName = isNegative ? 'negative' : 'positive';
   return (
     <div className="header__top-price">
@@ -23,7 +28,7 @@ const PriceOutput: FunctionComponent<HeaderProps> = ({
           {change != null ? Math.abs(change) : '0'}
         </span>
         <span>
-          {changeToPercent(Math.abs(changePercent))}
+          {changeToPercent(Math.abs(changePercent ? changePercent : 0))}
           <span className="icon--small">%</span>
         </span>
       </div>

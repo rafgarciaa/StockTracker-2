@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { HeaderProps } from '../../utilities/interfaces';
+import { FetchStatusElement } from '../../utilities/interfaces';
 
 const isMarketOpen = () => {
   const dateNow: Date = new Date();
@@ -11,12 +11,20 @@ const isMarketOpen = () => {
 
 const getLocalTimeZone = () => {
   const date: string = new Date().toString();
-  let timeZone: string | string[] = date.match(/\(([^)]+)\)/)[1];
+  let timeZone: string | string[] = date.match(/\(([^)]+)\)/)![1];
   timeZone = timeZone.split(' ').map((el: string) => el[0]);
   return timeZone.join('');
 };
 
-const MarketStatus: FunctionComponent<HeaderProps> = ({ updateTime }) => {
+interface MarketStatusProps {
+  updateTime: string | null;
+  fetchingStatus: FetchStatusElement;
+}
+
+const MarketStatus: FunctionComponent<MarketStatusProps> = ({
+  updateTime,
+  fetchingStatus,
+}) => {
   const localTimeZone =
     getLocalTimeZone() && updateTime
       ? getLocalTimeZone()
@@ -25,15 +33,19 @@ const MarketStatus: FunctionComponent<HeaderProps> = ({ updateTime }) => {
   const moon = <i className="far fa-moon" />;
 
   return (
-    <div className="header__bottom-status">
-      <span>
-        Real-Time Price as of {updateTime} {localTimeZone}
-      </span>
-      <span>{` `}</span>
-      <span>
-        {isMarketOpen() ? sun : moon} Market{' '}
-        {isMarketOpen() ? 'Open' : 'Closed'}
-      </span>
+    <div>
+      {fetchingStatus.startFetching && (
+        <div className="header__bottom-status">
+          <span>
+            Real-Time Price as of {updateTime} {localTimeZone}
+          </span>
+          <span>{` `}</span>
+          <span>
+            {isMarketOpen() ? sun : moon} Market{' '}
+            {isMarketOpen() ? 'Open' : 'Closed'}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
