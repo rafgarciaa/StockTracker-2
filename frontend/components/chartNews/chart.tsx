@@ -23,7 +23,7 @@ interface ChartProps {
   oneYearData: ChartDataProps[];
   fiveYearData: ChartDataProps[];
   maxData: ChartDataProps[];
-  fetchStatusChart: FetchStatusElement;
+  fetchStatus: FetchStatusElement;
 }
 
 interface ChartState {
@@ -58,12 +58,12 @@ export default class Chart extends React.Component<ChartProps, ChartState> {
       oneYearData,
       fiveYearData,
       maxData,
-      fetchStatusChart,
+      fetchStatus,
     } = this.props;
 
     return (
       <div className="section-chart">
-        {fetchStatusChart.startFetching && (
+        {fetchStatus.startFetching && (
           <div>
             <div className="section-chart__timelines">
               <a
@@ -107,8 +107,10 @@ export default class Chart extends React.Component<ChartProps, ChartState> {
               </a>
             </div>
 
-            {!fetchStatusChart.doneFetching ? (
+            {!fetchStatus.doneFetching ? (
               <AdaptiveLoader />
+            ) : !fetchStatus.fetchSuccess ? (
+              'ERROR'
             ) : (
               <ResponsiveContainer width="100%" aspect={2}>
                 <AreaChart

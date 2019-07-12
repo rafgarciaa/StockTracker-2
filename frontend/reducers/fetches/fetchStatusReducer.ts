@@ -50,7 +50,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
     case FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
       return Object.assign({}, state, {
         [action.section]: {
-          startFetching: false,
+          startFetching: true,
           doneFetching: true,
           fetchSuccess: false,
         },

@@ -4,17 +4,17 @@ import { FetchStatusElement } from '../../utilities/interfaces';
 interface TagsProps {
   exchange: string | null;
   sector: string | null;
-  fetchingStatus: FetchStatusElement;
+  fetchStatus: FetchStatusElement;
 }
 
 const Tags: FunctionComponent<TagsProps> = ({
   exchange,
   sector,
-  fetchingStatus,
+  fetchStatus,
 }) => {
   return (
     <div>
-      {fetchingStatus.startFetching && (
+      {fetchStatus.startFetching && (
         <div className="header__bottom-tags">
           <span>{exchange}</span>
           <span>{sector}</span>

@@ -4,20 +4,22 @@ import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface TopPeersProps {
   topPeers: string[];
-  fetchingStatus: FetchStatusElement;
+  fetchStatus: FetchStatusElement;
 }
 
 const TopPeers: FunctionComponent<TopPeersProps> = ({
   topPeers,
-  fetchingStatus,
+  fetchStatus,
 }) => {
   return (
     <div className="section-peers">
-      {fetchingStatus.startFetching && (
+      {fetchStatus.startFetching && (
         <div>
           <h2 className="heading-section">Top Peers</h2>
-          {!fetchingStatus.doneFetching ? (
+          {!fetchStatus.doneFetching ? (
             <AdaptiveLoader />
+          ) : !fetchStatus.fetchSuccess ? (
+            'ERROR'
           ) : (
             <div>
               {topPeers.map((peer, idx) => (
