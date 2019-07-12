@@ -15,7 +15,7 @@ const FooterLayout: FunctionComponent<FooterLayoutProps> = ({
   fetchStatus,
 }) => {
   return (
-    <div>
+    <div className="section-footer">
       {fetchStatus.startFetching && (
         <MarketFavorite sectionTitle={'us market'} symbolsList={marketList} />
       )}
