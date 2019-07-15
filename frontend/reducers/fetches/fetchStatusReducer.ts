@@ -50,7 +50,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
     case FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
       return {
         ...state,
-        [action.section]: {
+        [action.payload.section]: {
           startFetching: true,
           doneFetching: true,
           fetchSuccess: action.payload.message,
@@ -59,7 +59,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
     case FETCH_STATUS_ACTION_TYPE.SET_API_START:
       return {
         ...state,
-        [action.section]: {
+        [action.payload]: {
           startFetching: true,
           doneFetching: false,
           fetchSuccess: '',
@@ -68,7 +68,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
       return {
         ...state,
-        [action.section]: {
+        [action.payload]: {
           startFetching: true,
           doneFetching: true,
           fetchSuccess: '',

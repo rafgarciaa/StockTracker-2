@@ -66,16 +66,16 @@ const handleResponse = (response: {
   statusText: string;
   status: number;
 }) => {
-  if (response.status === 404) {
-    throw new APIError('Company Not Found', response.status);
-  } else if (response.status === 402) {
-    throw new APIError('API Key Limit Reached', response.status);
-  } else if (response.status === 400) {
-    throw new APIError('Invalid API key', response.status);
-  } else if (response.status !== 200) {
-    throw new APIError(response.statusText, response.status);
+  switch (response.status) {
+    case 404:
+      throw new APIError('Company Not Found', response.status);
+    case 402:
+      throw new APIError('API Key Limit Reached', response.status);
+    case 400:
+      throw new APIError('Invalid API key', response.status);
+    default:
+      throw new APIError(response.statusText, response.status);
   }
-  return response.json();
 };
 
 const createThunkAction = (
