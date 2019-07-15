@@ -12,7 +12,7 @@ const SearchPriceLayout: FunctionComponent<FetchStatusState> = ({
     <div className="header__top-search-area">
       <SearchInputContainer />
       {fetchStatus.startFetching ? (
-        !fetchStatus.fetchSuccess ? (
+        fetchStatus.fetchSuccess !== '' ? (
           'N/A'
         ) : (
           <PriceOutputContainer />

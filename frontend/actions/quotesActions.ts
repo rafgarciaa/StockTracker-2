@@ -1,9 +1,9 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
 import { ActionCreatorsMapObject, AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { action } from 'typesafe-actions';
 
 import {
-  Action,
   CompanyInfoState,
   News,
   CompanyStatsState,
@@ -23,33 +23,37 @@ import APIError from '../utilities/apiErrorMessage';
 import { UpdateActions } from '../actions/updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
 
-function createAction<T, P>(type: T, payload: P): Action<T, P> {
-  return { type, payload };
-}
-
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
+
+interface ExceptionEPS {
+  earnings: [
+    {
+      actualEPS: number | null;
+    }
+  ];
+}
 
 export const Actions = {
   setCompanyInfo: (companyInfo: CompanyInfoState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
   setCompanyNews: (companyNews: News[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
   setCompanyStats: (companyStats: CompanyStatsState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
-  setCompanyEPS: (earningsPerShare: number) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
+  setCompanyEPS: (earningsPerShare: number | ExceptionEPS) =>
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
   setDividendYield: ({ dividendYield }: any) =>
-    createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
+    action(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
   setTopPeers: (topPeers: string[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
+    action(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
   setChartDataDay: (chartData: any) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
+    action(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
   setChartData: (chartData: object[], timeFrame: string) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
+    action(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
   setFavorites: (favoritesData: any) =>
-    createAction(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
+    action(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
 
 export type ActionsTypes = ActionsUnion<typeof Actions>;
@@ -66,6 +70,8 @@ const handleResponse = (response: {
     throw new APIError('Company Not Found', response.status);
   } else if (response.status === 402) {
     throw new APIError('API Key Limit Reached', response.status);
+  } else if (response.status === 400) {
+    throw new APIError('Invalid API key', response.status);
   } else if (response.status !== 200) {
     throw new APIError(response.statusText, response.status);
   }
@@ -82,15 +88,22 @@ const createThunkAction = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = makeUrl(service, symbol, params);
 
-    dispatch(FetchStatusActions.setApiStart(section));
+    dispatch(FetchStatusActions.request(section));
     fetch(url)
       .then(response => handleResponse(response))
       .then(payload => {
         dispatch(success(payload));
-        dispatch(FetchStatusActions.setApiSuccess(section));
+        dispatch(FetchStatusActions.success(section));
         dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
-      .catch(event => dispatch(FetchStatusActions.setApiErrors(section)));
+      .catch(event =>
+        dispatch(
+          FetchStatusActions.failure({
+            section,
+            message: event.toString(),
+          })
+        )
+      );
   };
 };
 
@@ -170,7 +183,12 @@ export const fetchCompanyNames = () => {
       .then(response => response.json())
       .then(payload => dispatch(Actions.setCompanyNames(payload)))
       .catch(event =>
-        dispatch(FetchStatusActions.setApiErrors(event.toString()))
+        dispatch(
+          FetchStatusActions.failure({
+            section: '',
+            message: event.statusText,
+          })
+        )
       );
   };
 };
