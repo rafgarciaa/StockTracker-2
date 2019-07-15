@@ -7,9 +7,7 @@ const favoriteReducer = (state: FavoriteState = {}, action: ActionsTypes) => {
 
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_FAVORITES:
-      return Object.assign({}, state, {
-        [action.payload.symbol]: action.payload,
-      });
+      return { ...state, [action.payload.symbol]: action.payload };
     default:
       return state;
   }

@@ -6,8 +6,6 @@ const chartDataDayReducer = (
   state: ChartDataDay[] = [],
   action: ActionsTypes
 ) => {
-  Object.freeze(state);
-
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY:
       return action.payload;
