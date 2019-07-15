@@ -25,18 +25,16 @@ const INITIAL_STATE: CompanyStatsState = {
 const companyStatsReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_STATS:
-      return Object.assign({}, state, action.payload);
+      return action.payload;
 
     case QUOTES_ACTION_TYPES.SET_COMPANY_EPS:
       if (typeof action.payload === 'object') {
-        return Object.assign({}, state, {
-          actualEPS: action.payload.earnings[0].actualEPS,
-        });
+        return { ...state, actualEPS: action.payload.earnings[0].actualEPS };
       } else {
-        return Object.assign({}, state, { actualEPS: action.payload });
+        return { ...state, actualEPS: action.payload };
       }
     case QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD:
-      return Object.assign({}, state, { dividendYield: action.payload });
+      return { ...state, dividendYield: action.payload };
     default:
       return state;
   }
