@@ -5,6 +5,7 @@ import { RootState } from '../../utilities/interfaces';
 import { ThunkDispatch } from 'redux-thunk';
 
 const mapStateToProps = ({ quotes }: RootState) => ({
+  companyNames: quotes.companyNames,
   companyName: quotes.companyInfo.companyName,
   companySymbol: quotes.companyInfo.symbol,
 });
