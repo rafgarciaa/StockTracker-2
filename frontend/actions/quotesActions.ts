@@ -25,6 +25,14 @@ import { getCurrentDate } from '../utilities/getCurrentDate';
 
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
+interface ExceptionEPS {
+  earnings: [
+    {
+      actualEPS: number | null;
+    }
+  ];
+}
+
 export const Actions = {
   setCompanyInfo: (companyInfo: CompanyInfoState) =>
     action(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
@@ -32,7 +40,7 @@ export const Actions = {
     action(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
   setCompanyStats: (companyStats: CompanyStatsState) =>
     action(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
-  setCompanyEPS: (earningsPerShare: number) =>
+  setCompanyEPS: (earningsPerShare: number | ExceptionEPS) =>
     action(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
   setDividendYield: ({ dividendYield }: any) =>
     action(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
