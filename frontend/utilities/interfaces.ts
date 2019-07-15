@@ -1,3 +1,7 @@
+import rootReducer from '../reducers/rootReducer';
+
+export type RootState = ReturnType<typeof rootReducer>;
+
 export interface ChartDataTypes {
   readonly fiveDay: ChartDataDay[];
   readonly oneMonth: ChartData[];

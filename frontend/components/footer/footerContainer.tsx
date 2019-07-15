@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import FooterLayout from './footerLayout';
-import { RootState } from '../../reducers/rootReducer';
+import { RootState } from '../../utilities/interfaces';
 import { selectFetchingStatus } from '../../utilities/selectors';
 
 const harcodedData = {

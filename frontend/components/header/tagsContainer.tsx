@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Tags from './tags';
-import { RootState } from '../../reducers/rootReducer';
+import { RootState } from '../../utilities/interfaces';
 import { selectFetchingStatus } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => {
