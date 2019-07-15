@@ -73,6 +73,8 @@ const handleResponse = (response: {
       throw new APIError('API Key Limit Reached', response.status);
     case 400:
       throw new APIError('Invalid API key', response.status);
+    case 200:
+      return response.json();
     default:
       throw new APIError(response.statusText, response.status);
   }
