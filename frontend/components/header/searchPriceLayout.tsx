@@ -2,7 +2,8 @@ import React, { FunctionComponent } from 'react';
 import SearchInputContainer from './searchInputContainer';
 import PriceOutputContainer from './priceOutputContainer';
 import { connect } from 'react-redux';
-import { RootState, FetchStatusState } from '../../utilities/interfaces';
+import { FetchStatusState } from '../../utilities/interfaces';
+import { RootState } from '../../reducers/rootReducer';
 import { selectFetchingStatus } from '../../utilities/selectors';
 
 const SearchPriceLayout: FunctionComponent<FetchStatusState> = ({

@@ -90,22 +90,6 @@ export interface CompanyStatsState {
   actualEPS: number | null;
 }
 
-export interface RootState {
-  quotes: {
-    chartData: ChartDataTypes;
-    chartDataDay: ChartDataDay[];
-    companyInfo: CompanyInfoState;
-    companyStats: CompanyStatsState;
-    companyNews: News[];
-    topPeers: string[];
-    companyNames: CompanyNameState[];
-    favorites: FavoriteState[];
-  };
-  fetchStatus: FetchStatusState;
-  errors: string;
-  updateTime: string;
-}
-
 export interface HeaderProps {
   latestPrice?: number;
   change?: number;

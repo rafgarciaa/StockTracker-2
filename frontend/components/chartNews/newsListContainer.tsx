@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import NewsList from './newsList';
-import { RootState } from '../../utilities/interfaces';
+import { RootState } from '../../reducers/rootReducer';
 import { selectFetchingStatus } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({
