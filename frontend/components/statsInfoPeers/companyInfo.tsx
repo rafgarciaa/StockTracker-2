@@ -25,8 +25,8 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
           <h2 className="heading-section">Company Overview</h2>
           {!fetchStatus.doneFetching ? (
             <AdaptiveLoader />
-          ) : !fetchStatus.fetchSuccess ? (
-            'ERROR: Cannot display company info'
+          ) : fetchStatus.fetchSuccess !== '' ? (
+            fetchStatus.fetchSuccess
           ) : (
             <div>
               <h2>

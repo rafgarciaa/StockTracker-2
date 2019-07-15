@@ -1,10 +1,9 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
 import { ActionCreatorsMapObject, AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { action, createAction } from 'typesafe-actions';
+import { action } from 'typesafe-actions';
 
 import {
-  Action,
   CompanyInfoState,
   News,
   CompanyStatsState,
@@ -79,15 +78,22 @@ const createThunkAction = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const url = makeUrl(service, symbol, params);
 
-    dispatch(FetchStatusActions.setApiStart(section));
+    dispatch(FetchStatusActions.request(section));
     fetch(url)
       .then(response => handleResponse(response))
       .then(payload => {
         dispatch(success(payload));
-        dispatch(FetchStatusActions.setApiSuccess(section));
+        dispatch(FetchStatusActions.success(section));
         dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
-      .catch(event => dispatch(FetchStatusActions.setApiErrors(section)));
+      .catch(event =>
+        dispatch(
+          FetchStatusActions.failure({
+            section,
+            message: event.toString(),
+          })
+        )
+      );
   };
 };
 
@@ -166,9 +172,7 @@ export const fetchCompanyNames = () => {
     return fetch(url)
       .then(response => response.json())
       .then(payload => dispatch(Actions.setCompanyNames(payload)))
-      .catch(event =>
-        dispatch(FetchStatusActions.setApiErrors(event.toString()))
-      );
+      .catch(event => dispatch(FetchStatusActions.failure(event.statusText)));
   };
 };
 

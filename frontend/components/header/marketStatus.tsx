@@ -35,7 +35,7 @@ const MarketStatus: FunctionComponent<MarketStatusProps> = ({
   return (
     <div>
       {fetchStatus.startFetching ? (
-        !fetchStatus.fetchSuccess ? null : (
+        fetchStatus.fetchSuccess !== '' ? null : (
           <div className="header__bottom-status">
             <span>
               Real-Time Price as of {updateTime} {localTimeZone}
