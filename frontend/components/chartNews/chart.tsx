@@ -109,8 +109,8 @@ export default class Chart extends React.Component<ChartProps, ChartState> {
 
             {!fetchStatus.doneFetching ? (
               <AdaptiveLoader />
-            ) : !fetchStatus.fetchSuccess ? (
-              'ERROR: Cannot display chart'
+            ) : fetchStatus.fetchSuccess !== '' ? (
+              fetchStatus.fetchSuccess
             ) : (
               <ResponsiveContainer width="100%" aspect={2}>
                 <AreaChart

@@ -21,8 +21,8 @@ const KeyStatsList: FunctionComponent<CompanyStatsProps> = ({
           <h2 className="heading-section">Key Stats</h2>
           {!fetchStatus.doneFetching ? (
             <AdaptiveLoader />
-          ) : !fetchStatus.fetchSuccess ? (
-            'ERROR: Cannot display key stats'
+          ) : fetchStatus.fetchSuccess !== '' ? (
+            fetchStatus.fetchSuccess
           ) : (
             <div className="section-stats__list">
               <ul>

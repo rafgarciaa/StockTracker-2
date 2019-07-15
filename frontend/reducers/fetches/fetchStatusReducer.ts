@@ -6,42 +6,42 @@ const INITIAL_STATE: FetchStatusState = {
   companyInfo: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
   companyNews: {
     doneFetching: false,
     startFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
   companyStats: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
   companyEPS: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
   dividendYield: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
   topPeers: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
   chartData: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
   favoritePrices: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: false,
+    fetchSuccess: '',
   },
 };
 
@@ -53,7 +53,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
         [action.section]: {
           startFetching: true,
           doneFetching: true,
-          fetchSuccess: false,
+          fetchSuccess: action.payload.message,
         },
       };
     case FETCH_STATUS_ACTION_TYPE.SET_API_START:
@@ -62,7 +62,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
         [action.section]: {
           startFetching: true,
           doneFetching: false,
-          fetchSuccess: false,
+          fetchSuccess: '',
         },
       };
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
@@ -71,7 +71,7 @@ const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
         [action.section]: {
           startFetching: true,
           doneFetching: true,
-          fetchSuccess: true,
+          fetchSuccess: '',
         },
       };
     default:

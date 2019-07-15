@@ -90,11 +90,6 @@ export interface CompanyStatsState {
   actualEPS: number | null;
 }
 
-export interface Action<T, P> {
-  type: T;
-  payload: P;
-}
-
 export interface RootState {
   quotes: {
     chartData: ChartDataTypes;
@@ -136,12 +131,12 @@ export interface FetchStatusState {
   [k: string]: {
     startFetching: boolean;
     doneFetching: boolean;
-    fetchSuccess: boolean;
+    fetchSuccess: string;
   };
 }
 
 export interface FetchStatusElement {
   startFetching: boolean;
   doneFetching: boolean;
-  fetchSuccess: boolean;
+  fetchSuccess: string;
 }
