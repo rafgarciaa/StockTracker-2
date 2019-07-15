@@ -50,6 +50,7 @@
         "@types/webpack": "^4.4.34",
         "css-loader": "^3.0.0",
         "dotenv": "^8.0.0",
+        "downshift": "^3.2.10",
         "fork-ts-checker-webpack-plugin": "^1.4.0",
         "friendly-errors-webpack-plugin": "^1.7.0",
         "style-loader": "^0.23.1",
