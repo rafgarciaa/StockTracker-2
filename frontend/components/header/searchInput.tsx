@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  FunctionComponent,
-  ChangeEvent,
-  FormEvent,
-} from 'react';
+import React, { useEffect, FunctionComponent } from 'react';
 
 import { searchActionType, fetchActionType } from '../../actions/quotesActions';
 import { CompanyNameState } from '../../utilities/interfaces';

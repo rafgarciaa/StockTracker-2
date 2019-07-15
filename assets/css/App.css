@@ -109,6 +109,12 @@ body {
   z-index: 10;
 
   list-style: none;
+  width: 50%;
+}
+
+.header__top-search-list li {
+  padding: 1rem;
+  font-size: 1rem;
 }
 
 /* SEARCH ICON */

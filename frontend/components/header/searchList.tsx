@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import { CompanyNameState } from '../../utilities/interfaces';
-import Downshift from 'downshift';
+import SearchListItem from './searchListItem';
 
 interface SearchListProps {
   companyNames: CompanyNameState[];
   getItemProps: (options: any) => void;
-  isOpen: any;
-  inputValue: any;
-  highlightedIndex: any;
+  isOpen: boolean;
+  inputValue: string | null;
+  highlightedIndex: number | null;
   selectedItem: any;
 }
 
@@ -33,23 +33,16 @@ const SearchList: FunctionComponent<SearchListProps> = ({
                   .toLowerCase()
                   .startsWith(inputValue.toLowerCase())
             )
-            .slice(0, 5)
+            .slice(0, 6)
             .map((company: CompanyNameState, index: number) => (
-              <li
+              <SearchListItem
                 key={company.symbol}
-                {...getItemProps({
-                  key: company.symbol,
-                  index,
-                  item: company,
-                  style: {
-                    backgroundColor:
-                      highlightedIndex === index ? 'lightgray' : 'black',
-                    fontWeight: selectedItem === company ? 'bold' : 'normal',
-                  },
-                })}
-              >
-                {`${company.name} (${company.symbol})`}
-              </li>
+                company={company}
+                getItemProps={getItemProps}
+                highlightedIndex={highlightedIndex}
+                index={index}
+                selectedItem={selectedItem}
+              />
             ))
         : null}
     </ul>
