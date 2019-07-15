@@ -58,10 +58,13 @@ const handleResponse = (response: {
   statusText: string;
   status: number;
 }) => {
+  console.log(response);
   if (response.status === 404) {
     throw new APIError('Company Not Found', response.status);
   } else if (response.status === 402) {
     throw new APIError('API Key Limit Reached', response.status);
+  } else if (response.status === 400) {
+    throw new APIError('Invalid API key', response.status);
   } else if (response.status !== 200) {
     throw new APIError(response.statusText, response.status);
   }
