@@ -12,16 +12,12 @@ const INITIAL_STATE: ChartDataTypes = {
 };
 
 const chartDataReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
-  Object.freeze(state);
-
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_CHART_DATA:
       const timeFrame: string = chartTimeFrameFormatter(
         action.payload.timeFrame
       );
-      return Object.assign({}, state, {
-        [timeFrame]: action.payload.chartData,
-      });
+      return { ...state, [timeFrame]: action.payload.chartData };
 
     default:
       return state;

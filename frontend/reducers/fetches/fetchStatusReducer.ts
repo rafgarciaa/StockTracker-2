@@ -48,29 +48,32 @@ const INITIAL_STATE: FetchStatusState = {
 const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
   switch (action.type) {
     case FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
-      return Object.assign({}, state, {
-        [action.payload.section]: {
+      return {
+        ...state,
+        [action.section]: {
           startFetching: true,
           doneFetching: true,
           fetchSuccess: action.payload.message,
         },
-      });
+      };
     case FETCH_STATUS_ACTION_TYPE.SET_API_START:
-      return Object.assign({}, state, {
-        [action.payload]: {
+      return {
+        ...state,
+        [action.section]: {
           startFetching: true,
           doneFetching: false,
           fetchSuccess: '',
         },
-      });
+      };
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
-      return Object.assign({}, state, {
-        [action.payload]: {
+      return {
+        ...state,
+        [action.section]: {
           startFetching: true,
           doneFetching: true,
           fetchSuccess: '',
         },
-      });
+      };
     default:
       return state;
   }
