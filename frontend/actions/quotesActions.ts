@@ -58,7 +58,6 @@ const handleResponse = (response: {
   statusText: string;
   status: number;
 }) => {
-  console.log(response);
   if (response.status === 404) {
     throw new APIError('Company Not Found', response.status);
   } else if (response.status === 402) {
@@ -175,7 +174,14 @@ export const fetchCompanyNames = () => {
     return fetch(url)
       .then(response => response.json())
       .then(payload => dispatch(Actions.setCompanyNames(payload)))
-      .catch(event => dispatch(FetchStatusActions.failure(event.statusText)));
+      .catch(event =>
+        dispatch(
+          FetchStatusActions.failure({
+            section: '',
+            message: event.statusText,
+          })
+        )
+      );
   };
 };
 
