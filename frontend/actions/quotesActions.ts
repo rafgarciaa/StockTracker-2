@@ -1,6 +1,7 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
 import { ActionCreatorsMapObject, AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { action, createAction } from 'typesafe-actions';
 
 import {
   Action,
@@ -23,33 +24,29 @@ import APIError from '../utilities/apiErrorMessage';
 import { UpdateActions } from '../actions/updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
 
-function createAction<T, P>(type: T, payload: P): Action<T, P> {
-  return { type, payload };
-}
-
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
 export const Actions = {
   setCompanyInfo: (companyInfo: CompanyInfoState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
   setCompanyNews: (companyNews: News[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
   setCompanyStats: (companyStats: CompanyStatsState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
   setCompanyEPS: (earningsPerShare: number) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
   setDividendYield: ({ dividendYield }: any) =>
-    createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
+    action(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
   setTopPeers: (topPeers: string[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
+    action(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
   setChartDataDay: (chartData: any) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
+    action(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
+    action(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
   setChartData: (chartData: object[], timeFrame: string) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
+    action(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
   setFavorites: (favoritesData: any) =>
-    createAction(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
+    action(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
 
 export type ActionsTypes = ActionsUnion<typeof Actions>;
