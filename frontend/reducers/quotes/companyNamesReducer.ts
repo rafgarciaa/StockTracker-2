@@ -6,8 +6,6 @@ const companyNamesReducer = (
   state: CompanyNameState[] = [],
   action: ActionsTypes
 ) => {
-  Object.freeze(state);
-
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_NAMES:
       return action.payload;
