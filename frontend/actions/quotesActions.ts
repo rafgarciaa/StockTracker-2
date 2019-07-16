@@ -8,7 +8,7 @@ import {
   News,
   CompanyStatsState,
   CompanyNameState,
-  FavoriteState,
+  FavoriteElement,
 } from '../utilities/interfaces';
 
 import {
@@ -51,7 +51,7 @@ export const Actions = {
     action(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
   setChartData: (chartData: object[], timeFrame: string) =>
     action(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
-  setFavorites: (favoritesData: any) =>
+  setFavorites: (favoritesData: FavoriteElement) =>
     action(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
 
@@ -154,7 +154,13 @@ const fetchTopPeers = (symbol: string) =>
   createThunkAction('topPeers', 'peers', symbol, Actions.setTopPeers);
 
 const fetchChartDataDay = (symbol: string) =>
-  createThunkAction('chartData', 'chart/1d', symbol, Actions.setChartDataDay);
+  createThunkAction(
+    'chartData',
+    'chart/1d',
+    symbol,
+    Actions.setChartDataDay,
+    Filters.chartDataFilters
+  );
 
 const fetchChartData = (symbol: string, timeFrame: string) =>
   createThunkAction(

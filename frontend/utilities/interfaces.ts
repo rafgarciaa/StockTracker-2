@@ -17,6 +17,9 @@ export type UpdateTypes = ActionsUnion<typeof UpdateActions>;
 
 export type searchActionType = typeof searchAction;
 export type fetchActionType = typeof fetchCompanyNames;
+import { harcodedData } from '../components/footer/footerMarketContainer';
+
+export type harcodedDataType = typeof harcodedData;
 
 export interface ChartDataTypes {
   readonly fiveDay: ChartDataDay[];
@@ -107,20 +110,18 @@ export interface CompanyStatsState {
 }
 
 export interface FavoriteState {
-  [k: string]: {
-    readonly symbol: string | null;
-    readonly change: number | null;
-    readonly latestPrice: number | null;
-    readonly changePercent: number | null;
-  };
+  [k: string]: FavoriteElement;
+}
+
+export interface FavoriteElement {
+  symbol: string;
+  change: number;
+  latestPrice: number;
+  changePercent: number;
 }
 
 export interface FetchStatusState {
-  [k: string]: {
-    readonly startFetching: boolean;
-    readonly doneFetching: boolean;
-    readonly fetchSuccess: string;
-  };
+  [k: string]: FetchStatusElement;
 }
 
 export interface FetchStatusElement {

@@ -1,34 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import MarketFavorite from './marketFavorite';
-import { FavoriteState, FetchStatusElement } from '../../utilities/interfaces';
+import FooterMarketContainer from './footerMarketContainer';
+import FooterFavoriteContainer from './footerFavoriteContainer';
 
-interface FooterLayoutProps {
-  // TEMPORARY: any type should be changed; marketList is currently hardcoded
-  marketList: any;
-  favoriteList: FavoriteState[];
-  fetchStatus: FetchStatusElement;
-}
-
-const FooterLayout: FunctionComponent<FooterLayoutProps> = ({
-  marketList,
-  favoriteList,
-  fetchStatus,
-}) => {
+const FooterLayout: FunctionComponent = () => {
   return (
     <div className="section-footer">
-      {fetchStatus.startFetching ? (
-        fetchStatus.fetchSuccess !== '' ? null : (
-          <MarketFavorite sectionTitle={'us market'} symbolsList={marketList} />
-        )
-      ) : null}
-      {fetchStatus.startFetching ? (
-        fetchStatus.fetchSuccess !== '' ? null : (
-          <MarketFavorite
-            sectionTitle={'favorites'}
-            symbolsList={favoriteList}
-          />
-        )
-      ) : null}
+      <FooterMarketContainer />
+      <FooterFavoriteContainer />
     </div>
   );
 };
