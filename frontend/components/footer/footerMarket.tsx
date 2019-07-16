@@ -15,7 +15,7 @@ const FooterMarket: FunctionComponent<FooterMarketProps> = ({
   fetchStatus,
 }) => {
   return (
-    <React.Fragment>
+    <>
       {fetchStatus.startFetching && (
         <div className="section-footer__slice">
           <h4 className="section-footer__heading">Market</h4>
@@ -34,7 +34,7 @@ const FooterMarket: FunctionComponent<FooterMarketProps> = ({
           })}
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
