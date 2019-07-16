@@ -13,54 +13,79 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { FetchStatusElement } from '../../utilities/interfaces';
+import {
+  FetchStatusElement,
+  ChartData,
+  ChartDataDay,
+} from '../../utilities/interfaces';
 import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
+import * as Selectors from '../../utilities/selectors';
 
 interface ChartDataProps {
   dateTime: string | null;
   price: number | null;
 }
 
+// interface ChartProps {
+//   oneDayData: ChartDataProps[];
+//   fiveDayData: ChartDataProps[];
+//   oneMonthData: ChartDataProps[];
+//   oneYearData: ChartDataProps[];
+//   fiveYearData: ChartDataProps[];
+//   maxData: ChartDataProps[];
+//   fetchStatus: FetchStatusElement;
+// }
+
 interface ChartProps {
-  oneDayData: ChartDataProps[];
-  fiveDayData: ChartDataProps[];
-  oneMonthData: ChartDataProps[];
-  oneYearData: ChartDataProps[];
-  fiveYearData: ChartDataProps[];
-  maxData: ChartDataProps[];
+  oneDayData: ChartDataDay[];
+  fiveDayData: ChartDataDay[];
+  oneMonthData: ChartData[];
+  oneYearData: ChartData[];
+  fiveYearData: ChartData[];
+  maxData: ChartData[];
   fetchStatus: FetchStatusElement;
 }
 
 const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
-  const [displayedChartData, setDisplayedChartData] = useState(
-    props.oneDayData
-  );
+  const [displayedChartData, setDisplayedChartData] = useState<
+    ChartDataProps[]
+  >(Selectors.selectChartDataDay(props.oneDayData));
 
-  const setOneDay = useCallback(() => setDisplayedChartData(props.oneDayData), [
-    props.oneDayData,
-  ]);
+  const setOneDay = useCallback(
+    () => setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData)),
+    [props.oneDayData]
+  );
   const setFiveDay = useCallback(
-    () => setDisplayedChartData(props.fiveDayData),
+    () =>
+      setDisplayedChartData(
+        Selectors.selectChartDataFiveDay(props.fiveDayData)
+      ),
     [props.fiveDayData]
   );
   const setOneMonth = useCallback(
-    () => setDisplayedChartData(props.oneMonthData),
+    () =>
+      setDisplayedChartData(
+        Selectors.selectChartDataOneMonth(props.oneMonthData)
+      ),
     [props.oneMonthData]
   );
   const setOneYear = useCallback(
-    () => setDisplayedChartData(props.oneYearData),
+    () =>
+      setDisplayedChartData(Selectors.selectChartDataYear(props.oneYearData)),
     [props.oneYearData]
   );
   const setFiveYear = useCallback(
-    () => setDisplayedChartData(props.fiveYearData),
+    () =>
+      setDisplayedChartData(Selectors.selectChartDataYear(props.fiveYearData)),
     [props.fiveYearData]
   );
-  const setMax = useCallback(() => setDisplayedChartData(props.maxData), [
-    props.maxData,
-  ]);
+  const setMax = useCallback(
+    () => setDisplayedChartData(Selectors.selectChartDataYear(props.maxData)),
+    [props.maxData]
+  );
 
   useEffect(() => {
-    setDisplayedChartData(props.oneDayData);
+    setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData));
   }, [props.oneDayData]);
 
   console.log('@@@');

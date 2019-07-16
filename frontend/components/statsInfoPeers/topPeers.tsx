@@ -11,6 +11,7 @@ const TopPeers: FunctionComponent<TopPeersProps> = ({
   topPeers,
   fetchStatus,
 }) => {
+  console.log('I got re-rendered!');
   return (
     <div className="section-peers">
       {fetchStatus.startFetching && (

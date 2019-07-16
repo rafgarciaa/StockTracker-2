@@ -12,17 +12,11 @@ import { connect } from 'react-redux';
 import { getCurrentDate } from '../../utilities/getCurrentDate';
 
 interface HeaderLayoutProps {
-  latestPrice: number | null;
-  change: number | null;
-  changePercent: number | null;
   companySymbol: string | null;
   fetchTicker: fetchStatsType;
 }
 
 const HeaderLayout: FunctionComponent<HeaderLayoutProps> = ({
-  latestPrice,
-  change,
-  changePercent,
   companySymbol,
   fetchTicker,
 }) => {
@@ -38,7 +32,7 @@ const HeaderLayout: FunctionComponent<HeaderLayoutProps> = ({
         // console.log(`Price: ${latestPrice}`);
         // console.log(`Change: ${change}`);
         // console.log(`Change Percent: ${changePercent}`);
-      }, 5000);
+      }, 3000);
     }
 
     return () => clearInterval(intervalId);
@@ -55,9 +49,6 @@ const HeaderLayout: FunctionComponent<HeaderLayoutProps> = ({
 
 const mapStateToProps = ({ quotes }: RootState) => ({
   companySymbol: quotes.companyInfo.symbol,
-  latestPrice: quotes.companyStats.latestPrice,
-  change: quotes.companyStats.change,
-  changePercent: quotes.companyStats.changePercent,
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
