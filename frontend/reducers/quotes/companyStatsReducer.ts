@@ -25,7 +25,7 @@ const INITIAL_STATE: CompanyStatsState = {
 const companyStatsReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_STATS:
-      return action.payload;
+      return { ...state, ...action.payload };
 
     case QUOTES_ACTION_TYPES.SET_COMPANY_EPS:
       if (typeof action.payload === 'object') {
