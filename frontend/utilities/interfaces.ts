@@ -132,11 +132,7 @@ export interface FavoriteState {
 }
 
 export interface FetchStatusState {
-  [k: string]: {
-    startFetching: boolean;
-    doneFetching: boolean;
-    fetchSuccess: string;
-  };
+  [k: string]: FetchStatusElement;
 }
 
 export interface FetchStatusElement {
