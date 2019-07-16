@@ -32,27 +32,27 @@ export type ChartData = Pick<ChartDataDay, 'date' | 'label' | 'close'>;
 // 1d && 5dm
 export interface ChartDataDay {
   // 1d
-  average: number | null;
-  close: number | null;
-  date: string | null;
-  label: string | null;
-  minute: string | null;
+  readonly average: number | null;
+  readonly close: number | null;
+  readonly date: string | null;
+  readonly label: string | null;
+  readonly minute: string | null;
 
   // 5dm only
-  high?: number | null;
-  low?: number | null;
-  marketAverage?: number | null;
-  marketClose?: number | null;
-  marketHigh?: number | null;
-  marketLow?: number | null;
-  marketNotional?: number | null;
-  marketNumberOfTrades?: number | null;
-  marketOpen?: number | null;
-  marketVolume?: number | null;
-  notional?: number | null;
-  numberOfTrades?: number | null;
-  open?: number | null;
-  volume?: number | null;
+  readonly high?: number | null;
+  readonly low?: number | null;
+  readonly marketAverage?: number | null;
+  readonly marketClose?: number | null;
+  readonly marketHigh?: number | null;
+  readonly marketLow?: number | null;
+  readonly marketNotional?: number | null;
+  readonly marketNumberOfTrades?: number | null;
+  readonly marketOpen?: number | null;
+  readonly marketVolume?: number | null;
+  readonly notional?: number | null;
+  readonly numberOfTrades?: number | null;
+  readonly open?: number | null;
+  readonly volume?: number | null;
 }
 
 export interface CompanyNameState {
@@ -77,54 +77,54 @@ export interface News {
 }
 
 export interface CompanyStat {
-  name: string | null;
-  value: number | string | null;
+  readonly name: string | null;
+  readonly value: number | string | null;
 }
 
 export interface CompanyStatsProps {
-  companyStatsLeft: CompanyStat[];
-  companyStatsRight: CompanyStat[];
+  readonly companyStatsLeft: CompanyStat[];
+  readonly companyStatsRight: CompanyStat[];
 }
 
 export interface CompanyStatsState {
-  avgTotalVolume: number | null;
-  change: number | null;
-  changePercent: number | null;
-  close: number | null;
-  companyName: string | null;
-  high: number | null;
-  latestPrice: number | null;
-  latestVolume: number | null;
-  low: number | null;
-  marketCap: number | null;
-  open: number | null;
-  peRatio: number | null;
-  symbol: string | null;
-  week52High: number | null;
-  week52Low: number | null;
-  dividendYield: number | null;
-  actualEPS: number | null;
+  readonly avgTotalVolume: number | null;
+  readonly change: number | null;
+  readonly changePercent: number | null;
+  readonly close: number | null;
+  readonly companyName: string | null;
+  readonly high: number | null;
+  readonly latestPrice: number | null;
+  readonly latestVolume: number | null;
+  readonly low: number | null;
+  readonly marketCap: number | null;
+  readonly open: number | null;
+  readonly peRatio: number | null;
+  readonly symbol: string | null;
+  readonly week52High: number | null;
+  readonly week52Low: number | null;
+  readonly dividendYield: number | null;
+  readonly actualEPS: number | null;
 }
 
 export interface FavoriteState {
   [k: string]: {
-    symbol: string | null;
-    change: number | null;
-    latestPrice: number | null;
-    changePercent: number | null;
+    readonly symbol: string | null;
+    readonly change: number | null;
+    readonly latestPrice: number | null;
+    readonly changePercent: number | null;
   };
 }
 
 export interface FetchStatusState {
   [k: string]: {
-    startFetching: boolean;
-    doneFetching: boolean;
-    fetchSuccess: string;
+    readonly startFetching: boolean;
+    readonly doneFetching: boolean;
+    readonly fetchSuccess: string;
   };
 }
 
 export interface FetchStatusElement {
-  startFetching: boolean;
-  doneFetching: boolean;
-  fetchSuccess: string;
+  readonly startFetching: boolean;
+  readonly doneFetching: boolean;
+  readonly fetchSuccess: string;
 }
