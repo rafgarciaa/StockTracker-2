@@ -169,7 +169,7 @@ const fetchChartData = (symbol: string, timeFrame: string) =>
     'chartData',
     `chart/${timeFrame}`,
     symbol,
-    (chartData: object[]) => Actions.setChartData(chartData, timeFrame),
+    (chartData: ChartData[]) => Actions.setChartData(chartData, timeFrame),
     Filters.chartDataFilters
   );
 
