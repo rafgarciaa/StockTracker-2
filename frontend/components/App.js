@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import HeaderLayout from './header/headerLayout';
 import ChartNewsLayout from './chartNews/chartNewsLayout';
 import StatsInfoPeersLayout from './statsInfoPeers/statsInfoPeersLayout';
-import FooterContainer from './footer/footerContainer';
+import FooterLayout from './footer/footerLayout';
 
 const App = ({ store }) => (
   <Provider store={store}>
@@ -12,7 +12,7 @@ const App = ({ store }) => (
       <ChartNewsLayout />
       <StatsInfoPeersLayout />
     </div>
-    <FooterContainer />
+    <FooterLayout />
   </Provider>
 );
 

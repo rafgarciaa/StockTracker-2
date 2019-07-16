@@ -1,3 +1,7 @@
+import { harcodedData } from '../components/footer/footerMarketContainer';
+
+export type harcodedDataType = typeof harcodedData;
+
 export interface ChartDataTypes {
   readonly fiveDay: ChartDataDay[];
   readonly oneMonth: ChartData[];
@@ -119,20 +123,18 @@ export interface HeaderProps {
 }
 
 export interface FavoriteState {
-  [k: string]: {
-    symbol: string;
-    change: number;
-    latestPrice: number;
-    changePercent: number;
-  };
+  [k: string]: FavoriteElement;
+}
+
+export interface FavoriteElement {
+  symbol: string;
+  change: number;
+  latestPrice: number;
+  changePercent: number;
 }
 
 export interface FetchStatusState {
-  [k: string]: {
-    startFetching: boolean;
-    doneFetching: boolean;
-    fetchSuccess: string;
-  };
+  [k: string]: FetchStatusElement;
 }
 
 export interface FetchStatusElement {
