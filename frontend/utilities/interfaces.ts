@@ -123,12 +123,14 @@ export interface HeaderProps {
 }
 
 export interface FavoriteState {
-  [k: string]: {
-    symbol: string;
-    change: number;
-    latestPrice: number;
-    changePercent: number;
-  };
+  [k: string]: FavoriteElement;
+}
+
+export interface FavoriteElement {
+  symbol: string;
+  change: number;
+  latestPrice: number;
+  changePercent: number;
 }
 
 export interface FetchStatusState {
