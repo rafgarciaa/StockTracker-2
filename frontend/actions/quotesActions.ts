@@ -9,6 +9,8 @@ import {
   CompanyStatsState,
   CompanyNameState,
   FavoriteElement,
+  ChartDataDay,
+  ChartData,
 } from '../utilities/interfaces';
 
 import {
@@ -45,11 +47,11 @@ export const Actions = {
     action(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
   setTopPeers: (topPeers: string[]) =>
     action(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
-  setChartDataDay: (chartData: any) =>
+  setChartDataDay: (chartData: ChartDataDay[]) =>
     action(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
     action(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
-  setChartData: (chartData: object[], timeFrame: string) =>
+  setChartData: (chartData: ChartData[], timeFrame: string) =>
     action(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
   setFavorites: (favoritesData: FavoriteElement) =>
     action(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
