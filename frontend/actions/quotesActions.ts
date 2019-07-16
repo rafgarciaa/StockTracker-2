@@ -8,6 +8,7 @@ import {
   News,
   CompanyStatsState,
   CompanyNameState,
+  FavoriteState,
 } from '../utilities/interfaces';
 
 import {
@@ -40,7 +41,7 @@ export const Actions = {
     action(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
   setCompanyEPS: (earningsPerShare: number | ExceptionEPS) =>
     action(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
-  setDividendYield: ({ dividendYield }: any) =>
+  setDividendYield: ({ dividendYield }: { dividendYield: number }) =>
     action(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
   setTopPeers: (topPeers: string[]) =>
     action(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),

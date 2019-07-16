@@ -1,5 +1,5 @@
 import { UPDATE_ACTION_TYPES } from '../../constants/updateTypes';
-import { UpdateTypes } from '../../actions/updateActions';
+import { UpdateTypes } from '../../utilities/interfaces';
 
 const updateTimeReducer = (state: string = '', action: UpdateTypes) => {
   switch (action.type) {

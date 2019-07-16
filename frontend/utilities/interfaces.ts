@@ -4,12 +4,16 @@ import {
   searchAction,
   fetchCompanyNames,
 } from '../actions/quotesActions';
+import { FetchStatusActions } from '../actions/fetchStatusActions';
+import { UpdateActions } from '../actions/updateActions';
 import { ActionCreatorsMapObject } from 'redux';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 export type ActionsTypes = ActionsUnion<typeof Actions>;
+export type FetchStatusType = ActionsUnion<typeof FetchStatusActions>;
+export type UpdateTypes = ActionsUnion<typeof UpdateActions>;
 
 export type searchActionType = typeof searchAction;
 export type fetchActionType = typeof fetchCompanyNames;
@@ -23,11 +27,7 @@ export interface ChartDataTypes {
 }
 
 // 1m, 1y, 5y, max
-export interface ChartData {
-  readonly date: string | null;
-  readonly label: string | null;
-  readonly close: number | null;
-}
+export type ChartData = Pick<ChartDataDay, 'date' | 'label' | 'close'>;
 
 // 1d && 5dm
 export interface ChartDataDay {
@@ -106,24 +106,12 @@ export interface CompanyStatsState {
   actualEPS: number | null;
 }
 
-export interface HeaderProps {
-  latestPrice?: number;
-  change?: number;
-  changePercent?: number;
-  exchange?: string;
-  sector?: string;
-  updateTime?: string;
-  fetchStatusPrices?: FetchStatusElement;
-  fetchStatusTags?: FetchStatusElement;
-  fetchingStatus?: FetchStatusElement;
-}
-
 export interface FavoriteState {
   [k: string]: {
-    symbol: string;
-    change: number;
-    latestPrice: number;
-    changePercent: number;
+    symbol: string | null;
+    change: number | null;
+    latestPrice: number | null;
+    changePercent: number | null;
   };
 }
 
