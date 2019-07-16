@@ -5,21 +5,22 @@ import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface NewsListProps {
   newsList: News[];
-  fetchingStatusCompanyNews: FetchStatusElement;
+  fetchStatus: FetchStatusElement;
 }
 
 const NewsList: FunctionComponent<NewsListProps> = ({
   newsList,
-  fetchingStatusCompanyNews,
+  fetchStatus,
 }) => {
   return (
     <div className="section-news">
-      {fetchingStatusCompanyNews.startFetching && (
+      {fetchStatus.startFetching && (
         <h2 className="heading-section">Latest News</h2>
       )}
-      {!fetchingStatusCompanyNews.doneFetching &&
-      fetchingStatusCompanyNews.startFetching ? (
+      {!fetchStatus.doneFetching && fetchStatus.startFetching ? (
         <AdaptiveLoader />
+      ) : fetchStatus.startFetching && fetchStatus.fetchSuccess !== '' ? (
+        fetchStatus.fetchSuccess
       ) : (
         <ul className="section-news__list">
           {newsList.map((news, idx) => (

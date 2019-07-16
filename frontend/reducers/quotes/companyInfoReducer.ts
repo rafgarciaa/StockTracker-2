@@ -12,11 +12,9 @@ const INITIAL_STATE: CompanyInfoState = {
 };
 
 const companyInfoReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
-  Object.freeze(state);
-
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_INFO:
-      return Object.assign({}, state, action.payload);
+      return action.payload;
     default:
       return state;
   }

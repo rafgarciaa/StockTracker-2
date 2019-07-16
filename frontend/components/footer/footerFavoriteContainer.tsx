@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
-import TopPeers from './topPeers';
+import FooterFavorite from './footerFavorite';
 import { RootState } from '../../utilities/interfaces';
 import { selectFetchingStatus } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({
-  topPeers: state.quotes.topPeers,
-  fetchStatus: selectFetchingStatus(state, 'topPeers'),
+  favoriteList: state.quotes.favorites,
+  fetchStatus: selectFetchingStatus(state, 'favoritePrices'),
 });
 
 export default connect(
   mapStateToProps,
   null
-)(TopPeers);
+)(FooterFavorite);

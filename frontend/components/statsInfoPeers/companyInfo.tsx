@@ -7,12 +7,12 @@ import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface CompanyInfoProps {
   companyInfo: CompanyInfoState;
-  fetchingStatus: FetchStatusElement;
+  fetchStatus: FetchStatusElement;
 }
 
 const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
   companyInfo,
-  fetchingStatus,
+  fetchStatus,
 }) => {
   const { description, website, symbol, companyName } = companyInfo;
   const urlFormatter = (url: string | null) =>
@@ -20,11 +20,13 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
 
   return (
     <div className="section-info">
-      {fetchingStatus.startFetching && (
+      {fetchStatus.startFetching && (
         <div>
           <h2 className="heading-section">Company Overview</h2>
-          {!fetchingStatus.doneFetching ? (
+          {!fetchStatus.doneFetching ? (
             <AdaptiveLoader />
+          ) : fetchStatus.fetchSuccess !== '' ? (
+            fetchStatus.fetchSuccess
           ) : (
             <div>
               <h2>

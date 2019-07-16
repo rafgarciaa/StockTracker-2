@@ -1,16 +1,20 @@
+import { harcodedData } from '../components/footer/footerMarketContainer';
+
+export type harcodedDataType = typeof harcodedData;
+
 export interface ChartDataTypes {
-  fiveDay: ChartDataDay[];
-  oneMonth: ChartData[];
-  oneYear: ChartData[];
-  fiveYear: ChartData[];
-  max: ChartData[];
+  readonly fiveDay: ChartDataDay[];
+  readonly oneMonth: ChartData[];
+  readonly oneYear: ChartData[];
+  readonly fiveYear: ChartData[];
+  readonly max: ChartData[];
 }
 
 // 1m, 1y, 5y, max
 export interface ChartData {
-  date: string | null;
-  label: string | null;
-  close: number | null;
+  readonly date: string | null;
+  readonly label: string | null;
+  readonly close: number | null;
 }
 
 // 1d && 5dm
@@ -40,24 +44,24 @@ export interface ChartDataDay {
 }
 
 export interface CompanyNameState {
-  symbol: string;
-  name: string;
+  readonly symbol: string;
+  readonly name: string;
 }
 
 export interface CompanyInfoState {
-  description: string | null;
-  exchange: string | null;
-  sector: string | null;
-  website: string | null;
-  symbol: string | null;
-  companyName: string | null;
+  readonly description: string | null;
+  readonly exchange: string | null;
+  readonly sector: string | null;
+  readonly website: string | null;
+  readonly symbol: string | null;
+  readonly companyName: string | null;
 }
 
 export interface News {
-  datetime: number | null;
-  headline: string | null;
-  source: string | null;
-  url: string | null;
+  readonly datetime: number | null;
+  readonly headline: string | null;
+  readonly source: string | null;
+  readonly url: string | null;
 }
 
 export interface CompanyStat {
@@ -90,11 +94,6 @@ export interface CompanyStatsState {
   actualEPS: number | null;
 }
 
-export interface Action<T, P> {
-  type: T;
-  payload: P;
-}
-
 export interface RootState {
   quotes: {
     chartData: ChartDataTypes;
@@ -124,24 +123,22 @@ export interface HeaderProps {
 }
 
 export interface FavoriteState {
-  [k: string]: {
-    symbol: string;
-    change: number;
-    latestPrice: number;
-    changePercent: number;
-  };
+  [k: string]: FavoriteElement;
+}
+
+export interface FavoriteElement {
+  symbol: string;
+  change: number;
+  latestPrice: number;
+  changePercent: number;
 }
 
 export interface FetchStatusState {
-  [k: string]: {
-    startFetching: boolean | null;
-    doneFetching: boolean | null;
-    fetchSuccess: boolean | null;
-  };
+  [k: string]: FetchStatusElement;
 }
 
 export interface FetchStatusElement {
-  startFetching: boolean | null;
-  doneFetching: boolean | null;
-  fetchSuccess: boolean | null;
+  startFetching: boolean;
+  doneFetching: boolean;
+  fetchSuccess: string;
 }

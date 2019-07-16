@@ -6,71 +6,74 @@ const INITIAL_STATE: FetchStatusState = {
   companyInfo: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
   companyNews: {
     doneFetching: false,
     startFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
   companyStats: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
   companyEPS: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
   dividendYield: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
   topPeers: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
   chartData: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
   favoritePrices: {
     startFetching: false,
     doneFetching: false,
-    fetchSuccess: null,
+    fetchSuccess: '',
   },
 };
 
 const fetchStatusReducer = (state = INITIAL_STATE, action: FetchStatusType) => {
   switch (action.type) {
     case FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
-      return Object.assign({}, state, {
-        [action.section]: {
-          startFetching: false,
+      return {
+        ...state,
+        [action.payload.section]: {
+          startFetching: true,
           doneFetching: true,
-          fetchSuccess: false,
+          fetchSuccess: action.payload.message,
         },
-      });
+      };
     case FETCH_STATUS_ACTION_TYPE.SET_API_START:
-      return Object.assign({}, state, {
-        [action.section]: {
+      return {
+        ...state,
+        [action.payload]: {
           startFetching: true,
           doneFetching: false,
-          fetchSuccess: null,
+          fetchSuccess: '',
         },
-      });
+      };
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
-      return Object.assign({}, state, {
-        [action.section]: {
+      return {
+        ...state,
+        [action.payload]: {
           startFetching: true,
           doneFetching: true,
-          fetchSuccess: true,
+          fetchSuccess: '',
         },
-      });
+      };
     default:
       return state;
   }
