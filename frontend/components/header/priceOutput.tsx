@@ -18,14 +18,14 @@ const PriceOutput: FunctionComponent<PriceOutputProps> = ({
     <div className="header__top-price">
       <span>
         <span className="icon--small">$</span>
-        {latestPrice != null ? Math.abs(latestPrice) : '0'}
+        {latestPrice != null ? Math.abs(latestPrice).toFixed(2) : '0'}
       </span>
       <div className={`header__top-price--change ` + headerClassName}>
         <span>
           <span className="icon--small">
             {isNegative ? '\u2193' : '\u2191'}
           </span>
-          {change != null ? Math.abs(change) : '0'}
+          {change != null ? Math.abs(change).toFixed(2) : '0'}
         </span>
         <span>
           {changeToPercent(Math.abs(changePercent ? changePercent : 0))}
