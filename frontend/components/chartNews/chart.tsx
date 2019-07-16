@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import {
   AreaChart,
   Area,
@@ -31,48 +36,61 @@ const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
     props.oneDayData
   );
 
+  const setOneDay = useCallback(() => setDisplayedChartData(props.oneDayData), [
+    props.oneDayData,
+  ]);
+  const setFiveDay = useCallback(
+    () => setDisplayedChartData(props.fiveDayData),
+    [props.fiveDayData]
+  );
+  const setOneMonth = useCallback(
+    () => setDisplayedChartData(props.oneMonthData),
+    [props.oneMonthData]
+  );
+  const setOneYear = useCallback(
+    () => setDisplayedChartData(props.oneYearData),
+    [props.oneYearData]
+  );
+  const setFiveYear = useCallback(
+    () => setDisplayedChartData(props.fiveYearData),
+    [props.fiveYearData]
+  );
+  const setMax = useCallback(() => setDisplayedChartData(props.maxData), [
+    props.maxData,
+  ]);
+
   useEffect(() => {
     setDisplayedChartData(props.oneDayData);
-  }, []);
+  }, [props.oneDayData]);
+
+  console.log('@@@');
 
   return (
     <div className="section-chart">
       {props.fetchStatus.startFetching && (
         <div>
           <div className="section-chart__timelines">
-            <a href="#" onClick={() => setDisplayedChartData(props.oneDayData)}>
+            <a href="#" onClick={setOneDay}>
               {' '}
               1D{' '}
             </a>
-            <a
-              href="#"
-              onClick={() => setDisplayedChartData(props.fiveDayData)}
-            >
+            <a href="#" onClick={setFiveDay}>
               {' '}
               5D{' '}
             </a>
-            <a
-              href="#"
-              onClick={() => setDisplayedChartData(props.oneMonthData)}
-            >
+            <a href="#" onClick={setOneMonth}>
               {' '}
               1M{' '}
             </a>
-            <a
-              href="#"
-              onClick={() => setDisplayedChartData(props.oneYearData)}
-            >
+            <a href="#" onClick={setOneYear}>
               {' '}
               1Y{' '}
             </a>
-            <a
-              href="#"
-              onClick={() => setDisplayedChartData(props.fiveYearData)}
-            >
+            <a href="#" onClick={setFiveYear}>
               {' '}
               5Y{' '}
             </a>
-            <a href="#" onClick={() => setDisplayedChartData(props.maxData)}>
+            <a href="#" onClick={setMax}>
               {' '}
               MAX{' '}
             </a>
