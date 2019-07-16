@@ -26,4 +26,7 @@ const mapStateToProps = (state: RootState) => ({
   fetchStatus: selectFetchingStatus(state, 'companyStats'),
 });
 
-export default connect(mapStateToProps)(SearchPriceLayout);
+export default connect(
+  mapStateToProps,
+  null
+)(SearchPriceLayout);

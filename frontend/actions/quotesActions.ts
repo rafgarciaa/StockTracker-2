@@ -157,7 +157,13 @@ const fetchTopPeers = (symbol: string) =>
   createThunkAction('topPeers', 'peers', symbol, Actions.setTopPeers);
 
 const fetchChartDataDay = (symbol: string) =>
-  createThunkAction('chartData', 'chart/1d', symbol, Actions.setChartDataDay);
+  createThunkAction(
+    'chartData',
+    'chart/1d',
+    symbol,
+    Actions.setChartDataDay,
+    Filters.chartDataFilters
+  );
 
 const fetchChartData = (symbol: string, timeFrame: string) =>
   createThunkAction(
