@@ -1,3 +1,7 @@
+import { harcodedData } from '../components/footer/footerMarketContainer';
+
+export type harcodedDataType = typeof harcodedData;
+
 export interface ChartDataTypes {
   readonly fiveDay: ChartDataDay[];
   readonly oneMonth: ChartData[];
