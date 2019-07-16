@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PriceOutput from './priceOutput';
-import { RootState } from '../../reducers/rootReducer';
+import { RootState } from '../../utilities/interfaces';
 
 const mapStateToProps = (state: RootState) => ({
   latestPrice: state.quotes.companyStats.latestPrice,

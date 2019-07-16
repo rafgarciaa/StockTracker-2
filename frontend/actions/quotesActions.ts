@@ -1,5 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
-import { ActionCreatorsMapObject, AnyAction } from 'redux';
+import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { action } from 'typesafe-actions';
 
@@ -22,8 +22,6 @@ import APIError from '../utilities/apiErrorMessage';
 
 import { UpdateActions } from '../actions/updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
-
-type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
 interface ExceptionEPS {
   earnings: [
@@ -55,8 +53,6 @@ export const Actions = {
   setFavorites: (favoritesData: any) =>
     action(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
-
-export type ActionsTypes = ActionsUnion<typeof Actions>;
 
 const makeUrl = (service: string, symbol: string, params = '') =>
   `${iexApiSandboxUrl}/stock/${symbol}/${service}/?token=${API_KEY}&${params}`;
@@ -214,6 +210,3 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchFavoritePrices('msft'));
   dispatch(fetchFavoritePrices('goog'));
 };
-
-export type searchActionType = typeof searchAction;
-export type fetchActionType = typeof fetchCompanyNames;

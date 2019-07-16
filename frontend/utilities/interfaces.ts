@@ -1,6 +1,18 @@
 import rootReducer from '../reducers/rootReducer';
+import {
+  Actions,
+  searchAction,
+  fetchCompanyNames,
+} from '../actions/quotesActions';
+import { ActionCreatorsMapObject } from 'redux';
 
 export type RootState = ReturnType<typeof rootReducer>;
+
+type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
+export type ActionsTypes = ActionsUnion<typeof Actions>;
+
+export type searchActionType = typeof searchAction;
+export type fetchActionType = typeof fetchCompanyNames;
 
 export interface ChartDataTypes {
   readonly fiveDay: ChartDataDay[];

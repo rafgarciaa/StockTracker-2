@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Chart from './chart';
 import * as selectors from '../../utilities/selectors';
-import { RootState } from '../../reducers/rootReducer';
+import { RootState } from '../../utilities/interfaces';
 
 const mapStateToProps = (state: RootState) => ({
   oneDayData: selectors.selectChartDataDay(state.quotes.chartDataDay),

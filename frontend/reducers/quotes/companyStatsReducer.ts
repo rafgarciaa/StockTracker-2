@@ -1,6 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { ActionsTypes } from '../../actions/quotesActions';
-import { CompanyStatsState } from '../../utilities/interfaces';
+import { CompanyStatsState, ActionsTypes } from '../../utilities/interfaces';
 
 const INITIAL_STATE: CompanyStatsState = {
   avgTotalVolume: 0,

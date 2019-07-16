@@ -1,5 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { ActionsTypes } from '../../actions/quotesActions';
+import { ActionsTypes } from '../../utilities/interfaces';
 
 const topPeersReducer = (state: string[] = [], action: ActionsTypes) => {
   switch (action.type) {

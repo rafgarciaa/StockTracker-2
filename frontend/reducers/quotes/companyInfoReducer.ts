@@ -1,6 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { ActionsTypes } from '../../actions/quotesActions';
-import { CompanyInfoState } from '../../utilities/interfaces';
+import { CompanyInfoState, ActionsTypes } from '../../utilities/interfaces';
 
 const INITIAL_STATE: CompanyInfoState = {
   description: null,

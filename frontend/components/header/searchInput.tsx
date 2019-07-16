@@ -1,7 +1,10 @@
 import React, { useEffect, FunctionComponent } from 'react';
 
-import { searchActionType, fetchActionType } from '../../actions/quotesActions';
-import { CompanyNameState } from '../../utilities/interfaces';
+import {
+  CompanyNameState,
+  searchActionType,
+  fetchActionType,
+} from '../../utilities/interfaces';
 import SearchList from './searchList';
 
 import Downshift from 'downshift';

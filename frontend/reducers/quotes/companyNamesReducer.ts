@@ -1,6 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { ActionsTypes } from '../../actions/quotesActions';
-import { CompanyNameState } from '../../utilities/interfaces';
+import { CompanyNameState, ActionsTypes } from '../../utilities/interfaces';
 
 const companyNamesReducer = (
   state: CompanyNameState[] = [],

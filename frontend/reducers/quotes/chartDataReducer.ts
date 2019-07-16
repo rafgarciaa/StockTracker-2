@@ -1,6 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { ActionsTypes } from '../../actions/quotesActions';
-import { ChartDataTypes } from '../../utilities/interfaces';
+import { ChartDataTypes, ActionsTypes } from '../../utilities/interfaces';
 import { chartTimeFrameFormatter } from '../../utilities/chartTimeFrameFormatter';
 
 const INITIAL_STATE: ChartDataTypes = {

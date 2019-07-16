@@ -1,6 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { ActionsTypes } from '../../actions/quotesActions';
-import { News } from '../../utilities/interfaces';
+import { News, ActionsTypes } from '../../utilities/interfaces';
 
 const companyNewsReducer = (state: News[] = [], action: ActionsTypes) => {
   switch (action.type) {
