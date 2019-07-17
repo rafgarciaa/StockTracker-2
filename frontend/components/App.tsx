@@ -4,8 +4,9 @@ import HeaderLayout from './header/headerLayout';
 import ChartNewsLayout from './chartNews/chartNewsLayout';
 import StatsInfoPeersLayout from './statsInfoPeers/statsInfoPeersLayout';
 import FooterLayout from './footer/footerLayout';
+import { RootState } from '../utilities/interfaces';
 
-const App = ({ store }) => (
+const App = ({ store }: any) => (
   <Provider store={store}>
     <div className="section-main">
       <HeaderLayout />

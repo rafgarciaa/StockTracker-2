@@ -1,5 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
-import { AnyAction } from 'redux';
+import { Action } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { action } from 'typesafe-actions';
 
@@ -11,7 +11,6 @@ import {
   FavoriteElement,
   ChartDataDay,
   ChartData,
-  AllActions,
 } from '../utilities/interfaces';
 
 import {
@@ -86,8 +85,8 @@ const createThunkAction = (
   symbol: string,
   success: any,
   params?: string
-): ThunkAction<Promise<void>, {}, {}, AllActions> => {
-  return async (dispatch: ThunkDispatch<{}, {}, AllActions>) => {
+): ThunkAction<{}, {}, {}, Action> => {
+  return async (dispatch: ThunkDispatch<{}, {}, Action>) => {
     const url = makeUrl(service, symbol, params);
 
     dispatch(FetchStatusActions.request(section));
@@ -184,7 +183,7 @@ const fetchFavoritePrices = (symbol: string) =>
   );
 
 export const fetchCompanyNames = () => {
-  return async (dispatch: ThunkDispatch<{}, {}, AllActions>) => {
+  return async (dispatch: ThunkDispatch<{}, {}, Action>) => {
     const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
 
     return fetch(url)
@@ -202,7 +201,7 @@ export const fetchCompanyNames = () => {
 };
 
 export const searchAction = (symbol: string) => (
-  dispatch: ThunkDispatch<{}, {}, AllActions>
+  dispatch: ThunkDispatch<{}, {}, Action>
 ) => {
   dispatch(fetchCompanyInfo(symbol));
   dispatch(fetchCompanyNews(symbol));
