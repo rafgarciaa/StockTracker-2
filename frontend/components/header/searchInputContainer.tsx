@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import SearchInput from './searchInput';
 import { searchAction, fetchCompanyNames } from '../../actions/quotesActions';
-import { RootState, AllActions } from '../../utilities/interfaces';
+import { RootState } from '../../utilities/interfaces';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 

@@ -1,6 +1,11 @@
 import rootReducer from '../reducers/rootReducer';
+import { harcodedData } from '../components/footer/footerMarketContainer';
+import { searchAction, fetchCompanyNames } from '../actions/quotesActions';
 
 export type RootState = ReturnType<typeof rootReducer>;
+export type harcodedDataType = typeof harcodedData;
+export type searchActionType = typeof searchAction;
+export type fetchActionType = typeof fetchCompanyNames;
 
 export interface ChartDataTypes {
   readonly fiveDay: ChartDataDay[];
