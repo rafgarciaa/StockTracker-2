@@ -1,7 +1,11 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { FavoriteState, ActionsTypes } from '../../utilities/interfaces';
+import { FavoriteState } from '../../utilities/interfaces';
+import { QuotesActionsType } from '../../actions/actionsTypes';
 
-const favoriteReducer = (state: FavoriteState = {}, action: ActionsTypes) => {
+const favoriteReducer = (
+  state: FavoriteState = {},
+  action: QuotesActionsType
+) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_FAVORITES:
       return { ...state, [action.payload.symbol]: action.payload };

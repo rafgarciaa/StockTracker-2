@@ -1,5 +1,6 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { CompanyStatsState, ActionsTypes } from '../../utilities/interfaces';
+import { CompanyStatsState } from '../../utilities/interfaces';
+import { QuotesActionsType } from '../../actions/actionsTypes';
 
 const INITIAL_STATE: CompanyStatsState = {
   avgTotalVolume: 0,
@@ -21,7 +22,10 @@ const INITIAL_STATE: CompanyStatsState = {
   actualEPS: 0,
 };
 
-const companyStatsReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
+const companyStatsReducer = (
+  state = INITIAL_STATE,
+  action: QuotesActionsType
+) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_STATS:
       return action.payload;

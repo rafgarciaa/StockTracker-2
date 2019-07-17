@@ -3,6 +3,7 @@ import SearchInput from './searchInput';
 import { searchAction, fetchCompanyNames } from '../../actions/quotesActions';
 import { RootState, AllActions } from '../../utilities/interfaces';
 import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 
 const mapStateToProps = ({ quotes }: RootState) => ({
   companyNames: quotes.companyNames,
@@ -10,7 +11,7 @@ const mapStateToProps = ({ quotes }: RootState) => ({
   companySymbol: quotes.companyInfo.symbol,
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AllActions>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
   searchAction: (symbol: string) => dispatch(searchAction(symbol)),
   fetchCompanyNames: () => dispatch(fetchCompanyNames()),
 });

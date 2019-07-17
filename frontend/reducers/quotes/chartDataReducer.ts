@@ -1,6 +1,7 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { ChartDataTypes, ActionsTypes } from '../../utilities/interfaces';
+import { ChartDataTypes } from '../../utilities/interfaces';
 import { chartTimeFrameFormatter } from '../../utilities/chartTimeFrameFormatter';
+import { QuotesActionsType } from '../../actions/actionsTypes';
 
 const INITIAL_STATE: ChartDataTypes = {
   fiveDay: [],
@@ -10,7 +11,7 @@ const INITIAL_STATE: ChartDataTypes = {
   max: [],
 };
 
-const chartDataReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
+const chartDataReducer = (state = INITIAL_STATE, action: QuotesActionsType) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_CHART_DATA:
       const timeFrame: string = chartTimeFrameFormatter(
