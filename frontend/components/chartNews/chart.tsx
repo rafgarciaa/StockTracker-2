@@ -83,7 +83,37 @@ const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
       {props.fetchStatus.startFetching && (
         <div>
           <div className="section-chart__timelines">
-            <a href="#" onClick={setOneDay}>
+            <label>
+              <input
+                type="radio"
+                name="chart"
+                onClick={setOneDay}
+                defaultChecked={true}
+              />
+              <span className="section-chart__timelines--btn">1d</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setFiveDay} />
+              <span className="section-chart__timelines--btn">5d</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setOneMonth} />
+              <span className="section-chart__timelines--btn">1m</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setOneYear} />
+              <span className="section-chart__timelines--btn">1y</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setFiveYear} />
+              <span className="section-chart__timelines--btn">5y</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setMax} />
+              <span className="section-chart__timelines--btn">max</span>
+            </label>
+
+            {/* <a href="#" onClick={setOneDay}>
               {' '}
               1D{' '}
             </a>
@@ -106,7 +136,7 @@ const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
             <a href="#" onClick={setMax}>
               {' '}
               MAX{' '}
-            </a>
+            </a> */}
           </div>
 
           {!props.fetchStatus.doneFetching ? (
