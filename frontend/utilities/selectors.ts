@@ -9,16 +9,21 @@ import { changeToPercent } from './numberFormatters';
 export const selectCompanyStats = (companyStats: CompanyStatsState) => {
   return {
     companyStatsLeft: [
-      { name: 'Previous Close', value: companyStats.close },
+      {
+        name: 'Previous Close',
+        value: companyStats.close ? companyStats.close : 0,
+      },
       {
         name: 'Day Range',
-        value: `${companyStats.high} - ${companyStats.low}`,
+        value: `${companyStats.high ? companyStats.high : 0} - ${
+          companyStats.low ? companyStats.low : 0
+        }`,
       },
       {
         name: 'Volume',
         value: companyStats.latestVolume
           ? companyStats.latestVolume.toLocaleString()
-          : companyStats.latestVolume,
+          : 0,
       },
       {
         name: 'Market Cap',
@@ -26,13 +31,18 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
           ? companyStats.marketCap.toLocaleString()
           : companyStats.marketCap,
       },
-      { name: 'P/E Ratio', value: companyStats.peRatio },
+      {
+        name: 'P/E Ratio',
+        value: companyStats.peRatio ? companyStats.peRatio : 0,
+      },
     ],
     companyStatsRight: [
-      { name: 'Open', value: companyStats.open },
+      { name: 'Open', value: companyStats.open ? companyStats.open : 0 },
       {
         name: '52 Week Range',
-        value: `${companyStats.week52High} - ${companyStats.week52Low}`,
+        value: `${companyStats.week52High ? companyStats.week52High : 0} - ${
+          companyStats.week52Low ? companyStats.week52Low : 0
+        }`,
       },
       {
         name: 'Total Avg. Volume',
@@ -40,10 +50,17 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
           ? companyStats.avgTotalVolume.toLocaleString()
           : companyStats.avgTotalVolume,
       },
-      { name: 'Earnings Per Share', value: companyStats.actualEPS },
+      {
+        name: 'Earnings Per Share',
+        value: companyStats.actualEPS ? companyStats.actualEPS : 0,
+      },
       {
         name: 'Dividend & Yield',
-        value: `${changeToPercent(companyStats.dividendYield)}%`,
+        value: `${Number(
+          changeToPercent(
+            companyStats.dividendYield ? companyStats.dividendYield : 0
+          )
+        ).toFixed(2)}%`,
       },
     ],
   };
