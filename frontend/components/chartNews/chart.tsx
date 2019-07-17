@@ -26,16 +26,6 @@ interface ChartDataProps {
   price: number | null;
 }
 
-// interface ChartProps {
-//   oneDayData: ChartDataProps[];
-//   fiveDayData: ChartDataProps[];
-//   oneMonthData: ChartDataProps[];
-//   oneYearData: ChartDataProps[];
-//   fiveYearData: ChartDataProps[];
-//   maxData: ChartDataProps[];
-//   fetchStatus: FetchStatusElement;
-// }
-
 interface ChartProps {
   oneDayData: ChartDataDay[];
   fiveDayData: ChartDataDay[];
@@ -87,8 +77,6 @@ const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
   useEffect(() => {
     setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData));
   }, [props.oneDayData]);
-
-  console.log('@@@');
 
   return (
     <div className="section-chart">
