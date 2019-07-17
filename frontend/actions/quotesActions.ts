@@ -11,6 +11,7 @@ import {
   FavoriteElement,
   ChartDataDay,
   ChartData,
+  AllActions,
 } from '../utilities/interfaces';
 
 import {
@@ -85,8 +86,8 @@ const createThunkAction = (
   symbol: string,
   success: any,
   params?: string
-): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+): ThunkAction<Promise<void>, {}, {}, AllActions> => {
+  return async (dispatch: ThunkDispatch<{}, {}, AllActions>) => {
     const url = makeUrl(service, symbol, params);
 
     dispatch(FetchStatusActions.request(section));
@@ -183,7 +184,7 @@ const fetchFavoritePrices = (symbol: string) =>
   );
 
 export const fetchCompanyNames = () => {
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+  return async (dispatch: ThunkDispatch<{}, {}, AllActions>) => {
     const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
 
     return fetch(url)
@@ -201,7 +202,7 @@ export const fetchCompanyNames = () => {
 };
 
 export const searchAction = (symbol: string) => (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
+  dispatch: ThunkDispatch<{}, {}, AllActions>
 ) => {
   dispatch(fetchCompanyInfo(symbol));
   dispatch(fetchCompanyNews(symbol));
