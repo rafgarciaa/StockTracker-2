@@ -7,6 +7,7 @@ import {
 import { FetchStatusActions } from '../actions/fetchStatusActions';
 import { UpdateActions } from '../actions/updateActions';
 import { ActionCreatorsMapObject } from 'redux';
+import { harcodedData } from '../components/footer/footerMarketContainer';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -17,9 +18,15 @@ export type UpdateTypes = ActionsUnion<typeof UpdateActions>;
 
 export type searchActionType = typeof searchAction;
 export type fetchActionType = typeof fetchCompanyNames;
-import { harcodedData } from '../components/footer/footerMarketContainer';
-
 export type harcodedDataType = typeof harcodedData;
+
+export type AllActions =
+  | ActionsTypes
+  | FetchStatusType
+  | UpdateTypes
+  | searchActionType
+  | fetchActionType
+  | harcodedDataType;
 
 export interface ChartDataTypes {
   readonly fiveDay: ChartDataDay[];
