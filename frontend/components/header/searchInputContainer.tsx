@@ -11,7 +11,9 @@ const mapStateToProps = ({ quotes }: RootState) => ({
   companySymbol: quotes.companyInfo.symbol,
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<RootState, {}, AnyAction>
+) => ({
   searchAction: (symbol: string) => dispatch(searchAction(symbol)),
   fetchCompanyNames: () => dispatch(fetchCompanyNames()),
 });

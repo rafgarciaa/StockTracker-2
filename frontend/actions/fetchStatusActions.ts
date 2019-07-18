@@ -1,8 +1,11 @@
 import { FETCH_STATUS_ACTION_TYPE } from '../constants/fetchStatusTypes';
-import { createAsyncAction } from 'typesafe-actions';
+import { createAction } from './actionsTypes';
 
-export const FetchStatusActions = createAsyncAction(
-  FETCH_STATUS_ACTION_TYPE.SET_API_START,
-  FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS,
-  FETCH_STATUS_ACTION_TYPE.SET_API_ERROR
-)<string, string, { section: string; message: string }>();
+export const FetchStatusActions = {
+  setApiStart: (section: string) =>
+    createAction(FETCH_STATUS_ACTION_TYPE.SET_API_START, section),
+  setApiSuccess: (section: string) =>
+    createAction(FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS, section),
+  setApiError: ({ section, message }: { section: string; message: string }) =>
+    createAction(FETCH_STATUS_ACTION_TYPE.SET_API_ERROR, { section, message }),
+};

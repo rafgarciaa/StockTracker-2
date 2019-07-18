@@ -1,7 +1,7 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { createAction } from './actionsTypes';
-import { AnyAction } from 'redux';
+import { RootActions } from './actionsTypes';
 
 import {
   CompanyInfoState,
@@ -11,6 +11,7 @@ import {
   FavoriteElement,
   ChartDataDay,
   ChartData,
+  RootState,
 } from '../utilities/interfaces';
 
 import {
@@ -47,11 +48,17 @@ export const QuotesActions = {
     createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
   setTopPeers: (topPeers: string[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
-  setChartDataDay: (chartData: any) =>
+  setChartDataDay: (chartData: ChartDataDay[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
-  setChartData: (chartData: ChartData[], timeFrame: string) =>
+  setChartData: ({
+    chartData,
+    timeFrame,
+  }: {
+    chartData: ChartData[];
+    timeFrame: string;
+  }) =>
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
   setFavorites: (favoritesData: FavoriteElement) =>
     createAction(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
@@ -85,21 +92,21 @@ const createThunkAction = (
   symbol: string,
   success: any,
   params?: string
-): ThunkAction<{}, {}, {}, AnyAction> => {
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+): ThunkAction<Promise<void>, RootState, {}, RootActions> => {
+  return async (dispatch: ThunkDispatch<RootState, {}, RootActions>) => {
     const url = makeUrl(service, symbol, params);
 
-    dispatch(FetchStatusActions.request(section));
+    dispatch(FetchStatusActions.setApiStart(section));
     fetch(url)
       .then(response => handleResponse(response))
       .then(payload => {
         dispatch(success(payload));
-        dispatch(FetchStatusActions.success(section));
+        dispatch(FetchStatusActions.setApiSuccess(section));
         dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
       .catch(event =>
         dispatch(
-          FetchStatusActions.failure({
+          FetchStatusActions.setApiError({
             section,
             message: event.toString(),
           })
@@ -170,7 +177,7 @@ const fetchChartData = (symbol: string, timeFrame: string) =>
     `chart/${timeFrame}`,
     symbol,
     (chartData: ChartData[]) =>
-      QuotesActions.setChartData(chartData, timeFrame),
+      QuotesActions.setChartData({ chartData, timeFrame }),
     Filters.chartDataFilters
   );
 
@@ -184,7 +191,7 @@ const fetchFavoritePrices = (symbol: string) =>
   );
 
 export const fetchCompanyNames = () => {
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+  return async (dispatch: ThunkDispatch<RootState, {}, RootActions>) => {
     const url = iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
 
     return fetch(url)
@@ -192,7 +199,7 @@ export const fetchCompanyNames = () => {
       .then(payload => dispatch(QuotesActions.setCompanyNames(payload)))
       .catch(event =>
         dispatch(
-          FetchStatusActions.failure({
+          FetchStatusActions.setApiError({
             section: '',
             message: event.statusText,
           })
@@ -202,7 +209,7 @@ export const fetchCompanyNames = () => {
 };
 
 export const searchAction = (symbol: string) => (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
+  dispatch: ThunkDispatch<RootState, {}, RootActions>
 ) => {
   dispatch(fetchCompanyInfo(symbol));
   dispatch(fetchCompanyNews(symbol));

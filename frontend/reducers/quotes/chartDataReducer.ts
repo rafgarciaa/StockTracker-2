@@ -18,7 +18,6 @@ const chartDataReducer = (state = INITIAL_STATE, action: QuotesActionsType) => {
         action.payload.timeFrame
       );
       return { ...state, [timeFrame]: action.payload.chartData };
-
     default:
       return state;
   }
