@@ -1,10 +1,10 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { CompanyNameState } from '../../utilities/interfaces';
-import { QuotesActionsType } from '../../actions/actionsTypes';
+import { SetCompanyNamesAction } from '../../actions/quotesActions';
 
 const companyNamesReducer = (
   state: CompanyNameState[] = [],
-  action: QuotesActionsType
+  action: SetCompanyNamesAction
 ) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_NAMES:

@@ -1,7 +1,7 @@
 import { FETCH_STATUS_ACTION_TYPE } from '../constants/fetchStatusTypes';
 
 interface SetErrorAction {
-  type: typeof FETCH_STATUS_ACTION_TYPE.SET_API_ERROR;
+  type: string;
   payload: {
     section: string;
     message: string;
@@ -9,12 +9,12 @@ interface SetErrorAction {
 }
 
 interface SetStartAction {
-  type: typeof FETCH_STATUS_ACTION_TYPE.SET_API_START;
+  type: string;
   payload: string;
 }
 
 interface SetSuccessAction {
-  type: typeof FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS;
+  type: string;
   payload: string;
 }
 

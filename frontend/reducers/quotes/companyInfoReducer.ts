@@ -1,6 +1,6 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { CompanyInfoState } from '../../utilities/interfaces';
-import { QuotesActionsType } from '../../actions/actionsTypes';
+import { SetCompanyInfoAction } from '../../actions/quotesActions';
 
 const INITIAL_STATE: CompanyInfoState = {
   description: null,
@@ -13,7 +13,7 @@ const INITIAL_STATE: CompanyInfoState = {
 
 const companyInfoReducer = (
   state = INITIAL_STATE,
-  action: QuotesActionsType
+  action: SetCompanyInfoAction
 ) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_INFO:

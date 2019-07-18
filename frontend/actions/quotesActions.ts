@@ -1,7 +1,9 @@
 import { QUOTES_ACTION_TYPES } from '../constants/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { createAction } from './actionsTypes';
 import { RootActions } from './actionsTypes';
+import { handleResponse } from './actionsTypes';
+import { setApiError, setApiStart, setApiSuccess } from './fetchStatusActions';
+import { setUpdateTime } from './updateActions';
 
 import {
   CompanyInfoState,
@@ -9,7 +11,6 @@ import {
   CompanyStatsState,
   CompanyNameState,
   FavoriteElement,
-  ChartDataDay,
   ChartData,
   RootState,
   ExceptionEPS,
@@ -22,60 +23,165 @@ import {
   Filters,
 } from '../utilities/apiUtil';
 
-import APIError from '../utilities/apiErrorMessage';
-
 import { getCurrentDate } from '../utilities/getCurrentDate';
 
-export const QuotesActions = {
-  setCompanyInfo: (companyInfo: CompanyInfoState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
-  setCompanyNews: (companyNews: News[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
-  setCompanyStats: (companyStats: CompanyStatsState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
-  setCompanyEPS: (earningsPerShare: number | ExceptionEPS) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
-  setDividendYield: ({ dividendYield }: { dividendYield: number }) =>
-    createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
-  setTopPeers: (topPeers: string[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
-  setChartDataDay: (chartData: ChartDataDay[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
-  setCompanyNames: (companyNames: CompanyNameState[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
-  setChartData: ({
-    chartData,
-    timeFrame,
-  }: {
+export interface SetCompanyInfoAction {
+  type: string;
+  payload: CompanyInfoState;
+}
+
+export interface SetCompanyNewsAction {
+  type: string;
+  payload: News[];
+}
+
+export interface SetCompanyStatsAction {
+  type: string;
+  payload: CompanyStatsState;
+}
+export interface SetCompanyEPSAction {
+  type: string;
+  payload: number | ExceptionEPS;
+}
+export interface SetDividendYieldAction {
+  type: string;
+  payload: {
+    dividendYield: number;
+  };
+}
+interface SetTopPeersAction {
+  type: string;
+  payload: string[];
+}
+
+export interface SetChartDataDayAction {
+  type: string;
+  payload: ChartData[];
+}
+
+export interface SetChartDataAction {
+  type: string;
+  payload: {
     chartData: ChartData[];
     timeFrame: string;
-  }) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
-  setFavorites: (favoritesData: FavoriteElement) =>
-    createAction(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
-};
+  };
+}
+
+export interface SetCompanyNamesAction {
+  type: string;
+  payload: CompanyNameState[];
+}
+
+export interface SetFavoritesAction {
+  type: string;
+  payload: FavoriteElement;
+}
+
+function setCompanyInfo(companyInfo: CompanyInfoState): SetCompanyInfoAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_COMPANY_INFO,
+    payload: companyInfo,
+  };
+}
+
+function setCompanyNews(companyNews: News[]): SetCompanyNewsAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_COMPANY_INFO,
+    payload: companyNews,
+  };
+}
+
+function setCompanyStats(
+  companyStats: CompanyStatsState
+): SetCompanyStatsAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_COMPANY_STATS,
+    payload: companyStats,
+  };
+}
+
+function setCompanyEPS(
+  earningsPerShare: number | ExceptionEPS
+): SetCompanyEPSAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_COMPANY_EPS,
+    payload: earningsPerShare,
+  };
+}
+
+function setDividendYield({
+  dividendYield,
+}: {
+  dividendYield: number;
+}): SetDividendYieldAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD,
+    payload: {
+      dividendYield,
+    },
+  };
+}
+
+function setTopPeers(topPeers: string[]): SetTopPeersAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_TOP_PEERS,
+    payload: topPeers,
+  };
+}
+
+function setChartDataDay(chartData: ChartData[]): SetChartDataDayAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY,
+    payload: chartData,
+  };
+}
+
+function setChartData({
+  chartData,
+  timeFrame,
+}: {
+  chartData: ChartData[];
+  timeFrame: string;
+}): SetChartDataAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_CHART_DATA,
+    payload: {
+      chartData,
+      timeFrame,
+    },
+  };
+}
+
+function setCompanyNames(
+  companyNames: CompanyNameState[]
+): SetCompanyNamesAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_COMPANY_NAMES,
+    payload: companyNames,
+  };
+}
+
+function setFavorites(favoritesData: FavoriteElement): SetFavoritesAction {
+  return {
+    type: QUOTES_ACTION_TYPES.SET_FAVORITES,
+    payload: favoritesData,
+  };
+}
+
+export type QuotesActionsType =
+  | SetCompanyInfoAction
+  | SetCompanyNewsAction
+  | SetCompanyStatsAction
+  | SetCompanyEPSAction
+  | SetDividendYieldAction
+  | SetTopPeersAction
+  | SetChartDataDayAction
+  | SetChartDataAction
+  | SetCompanyNamesAction
+  | SetFavoritesAction;
 
 const makeUrl = (service: string, symbol: string, params = '') =>
   `${iexApiSandboxUrl}/stock/${symbol}/${service}/?token=${API_KEY}&${params}`;
-
-const handleResponse = (response: {
-  json: any;
-  statusText: string;
-  status: number;
-}) => {
-  switch (response.status) {
-    case 404:
-      throw new APIError('Company Not Found', response.status);
-    case 402:
-      throw new APIError('API Key Limit Reached', response.status);
-    case 400:
-      throw new APIError('Invalid API key', response.status);
-    case 200:
-      return response.json();
-    default:
-      throw new APIError(response.statusText, response.status);
-  }
-};
 
 const createThunkAction = (
   section: string,
@@ -87,22 +193,15 @@ const createThunkAction = (
   return async (dispatch: ThunkDispatch<RootState, {}, RootActions>) => {
     const url = makeUrl(service, symbol, params);
 
-    dispatch(FetchStatusActions.setApiStart(section));
+    dispatch(setApiStart(section));
     fetch(url)
       .then(response => handleResponse(response))
       .then(payload => {
         dispatch(success(payload));
-        dispatch(FetchStatusActions.setApiSuccess(section));
-        dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
+        dispatch(setApiSuccess(section));
+        dispatch(setUpdateTime(getCurrentDate()));
       })
-      .catch(event =>
-        dispatch(
-          FetchStatusActions.setApiError({
-            section,
-            message: event.toString(),
-          })
-        )
-      );
+      .catch(event => dispatch(setApiError(section, event.toString())));
   };
 };
 
@@ -111,7 +210,7 @@ const fetchCompanyInfo = (symbol: string) =>
     'companyInfo',
     'company',
     symbol,
-    QuotesActions.setCompanyInfo,
+    setCompanyInfo,
     Filters.companyInfoFilters
   );
 
@@ -120,7 +219,7 @@ const fetchCompanyNews = (symbol: string) =>
     'companyNews',
     'news/last/5',
     symbol,
-    QuotesActions.setCompanyNews,
+    setCompanyNews,
     Filters.newsFilters
   );
 
@@ -129,7 +228,7 @@ const fetchCompanyStats = (symbol: string) =>
     'companyStats',
     'quote',
     symbol,
-    QuotesActions.setCompanyStats,
+    setCompanyStats,
     Filters.quoteFilters
   );
 
@@ -138,7 +237,7 @@ const fetchCompanyEPS = (symbol: string) =>
     'companyEPS',
     'earnings/1/actualEPS',
     symbol,
-    QuotesActions.setCompanyEPS
+    setCompanyEPS
   );
 
 const fetchDividendYield = (symbol: string) =>
@@ -146,19 +245,19 @@ const fetchDividendYield = (symbol: string) =>
     'dividendYield',
     'stats',
     symbol,
-    QuotesActions.setDividendYield,
+    setDividendYield,
     Filters.statsFilters
   );
 
 const fetchTopPeers = (symbol: string) =>
-  createThunkAction('topPeers', 'peers', symbol, QuotesActions.setTopPeers);
+  createThunkAction('topPeers', 'peers', symbol, setTopPeers);
 
 const fetchChartDataDay = (symbol: string) =>
   createThunkAction(
     'chartData',
     'chart/1d',
     symbol,
-    QuotesActions.setChartDataDay,
+    setChartDataDay,
     Filters.chartDataFilters
   );
 
@@ -167,8 +266,7 @@ const fetchChartData = (symbol: string, timeFrame: string) =>
     'chartData',
     `chart/${timeFrame}`,
     symbol,
-    (chartData: ChartData[]) =>
-      QuotesActions.setChartData({ chartData, timeFrame }),
+    (chartData: ChartData[]) => setChartData({ chartData, timeFrame }),
     Filters.chartDataFilters
   );
 
@@ -177,7 +275,7 @@ const fetchFavoritePrices = (symbol: string) =>
     'favoritePrices',
     'quote',
     symbol,
-    QuotesActions.setFavorites,
+    setFavorites,
     Filters.favoritesQuoteFilters
   );
 
@@ -187,15 +285,8 @@ export const fetchCompanyNames = () => {
 
     return fetch(url)
       .then(response => response.json())
-      .then(payload => dispatch(QuotesActions.setCompanyNames(payload)))
-      .catch(event =>
-        dispatch(
-          FetchStatusActions.setApiError({
-            section: '',
-            message: event.statusText,
-          })
-        )
-      );
+      .then(payload => dispatch(setCompanyNames(payload)))
+      .catch(event => dispatch(setApiError('', event.statusText)));
   };
 };
 

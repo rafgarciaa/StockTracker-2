@@ -8,24 +8,22 @@ export type searchActionType = typeof searchAction;
 export type fetchActionType = typeof fetchCompanyNames;
 
 export interface ChartDataTypes {
-  readonly fiveDay: ChartDataDay[];
+  readonly fiveDay: ChartData[];
   readonly oneMonth: ChartData[];
   readonly oneYear: ChartData[];
   readonly fiveYear: ChartData[];
   readonly max: ChartData[];
 }
 
-// 1m, 1y, 5y, max
-export type ChartData = Pick<ChartDataDay, 'date' | 'label' | 'close'>;
-
 // 1d && 5dm
-export interface ChartDataDay {
+export interface ChartData {
   // 1d
-  readonly average: number | null;
   readonly close: number | null;
   readonly date: string | null;
   readonly label: string | null;
-  readonly minute: string | null;
+
+  readonly average?: number | null;
+  readonly minute?: string | null;
 
   // 5dm only
   readonly high?: number | null;
