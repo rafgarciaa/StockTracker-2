@@ -22,10 +22,8 @@ import {
   Filters,
 } from '../utilities/apiUtil';
 
-import { FetchStatusActions } from '../actions/fetchStatusActions';
 import APIError from '../utilities/apiErrorMessage';
 
-import { UpdateActions } from '../actions/updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
 
 export const QuotesActions = {

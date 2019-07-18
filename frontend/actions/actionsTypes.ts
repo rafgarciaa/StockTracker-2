@@ -1,6 +1,6 @@
 import { QuotesActions } from './quotesActions';
-import { UpdateActions } from './updateActions';
-import { FetchStatusActions } from './fetchStatusActions';
+import { UpdateActionsType } from './updateActions';
+import { FetchStatusActionsType } from './fetchStatusActions';
 import { ActionCreatorsMapObject } from 'redux';
 
 interface Action<P> {
@@ -15,8 +15,6 @@ export function createAction<P>(type: string, payload: P): Action<P> {
 }
 
 export type QuotesActionsType = ActionsUnion<typeof QuotesActions>;
-export type UpdateActionsType = ActionsUnion<typeof UpdateActions>;
-export type FetchStatusActionsType = ActionsUnion<typeof FetchStatusActions>;
 
 export type RootActions =
   | QuotesActionsType
