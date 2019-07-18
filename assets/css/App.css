@@ -440,3 +440,28 @@ body {
     left: 0;
   }
 }
+
+@media only screen and (max-width: 900px) {
+  .section-main {
+  }
+
+  .section-chart,
+  .section-news,
+  .section-stats-info-peers,
+  .section-info-peers,
+  .section-info,
+  .section-peers,
+  .section-stats {
+    width: 100%;
+    display: block;
+  }
+  .section-stats-info-peers {
+    margin-top: 0;
+  }
+
+  .section-stats,
+  .section-info,
+  .section-peers {
+    margin-top: 1rem;
+  }
+}
