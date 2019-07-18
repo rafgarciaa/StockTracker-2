@@ -81,7 +81,7 @@ const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
   return (
     <div className="section-chart">
       {props.fetchStatus.startFetching && (
-        <div>
+        <>
           <div className="section-chart__timelines">
             <label>
               <input
@@ -186,7 +186,7 @@ const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
               </AreaChart>
             </ResponsiveContainer>
           )}
-        </div>
+        </>
       )}
     </div>
   );
