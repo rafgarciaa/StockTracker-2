@@ -112,31 +112,6 @@ const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
               <input type="radio" name="chart" onClick={setMax} />
               <span className="section-chart__timelines--btn">max</span>
             </label>
-
-            {/* <a href="#" onClick={setOneDay}>
-              {' '}
-              1D{' '}
-            </a>
-            <a href="#" onClick={setFiveDay}>
-              {' '}
-              5D{' '}
-            </a>
-            <a href="#" onClick={setOneMonth}>
-              {' '}
-              1M{' '}
-            </a>
-            <a href="#" onClick={setOneYear}>
-              {' '}
-              1Y{' '}
-            </a>
-            <a href="#" onClick={setFiveYear}>
-              {' '}
-              5Y{' '}
-            </a>
-            <a href="#" onClick={setMax}>
-              {' '}
-              MAX{' '}
-            </a> */}
           </div>
 
           {!props.fetchStatus.doneFetching ? (
