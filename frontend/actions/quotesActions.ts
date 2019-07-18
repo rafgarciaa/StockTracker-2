@@ -8,6 +8,7 @@ import {
   News,
   CompanyStatsState,
   CompanyNameState,
+  FavoriteElement,
 } from '../utilities/interfaces';
 
 import {
@@ -52,7 +53,7 @@ export const Actions = {
     action(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
   setChartData: (chartData: object[], timeFrame: string) =>
     action(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
-  setFavorites: (favoritesData: any) =>
+  setFavorites: (favoritesData: FavoriteElement) =>
     action(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
 
