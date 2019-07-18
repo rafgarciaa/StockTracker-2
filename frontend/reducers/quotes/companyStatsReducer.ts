@@ -5,6 +5,7 @@ import {
   SetCompanyEPSAction,
   SetDividendYieldAction,
 } from '../../actions/quotesActions';
+import { Reducer, AnyAction } from 'redux';
 
 const INITIAL_STATE: CompanyStatsState = {
   avgTotalVolume: 0,
@@ -26,9 +27,9 @@ const INITIAL_STATE: CompanyStatsState = {
   actualEPS: 0,
 };
 
-const companyStatsReducer = (
+const companyStatsReducer: Reducer<CompanyStatsState, AnyAction> = (
   state = INITIAL_STATE,
-  action: SetCompanyStatsAction | SetCompanyEPSAction | SetDividendYieldAction
+  action: AnyAction
 ) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_STATS:

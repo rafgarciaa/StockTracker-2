@@ -4,6 +4,7 @@ import { RootActions } from './actionsTypes';
 import { handleResponse } from './actionsTypes';
 import { setApiError, setApiStart, setApiSuccess } from './fetchStatusActions';
 import { setUpdateTime } from './updateActions';
+import { AnyAction, Action } from 'redux';
 
 import {
   CompanyInfoState,
@@ -27,44 +28,44 @@ import { getCurrentDate } from '../utilities/getCurrentDate';
 
 export interface SetCompanyInfoAction {
   type: string;
-  payload: CompanyInfoState;
+  payload?: CompanyInfoState;
 }
 
 export interface SetCompanyNewsAction {
   type: string;
-  payload: News[];
+  payload?: News[];
 }
 
 export interface SetCompanyStatsAction {
   type: string;
-  payload: CompanyStatsState;
+  payload?: CompanyStatsState;
 }
 
 export interface SetCompanyEPSAction {
   type: string;
-  payload: number | ExceptionEPS;
+  payload?: number | ExceptionEPS;
 }
 
 export interface SetDividendYieldAction {
   type: string;
-  payload: {
+  payload?: {
     dividendYield: number;
   };
 }
 
 export interface SetTopPeersAction {
   type: string;
-  payload: string[];
+  payload?: string[];
 }
 
 export interface SetChartDataDayAction {
   type: string;
-  payload: ChartData[];
+  payload?: ChartData[];
 }
 
 export interface SetChartDataAction {
   type: string;
-  payload: {
+  payload?: {
     chartData: ChartData[];
     timeFrame: string;
   };
@@ -72,7 +73,7 @@ export interface SetChartDataAction {
 
 export interface SetCompanyNamesAction {
   type: string;
-  payload: CompanyNameState[];
+  payload?: CompanyNameState[];
 }
 
 export interface SetFavoritesAction {

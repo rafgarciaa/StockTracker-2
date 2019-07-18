@@ -8,7 +8,7 @@ const companyNamesReducer = (
 ) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_NAMES:
-      return action.payload;
+      return { ...state, ...action.payload };
     default:
       return state;
   }
