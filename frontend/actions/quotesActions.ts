@@ -39,17 +39,20 @@ export interface SetCompanyStatsAction {
   type: string;
   payload: CompanyStatsState;
 }
+
 export interface SetCompanyEPSAction {
   type: string;
   payload: number | ExceptionEPS;
 }
+
 export interface SetDividendYieldAction {
   type: string;
   payload: {
     dividendYield: number;
   };
 }
-interface SetTopPeersAction {
+
+export interface SetTopPeersAction {
   type: string;
   payload: string[];
 }

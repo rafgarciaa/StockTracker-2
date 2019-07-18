@@ -1,6 +1,6 @@
 import { UPDATE_ACTION_TYPES } from '../constants/updateTypes';
 
-interface SetUpdateTimeAction {
+export interface SetUpdateTimeAction {
   type: string;
   payload: string;
 }

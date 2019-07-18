@@ -1,6 +1,6 @@
 import { FETCH_STATUS_ACTION_TYPE } from '../../constants/fetchStatusTypes';
 import { FetchStatusState } from '../../utilities/interfaces';
-import { FetchStatusActionsType } from '../../actions/actionsTypes';
+import { FetchStatusActionsType } from '../../actions/fetchStatusActions';
 
 const INITIAL_STATE: FetchStatusState = {
   companyInfo: {
@@ -51,18 +51,22 @@ const fetchStatusReducer = (
 ) => {
   switch (action.type) {
     case FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
+      const payload: {
+        section: string;
+        message: string;
+      } = action.payload as any;
       return {
         ...state,
-        [action.payload.section]: {
+        [payload.section]: {
           startFetching: true,
           doneFetching: true,
-          fetchSuccess: action.payload.message,
+          fetchSuccess: payload.message,
         },
       };
     case FETCH_STATUS_ACTION_TYPE.SET_API_START:
       return {
         ...state,
-        [action.payload]: {
+        [action.payload as string]: {
           startFetching: true,
           doneFetching: false,
           fetchSuccess: '',
@@ -71,7 +75,7 @@ const fetchStatusReducer = (
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
       return {
         ...state,
-        [action.payload]: {
+        [action.payload as string]: {
           startFetching: true,
           doneFetching: true,
           fetchSuccess: '',

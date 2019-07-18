@@ -1,7 +1,7 @@
 import { UPDATE_ACTION_TYPES } from '../../constants/updateTypes';
-import { UpdateActionsType } from '../../actions/actionsTypes';
+import { SetUpdateTimeAction } from '../../actions/updateActions';
 
-const updateTimeReducer = (state: string = '', action: UpdateActionsType) => {
+const updateTimeReducer = (state: string = '', action: SetUpdateTimeAction) => {
   switch (action.type) {
     case UPDATE_ACTION_TYPES.SET_UPDATE_TIME:
       return action.payload;

@@ -1,8 +1,9 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ChartData } from '../../utilities/interfaces';
 import { SetChartDataDayAction } from '../../actions/quotesActions';
+import { Reducer } from 'redux';
 
-const chartDataDayReducer = (
+const chartDataDayReducer: Reducer<ChartData[], SetChartDataDayAction> = (
   state: ChartData[] = [],
   action: SetChartDataDayAction
 ) => {
