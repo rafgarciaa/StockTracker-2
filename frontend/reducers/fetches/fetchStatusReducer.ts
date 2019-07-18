@@ -62,7 +62,7 @@ const fetchStatusReducer = (
     case FETCH_STATUS_ACTION_TYPE.SET_API_START:
       return {
         ...state,
-        [action.payload]: {
+        [action.payload.section]: {
           startFetching: true,
           doneFetching: false,
           fetchSuccess: '',
@@ -71,7 +71,7 @@ const fetchStatusReducer = (
     case FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
       return {
         ...state,
-        [action.payload]: {
+        [action.payload.section]: {
           startFetching: true,
           doneFetching: true,
           fetchSuccess: '',

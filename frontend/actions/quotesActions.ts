@@ -37,21 +37,60 @@ interface ExceptionEPS {
 
 export const QuotesActions = {
   setCompanyInfo: (companyInfo: CompanyInfoState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_INFO, {
+      companyInfo,
+      timeFrame: '',
+      chartData: null,
+      favoritesData: null,
+    }),
   setCompanyNews: (companyNews: News[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, {
+      companyNews,
+      timeFrame: '',
+      chartData: null,
+      favoritesData: null,
+    }),
   setCompanyStats: (companyStats: CompanyStatsState) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_STATS, {
+      companyStats,
+      timeFrame: '',
+      chartData: null,
+      favoritesData: null,
+    }),
   setCompanyEPS: (earningsPerShare: number | ExceptionEPS) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_EPS, {
+      earningsPerShare,
+      timeFrame: '',
+      chartData: null,
+      favoritesData: null,
+    }),
   setDividendYield: ({ dividendYield }: { dividendYield: number }) =>
-    createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
+    createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, {
+      dividendYield,
+      timeFrame: '',
+      chartData: null,
+      favoritesData: null,
+    }),
   setTopPeers: (topPeers: string[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
+    createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, {
+      topPeers,
+      timeFrame: '',
+      chartData: null,
+      favoritesData: null,
+    }),
   setChartDataDay: (chartData: ChartDataDay[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
+    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, {
+      chartData,
+      timeFrame: '',
+      favoritesData: null,
+    }),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
-    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
+    createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, {
+      companyNames,
+      timeFrame: '',
+      chartData: null,
+      favoritesData: null,
+    }),
   setChartData: ({
     chartData,
     timeFrame,
@@ -59,9 +98,17 @@ export const QuotesActions = {
     chartData: ChartData[];
     timeFrame: string;
   }) =>
-    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
+    createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA, {
+      chartData,
+      timeFrame,
+      favoritesData: null,
+    }),
   setFavorites: (favoritesData: FavoriteElement) =>
-    createAction(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
+    createAction(QUOTES_ACTION_TYPES.SET_FAVORITES, {
+      favoritesData,
+      timeFrame: '',
+      chartData: null,
+    }),
 };
 
 const makeUrl = (service: string, symbol: string, params = '') =>

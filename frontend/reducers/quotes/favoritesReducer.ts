@@ -8,7 +8,7 @@ const favoriteReducer = (
 ) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_FAVORITES:
-      return { ...state, [action.payload.symbol]: action.payload };
+      return { ...state, temporary: action.payload };
     default:
       return state;
   }

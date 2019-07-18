@@ -32,7 +32,9 @@ const companyStatsReducer = (
 
     case QUOTES_ACTION_TYPES.SET_COMPANY_EPS:
       if (typeof action.payload === 'object') {
-        return { ...state, actualEPS: action.payload.earnings[0].actualEPS };
+        // TEMPORARY
+        // return { ...state, actualEPS: action.payload.earnings[0].actualEPS };
+        return { ...state, actualEPS: action.payload };
       } else {
         return { ...state, actualEPS: action.payload };
       }
