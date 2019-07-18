@@ -1,5 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { CompanyStatsState } from '../../utilities/interfaces';
+import { CompanyStatsState, ExceptionEPS } from '../../utilities/interfaces';
 import { QuotesActionsType } from '../../actions/actionsTypes';
 
 const INITIAL_STATE: CompanyStatsState = {
@@ -32,7 +32,13 @@ const companyStatsReducer = (
 
     case QUOTES_ACTION_TYPES.SET_COMPANY_EPS:
       if (typeof action.payload === 'object') {
-        return { ...state, actualEPS: action.payload.earnings[0].actualEPS };
+        const payload: {
+          earningsPerShare: ExceptionEPS;
+        } = action.payload as any;
+        return {
+          ...state,
+          actualEPS: payload.earningsPerShare.earnings[0].actualEPS,
+        };
       } else {
         return { ...state, actualEPS: action.payload };
       }

@@ -12,6 +12,7 @@ import {
   ChartDataDay,
   ChartData,
   RootState,
+  ExceptionEPS,
 } from '../utilities/interfaces';
 
 import {
@@ -26,14 +27,6 @@ import APIError from '../utilities/apiErrorMessage';
 
 import { UpdateActions } from '../actions/updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
-
-interface ExceptionEPS {
-  earnings: [
-    {
-      actualEPS: number | null;
-    }
-  ];
-}
 
 export const QuotesActions = {
   setCompanyInfo: (companyInfo: CompanyInfoState) =>

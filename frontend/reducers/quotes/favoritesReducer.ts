@@ -1,5 +1,5 @@
 import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
-import { FavoriteState } from '../../utilities/interfaces';
+import { FavoriteState, FavoriteElement } from '../../utilities/interfaces';
 import { QuotesActionsType } from '../../actions/actionsTypes';
 
 const favoriteReducer = (
@@ -8,7 +8,11 @@ const favoriteReducer = (
 ) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_FAVORITES:
-      return { ...state, [action.payload.symbol]: action.payload };
+      const payload: { favoritesData: FavoriteElement } = action.payload as any;
+      return {
+        ...state,
+        [payload.favoritesData.symbol]: payload.favoritesData,
+      };
     default:
       return state;
   }

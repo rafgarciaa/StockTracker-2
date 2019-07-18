@@ -115,3 +115,11 @@ export interface FetchStatusElement {
   readonly doneFetching: boolean;
   readonly fetchSuccess: string;
 }
+
+export interface ExceptionEPS {
+  earnings: [
+    {
+      actualEPS: number | null;
+    }
+  ];
+}
