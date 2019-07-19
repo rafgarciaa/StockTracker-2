@@ -3,28 +3,21 @@ import { harcodedData } from '../components/footer/footerMarketContainer';
 export type harcodedDataType = typeof harcodedData;
 
 export interface ChartDataTypes {
-  readonly fiveDay: ChartDataDay[];
+  readonly fiveDay: ChartData[];
   readonly oneMonth: ChartData[];
   readonly oneYear: ChartData[];
   readonly fiveYear: ChartData[];
   readonly max: ChartData[];
 }
 
-// 1m, 1y, 5y, max
-export interface ChartData {
-  readonly date: string | null;
-  readonly label: string | null;
-  readonly close: number | null;
-}
-
 // 1d && 5dm
-export interface ChartDataDay {
+export interface ChartData {
   // 1d
-  average: number | null;
+  average?: number | null;
   close: number | null;
   date: string | null;
   label: string | null;
-  minute: string | null;
+  minute?: string | null;
 
   // 5dm only
   high?: number | null;
@@ -97,7 +90,7 @@ export interface CompanyStatsState {
 export interface RootState {
   quotes: {
     chartData: ChartDataTypes;
-    chartDataDay: ChartDataDay[];
+    chartDataDay: ChartData[];
     companyInfo: CompanyInfoState;
     companyStats: CompanyStatsState;
     companyNews: News[];

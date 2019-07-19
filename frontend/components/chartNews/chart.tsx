@@ -13,22 +13,13 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import {
-  FetchStatusElement,
-  ChartData,
-  ChartDataDay,
-} from '../../utilities/interfaces';
+import { FetchStatusElement, ChartData } from '../../utilities/interfaces';
 import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 import * as Selectors from '../../utilities/selectors';
 
-interface ChartDataProps {
-  dateTime: string | null;
-  price: number | null;
-}
-
 interface ChartProps {
-  oneDayData: ChartDataDay[];
-  fiveDayData: ChartDataDay[];
+  oneDayData: ChartData[];
+  fiveDayData: ChartData[];
   oneMonthData: ChartData[];
   oneYearData: ChartData[];
   fiveYearData: ChartData[];
@@ -37,9 +28,9 @@ interface ChartProps {
 }
 
 const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
-  const [displayedChartData, setDisplayedChartData] = useState<
-    ChartDataProps[]
-  >(Selectors.selectChartDataDay(props.oneDayData));
+  const [displayedChartData, setDisplayedChartData] = useState(
+    Selectors.selectChartDataDay(props.oneDayData)
+  );
 
   const setOneDay = useCallback(
     () => setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData)),

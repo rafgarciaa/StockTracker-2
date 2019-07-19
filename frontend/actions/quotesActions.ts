@@ -8,6 +8,7 @@ import {
   CompanyStatsState,
   CompanyNameState,
   FavoriteElement,
+  ChartData,
 } from '../utilities/interfaces';
 
 import {
@@ -56,7 +57,7 @@ export const QuotesActions = {
     createAction(QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
   setTopPeers: (topPeers: string[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
-  setChartDataDay: (chartData: any) =>
+  setChartDataDay: (chartData: ChartData[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
   setCompanyNames: (companyNames: CompanyNameState[]) =>
     createAction(QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
