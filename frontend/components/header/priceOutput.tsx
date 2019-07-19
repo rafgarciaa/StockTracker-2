@@ -18,7 +18,7 @@ const PriceOutput: FunctionComponent<PriceOutputProps> = ({
     <div className="header__top-price">
       <span>
         <span className="icon--small">$</span>
-        {latestPrice != null ? Math.abs(latestPrice) : '0'}
+        {latestPrice != null ? Math.abs(latestPrice).toFixed(2) : '0'}
       </span>
       <div className={`header__top-price--change ` + headerClassName}>
         <span>
