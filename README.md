@@ -1,28 +1,32 @@
-## Stock Tracker Phase 2
+## ![Adaptive Logo](https://weareadaptive.com/wp-content/themes/bh-core/assets/images/favicons/favicon-32x32.png) Stock Tracker
 
-### Topics to Learn:
+### Overview
 
-- Webpack
-- Babel
-- Typescript (to an extent)
+Track stocks in real time!
 
-### Goals of Phase 2:
+### Features
 
-- Create own `webpack.config.js` and understand what configurations are in it.
-- Understand `babel`, what it does, its purpose, why we need it integrated in our app, etc.
-- Utilize `Typescript` in the `Stock Tracker` application, and understand its intricacies, and its benefits.
+With this application, users are able to:
 
-### Technologies/Dependencies (tentative):
+- Search for a publicly traded company
+- Read relevant information about the searched company:
+  - Real-time stock price, change, percent change
+  - Market Status
+  - Interactive graph for different time-series
+  - Key Statistics
+  - Company Information & website
+  - News
+  - Top peers
 
-- react
-- react-dom
-- redux
-- react-redux
-- redux-thunk
-- redux-logger
-- webpack
-- webpack-cli
-- @babel/core
-- @babel/preset-env
-- @babel/preset-react
-- babel-loader
+**Test data displayed**
+![App](./assets/images/app.png)
+
+### Technologies
+
+- [Typescript](https://github.com/microsoft/TypeScript)
+- [React](https://github.com/facebook/react)
+- [Redux](https://github.com/reduxjs/redux)
+- [Webpack](https://github.com/webpack)
+- [Babel](https://github.com/babel/babel)
+- [Recharts](https://github.com/recharts/recharts)
+- [Downshift-js](https://github.com/downshift-js/downshift)

@@ -7,11 +7,12 @@ import {
 } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({
+  companySymbol: state.quotes.companyInfo.symbol,
   companyStatsLeft: selectCompanyStats(state.quotes.companyStats)
     .companyStatsLeft,
   companyStatsRight: selectCompanyStats(state.quotes.companyStats)
     .companyStatsRight,
-  fetchStatus: selectFetchingStatus(state, 'companyStats'),
+  fetchStatus: state.fetchStatus.companyStats,
 });
 
 export default connect(

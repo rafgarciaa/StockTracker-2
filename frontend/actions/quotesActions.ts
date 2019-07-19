@@ -227,7 +227,7 @@ const fetchCompanyNews = (symbol: string) =>
     Filters.newsFilters
   );
 
-const fetchCompanyStats = (symbol: string) =>
+export const fetchCompanyStats = (symbol: string) =>
   createThunkAction(
     'companyStats',
     'quote',
@@ -313,3 +313,7 @@ export const searchAction = (symbol: string) => (
   dispatch(fetchFavoritePrices('msft'));
   dispatch(fetchFavoritePrices('goog'));
 };
+
+export type searchActionType = typeof searchAction;
+export type fetchActionType = typeof fetchCompanyNames;
+export type fetchStatsType = typeof fetchCompanyStats;

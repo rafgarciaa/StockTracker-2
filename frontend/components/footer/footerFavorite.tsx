@@ -16,19 +16,21 @@ const FooterFavorite: FunctionComponent<FooterFavoriteProps> = ({
       {fetchStatus.startFetching && (
         <div className="section-footer__slice">
           <h4 className="section-footer__heading">Favorites</h4>
-          {Object.keys(favoriteList).map((symbol, idx) => {
-            const market = favoriteList[symbol];
-            return (
-              <div className="section-market-favorite" key={idx}>
-                <span>{market.symbol}</span>
-                <PriceOutput
-                  latestPrice={market.latestPrice}
-                  change={market.change}
-                  changePercent={market.changePercent}
-                />
-              </div>
-            );
-          })}
+          <div className="section-footer__content">
+            {Object.keys(favoriteList).map((symbol, idx) => {
+              const market = favoriteList[symbol];
+              return (
+                <div className="section-market-favorite" key={idx}>
+                  <span>{market.symbol}</span>
+                  <PriceOutput
+                    latestPrice={market.latestPrice}
+                    change={market.change}
+                    changePercent={market.changePercent}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </>

@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import {
   AreaChart,
   Area,
@@ -8,8 +13,13 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { FetchStatusElement } from '../../utilities/interfaces';
+import {
+  FetchStatusElement,
+  ChartData,
+  ChartDataDay,
+} from '../../utilities/interfaces';
 import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
+import * as Selectors from '../../utilities/selectors';
 
 interface ChartDataProps {
   dateTime: string | null;
@@ -17,146 +27,144 @@ interface ChartDataProps {
 }
 
 interface ChartProps {
-  oneDayData: ChartDataProps[];
-  fiveDayData: ChartDataProps[];
-  oneMonthData: ChartDataProps[];
-  oneYearData: ChartDataProps[];
-  fiveYearData: ChartDataProps[];
-  maxData: ChartDataProps[];
+  oneDayData: ChartDataDay[];
+  fiveDayData: ChartDataDay[];
+  oneMonthData: ChartData[];
+  oneYearData: ChartData[];
+  fiveYearData: ChartData[];
+  maxData: ChartData[];
   fetchStatus: FetchStatusElement;
 }
 
-interface ChartState {
-  displayedChartData: ChartDataProps[];
-}
+const Chart: FunctionComponent<ChartProps> = (props: ChartProps) => {
+  const [displayedChartData, setDisplayedChartData] = useState<
+    ChartDataProps[]
+  >(Selectors.selectChartDataDay(props.oneDayData));
 
-export default class Chart extends React.Component<ChartProps, ChartState> {
-  public readonly state: ChartState = {
-    displayedChartData: [],
-  };
+  const setOneDay = useCallback(
+    () => setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData)),
+    [props.oneDayData]
+  );
+  const setFiveDay = useCallback(
+    () =>
+      setDisplayedChartData(
+        Selectors.selectChartDataFiveDay(props.fiveDayData)
+      ),
+    [props.fiveDayData]
+  );
+  const setOneMonth = useCallback(
+    () =>
+      setDisplayedChartData(
+        Selectors.selectChartDataOneMonth(props.oneMonthData)
+      ),
+    [props.oneMonthData]
+  );
+  const setOneYear = useCallback(
+    () =>
+      setDisplayedChartData(Selectors.selectChartDataYear(props.oneYearData)),
+    [props.oneYearData]
+  );
+  const setFiveYear = useCallback(
+    () =>
+      setDisplayedChartData(Selectors.selectChartDataYear(props.fiveYearData)),
+    [props.fiveYearData]
+  );
+  const setMax = useCallback(
+    () => setDisplayedChartData(Selectors.selectChartDataYear(props.maxData)),
+    [props.maxData]
+  );
 
-  public componentDidMount() {
-    this.setState({ displayedChartData: this.props.oneDayData });
-  }
+  useEffect(() => {
+    setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData));
+  }, [props.oneDayData]);
 
-  public componentDidUpdate(prevProps: ChartProps) {
-    if (prevProps.oneDayData !== this.props.oneDayData) {
-      this.setState({ displayedChartData: this.props.oneDayData });
-    }
-  }
-
-  public setDisplayedChartData = (chartData: ChartDataProps[]) => {
-    this.setState({ displayedChartData: chartData });
-  };
-
-  public render() {
-    const { displayedChartData } = this.state;
-    const {
-      oneDayData,
-      fiveDayData,
-      oneMonthData,
-      oneYearData,
-      fiveYearData,
-      maxData,
-      fetchStatus,
-    } = this.props;
-
-    return (
-      <div className="section-chart">
-        {fetchStatus.startFetching && (
-          <div>
-            <div className="section-chart__timelines">
-              <a
-                href="#"
-                onClick={() => this.setDisplayedChartData(oneDayData)}
-              >
-                {' '}
-                1D{' '}
-              </a>
-              <a
-                href="#"
-                onClick={() => this.setDisplayedChartData(fiveDayData)}
-              >
-                {' '}
-                5D{' '}
-              </a>
-              <a
-                href="#"
-                onClick={() => this.setDisplayedChartData(oneMonthData)}
-              >
-                {' '}
-                1M{' '}
-              </a>
-              <a
-                href="#"
-                onClick={() => this.setDisplayedChartData(oneYearData)}
-              >
-                {' '}
-                1Y{' '}
-              </a>
-              <a
-                href="#"
-                onClick={() => this.setDisplayedChartData(fiveYearData)}
-              >
-                {' '}
-                5Y{' '}
-              </a>
-              <a href="#" onClick={() => this.setDisplayedChartData(maxData)}>
-                {' '}
-                MAX{' '}
-              </a>
-            </div>
-
-            {!fetchStatus.doneFetching ? (
-              <AdaptiveLoader />
-            ) : fetchStatus.fetchSuccess !== '' ? (
-              fetchStatus.fetchSuccess
-            ) : (
-              <ResponsiveContainer width="100%" aspect={2}>
-                <AreaChart
-                  data={displayedChartData}
-                  margin={{
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                  }}
-                >
-                  <defs>
-                    <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="15%" stopColor="#8884d8" stopOpacity={1} />
-                      <stop offset="85%" stopColor="#8884d8" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="dateTime"
-                    interval={'preserveStart'}
-                    tick={{ stroke: '#f4f6f9', strokeWidth: 0.1 }}
-                  />
-                  <YAxis
-                    orientation="right"
-                    domain={['dataMin', 'auto']}
-                    tick={{ stroke: '#f4f6f9', strokeWidth: 0.1 }}
-                  />
-                  <Tooltip
-                    cursor={{ stroke: 'red', strokeWidth: 2 }}
-                    labelStyle={{ color: 'black' }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="price"
-                    stroke="#8884d8"
-                    fill="url(#colorPrice)"
-                    fillOpacity={0.3}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
+  return (
+    <div className="section-chart">
+      {props.fetchStatus.startFetching && (
+        <>
+          <div className="section-chart__timelines">
+            <label>
+              <input
+                type="radio"
+                name="chart"
+                onClick={setOneDay}
+                defaultChecked={true}
+              />
+              <span className="section-chart__timelines--btn">1d</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setFiveDay} />
+              <span className="section-chart__timelines--btn">5d</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setOneMonth} />
+              <span className="section-chart__timelines--btn">1m</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setOneYear} />
+              <span className="section-chart__timelines--btn">1y</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setFiveYear} />
+              <span className="section-chart__timelines--btn">5y</span>
+            </label>
+            <label>
+              <input type="radio" name="chart" onClick={setMax} />
+              <span className="section-chart__timelines--btn">max</span>
+            </label>
           </div>
-        )}
-      </div>
-    );
-  }
-}
+
+          {!props.fetchStatus.doneFetching ? (
+            <AdaptiveLoader />
+          ) : props.fetchStatus.fetchSuccess !== '' ? (
+            props.fetchStatus.fetchSuccess
+          ) : (
+            <ResponsiveContainer width="100%" aspect={2}>
+              <AreaChart
+                data={displayedChartData}
+                margin={{
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+              >
+                <defs>
+                  <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="15%" stopColor="#8884d8" stopOpacity={1} />
+                    <stop offset="85%" stopColor="#8884d8" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="dateTime"
+                  interval={'preserveStart'}
+                  tick={{ stroke: '#f4f6f9', strokeWidth: 0.1 }}
+                />
+                <YAxis
+                  orientation="right"
+                  domain={['dataMin', 'auto']}
+                  tick={{ stroke: '#f4f6f9', strokeWidth: 0.1 }}
+                />
+                <Tooltip
+                  cursor={{ stroke: 'red', strokeWidth: 2 }}
+                  labelStyle={{ color: 'black' }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="price"
+                  stroke="#8884d8"
+                  fill="url(#colorPrice)"
+                  fillOpacity={0.3}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default Chart;
