@@ -24,6 +24,7 @@ const SearchPriceLayout: FunctionComponent<FetchStatusState> = ({
 
 const mapStateToProps = (state: RootState) => ({
   fetchStatus: selectFetchingStatus(state, 'companyStats'),
+  // fetchStatus: state.quotes.companyStats,
 });
 
 export default connect(

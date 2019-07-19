@@ -4,7 +4,7 @@ import { News, FetchStatusElement } from '../../utilities/interfaces';
 import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface NewsListProps {
-  newsList: News[];
+  newsList: News[] | undefined;
   fetchStatus: FetchStatusElement;
 }
 
@@ -23,9 +23,8 @@ const NewsList: FunctionComponent<NewsListProps> = ({
         fetchStatus.fetchSuccess
       ) : (
         <ul className="section-news__list">
-          {newsList.map((news, idx) => (
-            <NewsListItem key={idx} news={news} />
-          ))}
+          {newsList &&
+            newsList.map((news, idx) => <NewsListItem key={idx} news={news} />)}
         </ul>
       )}
     </div>

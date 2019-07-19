@@ -1,4 +1,6 @@
 import React, { useEffect, FunctionComponent } from 'react';
+import { SetCompanyNamesAction } from '../../actions/quotesActions';
+import { SetErrorAction } from '../../actions/fetchStatusActions';
 
 import {
   CompanyNameState,
@@ -13,8 +15,8 @@ interface SearchInputProps {
   companyNames: CompanyNameState[];
   companyName: string | null;
   companySymbol: string | null;
-  searchAction: searchActionType;
-  fetchCompanyNames: fetchActionType;
+  searchAction: (symbol: string) => void;
+  fetchCompanyNames: () => Promise<SetCompanyNamesAction | SetErrorAction>;
 }
 
 const SearchInput: FunctionComponent<SearchInputProps> = ({

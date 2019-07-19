@@ -1,6 +1,6 @@
 import { FETCH_STATUS_ACTION_TYPE } from '../constants/fetchStatusTypes';
 
-interface SetErrorAction {
+export interface SetErrorAction {
   type: string;
   payload: {
     section: string;

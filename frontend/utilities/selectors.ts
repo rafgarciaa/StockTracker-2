@@ -1,9 +1,4 @@
-import {
-  CompanyStatsState,
-  ChartDataDay,
-  ChartData,
-  RootState,
-} from './interfaces';
+import { CompanyStatsState, ChartData, RootState } from './interfaces';
 import { changeToPercent } from './numberFormatters';
 
 export const selectCompanyStats = (companyStats: CompanyStatsState) => {
@@ -66,7 +61,7 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
   };
 };
 
-export const selectChartDataDay = (chartDataDay: ChartDataDay[]) => {
+export const selectChartDataDay = (chartDataDay: ChartData[]) => {
   return chartDataDay
     .filter(data => data.average)
     .map(data => ({ dateTime: data.label, price: data.average }));
@@ -80,7 +75,7 @@ const dateFormatter = (date: string | null) => {
   }
 };
 
-export const selectChartDataFiveDay = (fiveDayDataArray: ChartDataDay[]) =>
+export const selectChartDataFiveDay = (fiveDayDataArray: ChartData[]) =>
   fiveDayDataArray
     .filter(data => data.average)
     .map(data => ({ dateTime: dateFormatter(data.date), price: data.average }))

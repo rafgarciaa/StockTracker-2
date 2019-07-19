@@ -17,10 +17,12 @@ const chartDataReducer = (
 ) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_CHART_DATA:
-      const timeFrame: string = chartTimeFrameFormatter(
-        action.payload.timeFrame
-      );
-      return { ...state, [timeFrame]: action.payload.chartData };
+      if (action.payload) {
+        const timeFrame: string = chartTimeFrameFormatter(
+          action.payload.timeFrame
+        );
+        return { ...state, [timeFrame]: action.payload.chartData };
+      }
     default:
       return state;
   }

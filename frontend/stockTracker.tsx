@@ -5,6 +5,6 @@ import configureStore from './store/store';
 import '../assets/css/App.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const store = configureStore;
+  const store = configureStore();
   render(<App store={store} />, document.getElementById('root'));
 });

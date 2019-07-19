@@ -3,7 +3,7 @@ import { FetchStatusElement } from '../../utilities/interfaces';
 import AdaptiveLoader from '../adaptiveLoader/adaptiveLoader';
 
 interface TopPeersProps {
-  topPeers: string[];
+  topPeers: string[] | undefined;
   fetchStatus: FetchStatusElement;
 }
 
@@ -22,11 +22,12 @@ const TopPeers: FunctionComponent<TopPeersProps> = ({
             fetchStatus.fetchSuccess
           ) : (
             <div>
-              {topPeers.map((peer, idx) => (
-                <span className="section-peers__peer" key={idx}>
-                  {peer}
-                </span>
-              ))}
+              {topPeers &&
+                topPeers.map((peer, idx) => (
+                  <span className="section-peers__peer" key={idx}>
+                    {peer}
+                  </span>
+                ))}
             </div>
           )}
         </div>
