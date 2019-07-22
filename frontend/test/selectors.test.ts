@@ -24,15 +24,15 @@ test('Separate company stats in two columns', () => {
     companyStatsLeft: [
       {
         name: 'Previous Close',
-        value: 0,
+        value: 'N/A',
       },
       {
         name: 'Day Range',
-        value: '0 - 0',
+        value: 'N/A',
       },
       {
         name: 'Volume',
-        value: 0,
+        value: 'N/A',
       },
       {
         name: 'Market Cap',
@@ -40,22 +40,22 @@ test('Separate company stats in two columns', () => {
       },
       {
         name: 'P/E Ratio',
-        value: 0,
+        value: 'N/A',
       },
     ],
     companyStatsRight: [
-      { name: 'Open', value: 0 },
+      { name: 'Open', value: 'N/A' },
       {
         name: '52 Week Range',
-        value: '0 - 0',
+        value: 'N/A',
       },
       {
         name: 'Total Avg. Volume',
-        value: 0,
+        value: 'N/A',
       },
       {
         name: 'Earnings Per Share',
-        value: 0,
+        value: 'N/A',
       },
       {
         name: 'Dividend & Yield',
