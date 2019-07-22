@@ -11,19 +11,21 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
     companyStatsLeft: [
       {
         name: 'Previous Close',
-        value: companyStats.close ? companyStats.close : 0,
+        value: companyStats.previousClose ? companyStats.previousClose : `N/A`,
       },
       {
         name: 'Day Range',
-        value: `${companyStats.high ? companyStats.high : 0} - ${
-          companyStats.low ? companyStats.low : 0
+        value: `${
+          companyStats.high && companyStats.low
+            ? `${companyStats.high} -  ${companyStats.low}`
+            : `N/A`
         }`,
       },
       {
         name: 'Volume',
         value: companyStats.latestVolume
           ? companyStats.latestVolume.toLocaleString()
-          : 0,
+          : `N/A`,
       },
       {
         name: 'Market Cap',
@@ -33,26 +35,28 @@ export const selectCompanyStats = (companyStats: CompanyStatsState) => {
       },
       {
         name: 'P/E Ratio',
-        value: companyStats.peRatio ? companyStats.peRatio : 0,
+        value: companyStats.peRatio ? companyStats.peRatio : `N/A`,
       },
     ],
     companyStatsRight: [
-      { name: 'Open', value: companyStats.open ? companyStats.open : 0 },
+      { name: 'Open', value: companyStats.open ? companyStats.open : `N/A` },
       {
         name: '52 Week Range',
-        value: `${companyStats.week52High ? companyStats.week52High : 0} - ${
-          companyStats.week52Low ? companyStats.week52Low : 0
+        value: `${
+          companyStats.week52High && companyStats.week52Low
+            ? `${companyStats.week52High} - ${companyStats.week52Low}`
+            : `N/A`
         }`,
       },
       {
         name: 'Total Avg. Volume',
         value: companyStats.avgTotalVolume
           ? companyStats.avgTotalVolume.toLocaleString()
-          : companyStats.avgTotalVolume,
+          : `N/A`,
       },
       {
         name: 'Earnings Per Share',
-        value: companyStats.actualEPS ? companyStats.actualEPS : 0,
+        value: companyStats.actualEPS ? companyStats.actualEPS : `N/A`,
       },
       {
         name: 'Dividend & Yield',

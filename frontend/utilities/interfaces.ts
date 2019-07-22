@@ -78,7 +78,7 @@ export interface CompanyStatsState {
   avgTotalVolume: number | null;
   change: number | null;
   changePercent: number | null;
-  close: number | null;
+  previousClose: number | null;
   companyName: string | null;
   high: number | null;
   latestPrice: number | null;
