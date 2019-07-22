@@ -5,7 +5,7 @@ test('Separate company stats in two columns', () => {
     avgTotalVolume: 0,
     change: 0,
     changePercent: 0,
-    close: 0,
+    previousClose: 0,
     companyName: 'test',
     high: 0,
     latestPrice: 0,
