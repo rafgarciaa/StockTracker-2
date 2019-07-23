@@ -6,7 +6,7 @@ const INITIAL_STATE: CompanyStatsState = {
   avgTotalVolume: 0,
   change: 0,
   changePercent: 0,
-  close: 0,
+  previousClose: 0,
   companyName: '',
   high: 0,
   latestPrice: 0,
