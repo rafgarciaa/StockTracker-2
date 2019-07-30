@@ -25,6 +25,9 @@ import APIError from '../utilities/apiErrorMessage';
 import { UpdateActions } from '../actions/updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
 
+// I don't know if it is best practice, but it might be better to 
+// separate the concerns in different files
+
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
 interface ExceptionEPS {
