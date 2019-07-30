@@ -12,6 +12,7 @@ const PriceOutput: FunctionComponent<PriceOutputProps> = ({
   change,
   changePercent,
 }) => {
+  // technically a change of 0 should be neither positive nor negative
   const isNegative = change ? change <= 0 : false;
   const headerClassName = isNegative ? 'negative' : 'positive';
   return (

@@ -30,6 +30,7 @@ const KeyStatsList: FunctionComponent<CompanyStatsProps> = ({
     }
   }, [companySymbol]);
 
+  // nested ternary are difficult to read, and just check firstLoad, no need for firstLoad === true
   return (
     <div>
       {fetchStatus.startFetching && (

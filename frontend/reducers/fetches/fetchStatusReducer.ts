@@ -2,6 +2,7 @@ import { FETCH_STATUS_ACTION_TYPE } from '../../constants/fetchStatusTypes';
 import { FetchStatusType } from '../../actions/fetchStatusActions';
 import { FetchStatusState } from '../../utilities/interfaces';
 
+// seems unnecessarily repetitive. DRY
 const INITIAL_STATE: FetchStatusState = {
   companyInfo: {
     startFetching: false,

@@ -16,8 +16,10 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
 }) => {
   const { description, website, symbol, companyName } = companyInfo;
   const urlFormatter = (url: string | null) =>
+    // you can just check url? no need for == null in this case
     url == null ? null : url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
+  // nested ternary operations are harder to read
   return (
     <div className="section-info">
       {fetchStatus.startFetching && (

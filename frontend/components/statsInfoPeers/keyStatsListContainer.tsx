@@ -3,6 +3,7 @@ import KeyStatsList from './keyStatsList';
 import { RootState } from '../../utilities/interfaces';
 import {
   selectCompanyStats,
+  // remove unused imports
   selectFetchingStatus,
 } from '../../utilities/selectors';
 

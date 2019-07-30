@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { FetchStatusElement } from '../../utilities/interfaces';
 import { isMarketOpen } from '../../utilities/marketStatusUtil';
 
+// might make your code cleaner to extract this function to its own file
 const getLocalTimeZone = () => {
   const date: string = new Date().toString();
   let timeZone: string | string[] = date.match(/\(([^)]+)\)/)![1];
@@ -19,6 +20,8 @@ const MarketStatus: FunctionComponent<MarketStatusProps> = ({
   fetchStatus,
 }) => {
   const localTimeZone =
+    /* not sure why you have to check for getLocalTimeZone(),
+     * if this conditional is true, you're unecessarily calling that function twice*/
     getLocalTimeZone() && updateTime
       ? getLocalTimeZone()
       : new Date().toUTCString();

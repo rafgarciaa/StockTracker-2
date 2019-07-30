@@ -11,6 +11,7 @@ import {
   FavoriteElement,
 } from '../utilities/interfaces';
 
+// you should remove any unused imports
 import {
   API_KEY,
   iexApiSandboxUrl,
@@ -25,6 +26,7 @@ import APIError from '../utilities/apiErrorMessage';
 import { UpdateActions } from '../actions/updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
 
+// it's a bit difficult to understand what's going on with this type
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
 
 interface ExceptionEPS {
@@ -58,6 +60,10 @@ export const Actions = {
     action(QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
 
+/* seems like you're overcomplicating getting your action types a bit.  Keeping things simple here would be
+ * beneficial for other people who may look and work on your code, and also future you who might forget why you
+ * made certain choices.
+ */
 export type ActionsTypes = ActionsUnion<typeof Actions>;
 
 const makeUrl = (service: string, symbol: string, params = '') =>
@@ -68,6 +74,7 @@ const handleResponse = (response: {
   statusText: string;
   status: number;
 }) => {
+  // might be better to have the error codes in a separate file, use enums
   switch (response.status) {
     case 404:
       throw new APIError('Company Not Found', response.status);
@@ -98,6 +105,11 @@ const createThunkAction = (
       .then(payload => {
         dispatch(success(payload));
         dispatch(FetchStatusActions.success(section));
+
+        /* you're setting the updateTime to be the time that the action was dispatched but
+         * but that doesn't accurately reflect what the updateTime should be, it should be the last time
+         * the fetched information was updated, not the last time you searched for the information
+         */
         dispatch(UpdateActions.setUpdateTime(getCurrentDate()));
       })
       .catch(event =>
@@ -111,6 +123,7 @@ const createThunkAction = (
   };
 };
 
+// you're code might look a bit cleaner if you extracted these fetch actions to another file
 const fetchCompanyInfo = (symbol: string) =>
   createThunkAction(
     'companyInfo',

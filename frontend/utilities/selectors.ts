@@ -76,6 +76,9 @@ export const selectChartDataDay = (chartDataDay: ChartDataDay[]) => {
     .map(data => ({ dateTime: data.label, price: data.average }));
 };
 
+/* might be better to have these functions only accept non-null types and remove the null checks.
+ * instead check for nulls when you call this function and make sure you pass the correct type
+ */
 const dateFormatter = (date: string | null) => {
   if (date === null) {
     return null;
@@ -95,6 +98,7 @@ export const selectChartDataOneMonth = (oneMonthDataArray: ChartData[]) =>
     .filter(data => data.close)
     .map(data => ({ dateTime: data.label, price: data.close }));
 
+// same as dateFormatter, only accept the string type and make sure you use the function correctly when you call it
 const yearDateFormatter = (date: string | null) => {
   if (date === null) {
     return null;

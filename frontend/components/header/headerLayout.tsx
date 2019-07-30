@@ -18,6 +18,11 @@ const HeaderLayout: FunctionComponent<HeaderLayoutProps> = ({
   fetchTicker,
 }) => {
   useEffect(() => {
+    /* not sure why intervalId has to be a type any.
+     * One possible way to fix this is to use var inside the if
+     * statement and remove the outter let to get type inference
+     * from the setInterval... but I believe the type is NodeJS.Timeout
+     */
     let intervalId: any;
 
     if (isMarketOpen() && companySymbol) {
