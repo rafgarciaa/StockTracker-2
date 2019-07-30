@@ -8,6 +8,8 @@ export const FetchStatusActions = createAsyncAction(
   FETCH_STATUS_ACTION_TYPE.SET_API_START,
   FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS,
   FETCH_STATUS_ACTION_TYPE.SET_API_ERROR
+  // Could the types not be infered?
+  // Just curious
 )<string, string, { section: string; message: string }>();
 
 export type FetchStatusType = ActionsUnion<typeof FetchStatusActions>;
