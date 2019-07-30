@@ -11,6 +11,9 @@ const INITIAL_STATE: CompanyInfoState = {
   companyName: null,
 };
 
+// Same comment as here :
+// https://github.com/Vboivin/StockTracker-2/blob/master/frontend/components/statsInfoPeers/topPeersContainer.tsx
+
 const companyInfoReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_COMPANY_INFO:
