@@ -15,6 +15,7 @@ const CompanyInfo: FunctionComponent<CompanyInfoProps> = ({
   fetchStatus,
 }) => {
   const { description, website, symbol, companyName } = companyInfo;
+// urlFormatter should be imported from util or be an imported function instead of being inline
   const urlFormatter = (url: string | null) =>
     url == null ? null : url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
