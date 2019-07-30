@@ -11,6 +11,9 @@ const INITIAL_STATE: ChartDataTypes = {
   max: [],
 };
 
+// Same comment as here :
+// https://github.com/Vboivin/StockTracker-2/blob/master/frontend/components/statsInfoPeers/topPeersContainer.tsx
+
 const chartDataReducer = (state = INITIAL_STATE, action: ActionsTypes) => {
   switch (action.type) {
     case QUOTES_ACTION_TYPES.SET_CHART_DATA:
