@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import TopPeers from './topPeers';
 import { RootState } from '../../utilities/interfaces';
+// remove unused imports
 import { selectFetchingStatus } from '../../utilities/selectors';
 
 const mapStateToProps = (state: RootState) => ({

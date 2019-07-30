@@ -2,6 +2,7 @@ import { QUOTES_ACTION_TYPES } from '../../constants/actionTypes';
 import { ActionsTypes } from '../../actions/quotesActions';
 import { CompanyStatsState } from '../../utilities/interfaces';
 
+// might be better to default to undefined or null values because a value of 0 doesn't accurately reflect an unattained value, (it could be possible to have a change of 0 for instance, which would be confusing if 0 also means no data)
 const INITIAL_STATE: CompanyStatsState = {
   avgTotalVolume: 0,
   change: 0,
