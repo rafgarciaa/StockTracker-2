@@ -4,7 +4,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = {
-  entry: './frontend/stockTracker.tsx',
+  entry: './src/stockTracker.tsx',
   output: {
     path: path.resolve(__dirname),
     filename: './bundle.js',

@@ -19,10 +19,10 @@ import {
   Filters,
 } from '../utilities/apiUtil';
 
-import { FetchStatusActions } from '../actions/fetchStatusActions';
+import { FetchStatusActions } from './fetchStatusActions';
 import APIError from '../utilities/apiErrorMessage';
 
-import { UpdateActions } from '../actions/updateActions';
+import { UpdateActions } from './updateActions';
 import { getCurrentDate } from '../utilities/getCurrentDate';
 
 type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<A[keyof A]>;
