@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./frontend/stockTracker.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./frontend/stockTracker.tsx");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -116,23 +116,19 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./frontend/actions/errorActions.ts":
-/*!******************************************!*\
-  !*** ./frontend/actions/errorActions.ts ***!
-  \******************************************/
+/***/ "./frontend/actions/fetchStatusActions.ts":
+/*!************************************************!*\
+  !*** ./frontend/actions/fetchStatusActions.ts ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const errorTypes_1 = __webpack_require__(/*! ../constants/errorTypes */ "./frontend/constants/errorTypes.ts");
-exports.ErrorActions = {
-    setApiErrors: (message) => ({
-        type: errorTypes_1.ERROR_ACTION_TYPE.SET_API_ERROR,
-        message,
-    }),
-};
+const fetchStatusTypes_1 = __webpack_require__(/*! ../constants/fetchStatusTypes */ "./frontend/constants/fetchStatusTypes.ts");
+const typesafe_actions_1 = __webpack_require__(/*! typesafe-actions */ "./node_modules/typesafe-actions/dist/typesafe-actions.umd.production.js");
+exports.FetchStatusActions = typesafe_actions_1.createAsyncAction(fetchStatusTypes_1.FETCH_STATUS_ACTION_TYPE.SET_API_START, fetchStatusTypes_1.FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS, fetchStatusTypes_1.FETCH_STATUS_ACTION_TYPE.SET_API_ERROR)();
 
 
 /***/ }),
@@ -159,74 +155,81 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const actionTypes_1 = __webpack_require__(/*! ../constants/actionTypes */ "./frontend/constants/actionTypes.ts");
+const typesafe_actions_1 = __webpack_require__(/*! typesafe-actions */ "./node_modules/typesafe-actions/dist/typesafe-actions.umd.production.js");
 const apiUtil_1 = __webpack_require__(/*! ../utilities/apiUtil */ "./frontend/utilities/apiUtil.ts");
-const errorActions_1 = __webpack_require__(/*! ../actions/errorActions */ "./frontend/actions/errorActions.ts");
+const fetchStatusActions_1 = __webpack_require__(/*! ../actions/fetchStatusActions */ "./frontend/actions/fetchStatusActions.ts");
 const apiErrorMessage_1 = __importDefault(__webpack_require__(/*! ../utilities/apiErrorMessage */ "./frontend/utilities/apiErrorMessage.ts"));
 const updateActions_1 = __webpack_require__(/*! ../actions/updateActions */ "./frontend/actions/updateActions.ts");
 const getCurrentDate_1 = __webpack_require__(/*! ../utilities/getCurrentDate */ "./frontend/utilities/getCurrentDate.ts");
-function createAction(type, payload) {
-    return { type, payload };
-}
 exports.Actions = {
-    setCompanyInfo: (companyInfo) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
-    setCompanyNews: (companyNews) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
-    setCompanyStats: (companyStats) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
-    setCompanyEPS: (earningsPerShare) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
-    setDividendYield: ({ dividendYield }) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
-    setTopPeers: (topPeers) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
-    setChartDataDay: (chartData) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
-    setCompanyNames: (companyNames) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
-    setChartData: (chartData, timeFrame) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
-    setFavorites: (favoritesData) => createAction(actionTypes_1.QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
+    setCompanyInfo: (companyInfo) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_INFO, companyInfo),
+    setCompanyNews: (companyNews) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_NEWS, companyNews),
+    setCompanyStats: (companyStats) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_STATS, companyStats),
+    setCompanyEPS: (earningsPerShare) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_EPS, earningsPerShare),
+    setDividendYield: ({ dividendYield }) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_DIVIDENDYIELD, dividendYield),
+    setTopPeers: (topPeers) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_TOP_PEERS, topPeers),
+    setChartDataDay: (chartData) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY, chartData),
+    setCompanyNames: (companyNames) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_NAMES, companyNames),
+    setChartData: (chartData, timeFrame) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_CHART_DATA, { chartData, timeFrame }),
+    setFavorites: (favoritesData) => typesafe_actions_1.action(actionTypes_1.QUOTES_ACTION_TYPES.SET_FAVORITES, favoritesData),
 };
 const makeUrl = (service, symbol, params = '') => `${apiUtil_1.iexApiSandboxUrl}/stock/${symbol}/${service}/?token=${apiUtil_1.API_KEY}&${params}`;
 const handleResponse = (response) => {
-    if (response.status === 404) {
-        throw new apiErrorMessage_1.default('Company Not Found', response.status);
+    switch (response.status) {
+        case 404:
+            throw new apiErrorMessage_1.default('Company Not Found', response.status);
+        case 402:
+            throw new apiErrorMessage_1.default('API Key Limit Reached', response.status);
+        case 400:
+            throw new apiErrorMessage_1.default('Invalid API key', response.status);
+        case 200:
+            return response.json();
+        default:
+            throw new apiErrorMessage_1.default(response.statusText, response.status);
     }
-    else if (response.status === 402) {
-        throw new apiErrorMessage_1.default('API Key Limit Reached', response.status);
-    }
-    else if (response.status !== 200) {
-        throw new apiErrorMessage_1.default(response.statusText, response.status);
-    }
-    return response.json();
 };
-const createThunkAction = (service, symbol, success, params) => {
+const createThunkAction = (section, service, symbol, success, params) => {
     return (dispatch) => __awaiter(this, void 0, void 0, function* () {
         const url = makeUrl(service, symbol, params);
+        dispatch(fetchStatusActions_1.FetchStatusActions.request(section));
         fetch(url)
             .then(response => handleResponse(response))
             .then(payload => {
             dispatch(success(payload));
-            dispatch(errorActions_1.ErrorActions.setApiErrors(''));
+            dispatch(fetchStatusActions_1.FetchStatusActions.success(section));
             dispatch(updateActions_1.UpdateActions.setUpdateTime(getCurrentDate_1.getCurrentDate()));
         })
-            .catch(event => dispatch(errorActions_1.ErrorActions.setApiErrors(event.toString())));
+            .catch(event => dispatch(fetchStatusActions_1.FetchStatusActions.failure({
+            section,
+            message: event.toString(),
+        })));
     });
 };
-const fetchCompanyInfo = (symbol) => createThunkAction('company', symbol, exports.Actions.setCompanyInfo, apiUtil_1.Filters.companyInfoFilters);
-const fetchCompanyNews = (symbol) => createThunkAction('news/last/5', symbol, exports.Actions.setCompanyNews, apiUtil_1.Filters.newsFilters);
-const fetchCompanyStats = (symbol) => createThunkAction('quote', symbol, exports.Actions.setCompanyStats, apiUtil_1.Filters.quoteFilters);
-const fetchCompanyEPS = (symbol) => createThunkAction('earnings/1/actualEPS', symbol, exports.Actions.setCompanyEPS);
-const fetchDividendYield = (symbol) => createThunkAction('stats', symbol, exports.Actions.setDividendYield, apiUtil_1.Filters.statsFilters);
-const fetchTopPeers = (symbol) => createThunkAction('peers', symbol, exports.Actions.setTopPeers);
-const fetchChartDataDay = (symbol) => createThunkAction('chart/1d', symbol, exports.Actions.setChartDataDay);
-const fetchChartData = (symbol, timeFrame) => createThunkAction(`chart/${timeFrame}`, symbol, (chartData) => exports.Actions.setChartData(chartData, timeFrame));
-const fetchFavoritePrices = (symbol) => createThunkAction('quote', symbol, exports.Actions.setFavorites, apiUtil_1.Filters.favoritesQuoteFilters);
+const fetchCompanyInfo = (symbol) => createThunkAction('companyInfo', 'company', symbol, exports.Actions.setCompanyInfo, apiUtil_1.Filters.companyInfoFilters);
+const fetchCompanyNews = (symbol) => createThunkAction('companyNews', 'news/last/5', symbol, exports.Actions.setCompanyNews, apiUtil_1.Filters.newsFilters);
+exports.fetchCompanyStats = (symbol) => createThunkAction('companyStats', 'quote', symbol, exports.Actions.setCompanyStats, apiUtil_1.Filters.quoteFilters);
+const fetchCompanyEPS = (symbol) => createThunkAction('companyEPS', 'earnings/1/actualEPS', symbol, exports.Actions.setCompanyEPS);
+const fetchDividendYield = (symbol) => createThunkAction('dividendYield', 'stats', symbol, exports.Actions.setDividendYield, apiUtil_1.Filters.statsFilters);
+const fetchTopPeers = (symbol) => createThunkAction('topPeers', 'peers', symbol, exports.Actions.setTopPeers);
+const fetchChartDataDay = (symbol) => createThunkAction('chartData', 'chart/1d', symbol, exports.Actions.setChartDataDay, apiUtil_1.Filters.chartDataFilters);
+const fetchChartData = (symbol, timeFrame) => createThunkAction('chartData', `chart/${timeFrame}`, symbol, (chartData) => exports.Actions.setChartData(chartData, timeFrame), apiUtil_1.Filters.chartDataFilters);
+const fetchFavoritePrices = (symbol) => createThunkAction('favoritePrices', 'quote', symbol, exports.Actions.setFavorites, apiUtil_1.Filters.favoritesQuoteFilters);
 exports.fetchCompanyNames = () => {
     return (dispatch) => __awaiter(this, void 0, void 0, function* () {
         const url = apiUtil_1.iexApiFreeUrl + '/ref-data/symbols/?filter=symbol,name';
         return fetch(url)
             .then(response => response.json())
             .then(payload => dispatch(exports.Actions.setCompanyNames(payload)))
-            .catch(event => dispatch(errorActions_1.ErrorActions.setApiErrors(event.toString())));
+            .catch(event => dispatch(fetchStatusActions_1.FetchStatusActions.failure({
+            section: '',
+            message: event.statusText,
+        })));
     });
 };
 exports.searchAction = (symbol) => (dispatch) => {
     dispatch(fetchCompanyInfo(symbol));
     dispatch(fetchCompanyNews(symbol));
-    dispatch(fetchCompanyStats(symbol));
+    dispatch(exports.fetchCompanyStats(symbol));
     dispatch(fetchCompanyEPS(symbol));
     dispatch(fetchDividendYield(symbol));
     dispatch(fetchTopPeers(symbol));
@@ -265,41 +268,90 @@ exports.UpdateActions = {
 
 /***/ }),
 
-/***/ "./frontend/components/App.js":
-/*!************************************!*\
-  !*** ./frontend/components/App.js ***!
-  \************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./frontend/components/App.tsx":
+/*!*************************************!*\
+  !*** ./frontend/components/App.tsx ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _header_headerLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./header/headerLayout */ "./frontend/components/header/headerLayout.tsx");
-/* harmony import */ var _header_headerLayout__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_header_headerLayout__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _chartNews_chartNewsLayout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chartNews/chartNewsLayout */ "./frontend/components/chartNews/chartNewsLayout.tsx");
-/* harmony import */ var _chartNews_chartNewsLayout__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_chartNews_chartNewsLayout__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _statsInfoPeers_statsInfoPeersLayout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./statsInfoPeers/statsInfoPeersLayout */ "./frontend/components/statsInfoPeers/statsInfoPeersLayout.tsx");
-/* harmony import */ var _statsInfoPeers_statsInfoPeersLayout__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_statsInfoPeers_statsInfoPeersLayout__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _footer_footerContainer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./footer/footerContainer */ "./frontend/components/footer/footerContainer.tsx");
-/* harmony import */ var _footer_footerContainer__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_footer_footerContainer__WEBPACK_IMPORTED_MODULE_5__);
 
-
-
-
-
-
-
-var App = function App(_ref) {
-  var store = _ref.store;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
-    store: store
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_header_headerLayout__WEBPACK_IMPORTED_MODULE_2___default.a, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_chartNews_chartNewsLayout__WEBPACK_IMPORTED_MODULE_3___default.a, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_statsInfoPeers_statsInfoPeersLayout__WEBPACK_IMPORTED_MODULE_4___default.a, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_footer_footerContainer__WEBPACK_IMPORTED_MODULE_5___default.a, null));
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const headerLayout_1 = __importDefault(__webpack_require__(/*! ./header/headerLayout */ "./frontend/components/header/headerLayout.tsx"));
+const chartNewsLayout_1 = __importDefault(__webpack_require__(/*! ./chartNews/chartNewsLayout */ "./frontend/components/chartNews/chartNewsLayout.tsx"));
+const statsInfoPeersLayout_1 = __importDefault(__webpack_require__(/*! ./statsInfoPeers/statsInfoPeersLayout */ "./frontend/components/statsInfoPeers/statsInfoPeersLayout.tsx"));
+const footerLayout_1 = __importDefault(__webpack_require__(/*! ./footer/footerLayout */ "./frontend/components/footer/footerLayout.tsx"));
+const App = ({ store }) => (react_1.default.createElement(react_redux_1.Provider, { store: store },
+    react_1.default.createElement("div", { className: "section-main" },
+        react_1.default.createElement(headerLayout_1.default, null),
+        react_1.default.createElement(chartNewsLayout_1.default, null),
+        react_1.default.createElement(statsInfoPeersLayout_1.default, null)),
+    react_1.default.createElement(footerLayout_1.default, null)));
+exports.default = App;
 
-/* harmony default export */ __webpack_exports__["default"] = (App);
+
+/***/ }),
+
+/***/ "./frontend/components/adaptiveLoader/adaptiveLoader.css":
+/*!***************************************************************!*\
+  !*** ./frontend/components/adaptiveLoader/adaptiveLoader.css ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader/dist/cjs.js!./adaptiveLoader.css */ "./node_modules/css-loader/dist/cjs.js!./frontend/components/adaptiveLoader/adaptiveLoader.css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./frontend/components/adaptiveLoader/adaptiveLoader.tsx":
+/*!***************************************************************!*\
+  !*** ./frontend/components/adaptiveLoader/adaptiveLoader.tsx ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+__webpack_require__(/*! ./adaptiveLoader.css */ "./frontend/components/adaptiveLoader/adaptiveLoader.css");
+const AdaptiveLoader = () => {
+    return (react_1.default.createElement("div", { className: "lds-facebook" },
+        react_1.default.createElement("div", null),
+        react_1.default.createElement("div", null),
+        react_1.default.createElement("div", null),
+        react_1.default.createElement("div", null)));
+};
+exports.default = AdaptiveLoader;
+
 
 /***/ }),
 
@@ -319,59 +371,46 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const recharts_1 = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/index.js");
-const Chart = ({ oneDayData, fiveDayData, oneMonthData, oneYearData, fiveYearData, maxData, }) => {
-    const [displayedChartData, setDisplayedChartData] = react_1.useState(undefined);
-    const setOneDay = react_1.useCallback(() => setDisplayedChartData(oneDayData), [
-        oneDayData,
-    ]);
-    const setFiveDay = react_1.useCallback(() => setDisplayedChartData(fiveDayData), [
-        fiveDayData,
-    ]);
-    const setOneMonth = react_1.useCallback(() => setDisplayedChartData(oneMonthData), [
-        oneMonthData,
-    ]);
-    const setOneYear = react_1.useCallback(() => setDisplayedChartData(oneYearData), [
-        oneYearData,
-    ]);
-    const setFiveYear = react_1.useCallback(() => setDisplayedChartData(fiveYearData), [
-        fiveYearData,
-    ]);
-    const setMax = react_1.useCallback(() => setDisplayedChartData(maxData), [maxData]);
+const adaptiveLoader_1 = __importDefault(__webpack_require__(/*! ../adaptiveLoader/adaptiveLoader */ "./frontend/components/adaptiveLoader/adaptiveLoader.tsx"));
+const Selectors = __importStar(__webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts"));
+const Chart = (props) => {
+    const [displayedChartData, setDisplayedChartData] = react_1.useState(Selectors.selectChartDataDay(props.oneDayData));
+    const setOneDay = react_1.useCallback(() => setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData)), [props.oneDayData]);
+    const setFiveDay = react_1.useCallback(() => setDisplayedChartData(Selectors.selectChartDataFiveDay(props.fiveDayData)), [props.fiveDayData]);
+    const setOneMonth = react_1.useCallback(() => setDisplayedChartData(Selectors.selectChartDataOneMonth(props.oneMonthData)), [props.oneMonthData]);
+    const setOneYear = react_1.useCallback(() => setDisplayedChartData(Selectors.selectChartDataYear(props.oneYearData)), [props.oneYearData]);
+    const setFiveYear = react_1.useCallback(() => setDisplayedChartData(Selectors.selectChartDataYear(props.fiveYearData)), [props.fiveYearData]);
+    const setMax = react_1.useCallback(() => setDisplayedChartData(Selectors.selectChartDataYear(props.maxData)), [props.maxData]);
     react_1.useEffect(() => {
-        if (!displayedChartData && oneDayData.length !== 0) {
-            setDisplayedChartData(oneDayData);
-        }
-    });
-    return (react_1.default.createElement("div", { className: "section-chart" },
+        setDisplayedChartData(Selectors.selectChartDataDay(props.oneDayData));
+    }, [props.oneDayData]);
+    return (react_1.default.createElement("div", { className: "section-chart" }, props.fetchStatus.startFetching && (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("div", { className: "section-chart__timelines" },
-            react_1.default.createElement("a", { href: "#", onClick: setOneDay },
-                ' ',
-                "1D",
-                ' '),
-            react_1.default.createElement("a", { href: "#", onClick: setFiveDay },
-                ' ',
-                "5D",
-                ' '),
-            react_1.default.createElement("a", { href: "#", onClick: setOneMonth },
-                ' ',
-                "1M",
-                ' '),
-            react_1.default.createElement("a", { href: "#", onClick: setOneYear },
-                ' ',
-                "1Y",
-                ' '),
-            react_1.default.createElement("a", { href: "#", onClick: setFiveYear },
-                ' ',
-                "5Y",
-                ' '),
-            react_1.default.createElement("a", { href: "#", onClick: setMax },
-                ' ',
-                "MAX",
-                ' ')),
-        react_1.default.createElement(recharts_1.ResponsiveContainer, { width: "100%", aspect: 2 },
+            react_1.default.createElement("label", null,
+                react_1.default.createElement("input", { type: "radio", name: "chart", onClick: setOneDay, defaultChecked: true }),
+                react_1.default.createElement("span", { className: "section-chart__timelines--btn" }, "1d")),
+            react_1.default.createElement("label", null,
+                react_1.default.createElement("input", { type: "radio", name: "chart", onClick: setFiveDay }),
+                react_1.default.createElement("span", { className: "section-chart__timelines--btn" }, "5d")),
+            react_1.default.createElement("label", null,
+                react_1.default.createElement("input", { type: "radio", name: "chart", onClick: setOneMonth }),
+                react_1.default.createElement("span", { className: "section-chart__timelines--btn" }, "1m")),
+            react_1.default.createElement("label", null,
+                react_1.default.createElement("input", { type: "radio", name: "chart", onClick: setOneYear }),
+                react_1.default.createElement("span", { className: "section-chart__timelines--btn" }, "1y")),
+            react_1.default.createElement("label", null,
+                react_1.default.createElement("input", { type: "radio", name: "chart", onClick: setFiveYear }),
+                react_1.default.createElement("span", { className: "section-chart__timelines--btn" }, "5y")),
+            react_1.default.createElement("label", null,
+                react_1.default.createElement("input", { type: "radio", name: "chart", onClick: setMax }),
+                react_1.default.createElement("span", { className: "section-chart__timelines--btn" }, "max"))),
+        !props.fetchStatus.doneFetching ? (react_1.default.createElement(adaptiveLoader_1.default, null)) : props.fetchStatus.fetchSuccess !== '' ? (props.fetchStatus.fetchSuccess) : (react_1.default.createElement(recharts_1.ResponsiveContainer, { width: "100%", aspect: 2 },
             react_1.default.createElement(recharts_1.AreaChart, { data: displayedChartData, margin: {
                     top: 0,
                     right: 0,
@@ -386,7 +425,7 @@ const Chart = ({ oneDayData, fiveDayData, oneMonthData, oneYearData, fiveYearDat
                 react_1.default.createElement(recharts_1.XAxis, { dataKey: "dateTime", interval: 'preserveStart', tick: { stroke: '#f4f6f9', strokeWidth: 0.1 } }),
                 react_1.default.createElement(recharts_1.YAxis, { orientation: "right", domain: ['dataMin', 'auto'], tick: { stroke: '#f4f6f9', strokeWidth: 0.1 } }),
                 react_1.default.createElement(recharts_1.Tooltip, { cursor: { stroke: 'red', strokeWidth: 2 }, labelStyle: { color: 'black' } }),
-                react_1.default.createElement(recharts_1.Area, { type: "monotone", dataKey: "price", stroke: "#8884d8", fill: "url(#colorPrice)", fillOpacity: 0.3 })))));
+                react_1.default.createElement(recharts_1.Area, { type: "monotone", dataKey: "price", stroke: "#8884d8", fill: "url(#colorPrice)", fillOpacity: 0.3 }))))))));
 };
 exports.default = Chart;
 
@@ -405,24 +444,26 @@ exports.default = Chart;
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const chart_1 = __importDefault(__webpack_require__(/*! ./chart */ "./frontend/components/chartNews/chart.tsx"));
-const selectors = __importStar(__webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts"));
 const mapStateToProps = (state) => ({
-    oneDayData: selectors.selectChartDataDay(state.quotes.chartDataDay),
-    fiveDayData: selectors.selectChartDataFiveDay(state.quotes.chartData.fiveDay),
-    oneMonthData: selectors.selectChartDataOneMonth(state.quotes.chartData.oneMonth),
-    oneYearData: selectors.selectChartDataYear(state.quotes.chartData.oneYear),
-    fiveYearData: selectors.selectChartDataYear(state.quotes.chartData.fiveYear),
-    maxData: selectors.selectChartDataYear(state.quotes.chartData.max),
+    // oneDayData: selectors.selectChartDataDay(state.quotes.chartDataDay),
+    // fiveDayData: selectors.selectChartDataFiveDay(state.quotes.chartData.fiveDay),
+    // oneMonthData: selectors.selectChartDataOneMonth(
+    //   state.quotes.chartData.oneMonth
+    // ),
+    // oneYearData: selectors.selectChartDataYear(state.quotes.chartData.oneYear),
+    // fiveYearData: selectors.selectChartDataYear(state.quotes.chartData.fiveYear),
+    // maxData: selectors.selectChartDataYear(state.quotes.chartData.max),
+    // fetchStatus: selectors.selectFetchingStatus(state, 'chartData'),
+    oneDayData: state.quotes.chartDataDay,
+    fiveDayData: state.quotes.chartData.fiveDay,
+    oneMonthData: state.quotes.chartData.oneMonth,
+    oneYearData: state.quotes.chartData.oneYear,
+    fiveYearData: state.quotes.chartData.fiveYear,
+    maxData: state.quotes.chartData.max,
+    fetchStatus: state.fetchStatus.chartData,
 });
 exports.default = react_redux_1.connect(mapStateToProps, null)(chart_1.default);
 
@@ -470,10 +511,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const newsListItem_1 = __importDefault(__webpack_require__(/*! ./newsListItem */ "./frontend/components/chartNews/newsListItem.tsx"));
-const NewsList = ({ newsList }) => {
+const adaptiveLoader_1 = __importDefault(__webpack_require__(/*! ../adaptiveLoader/adaptiveLoader */ "./frontend/components/adaptiveLoader/adaptiveLoader.tsx"));
+const NewsList = ({ newsList, fetchStatus, }) => {
     return (react_1.default.createElement("div", { className: "section-news" },
-        react_1.default.createElement("h2", { className: "heading-section" }, "Latest News"),
-        react_1.default.createElement("ul", { className: "section-news__list" }, newsList.map((news, idx) => (react_1.default.createElement(newsListItem_1.default, { key: idx, news: news }))))));
+        fetchStatus.startFetching && (react_1.default.createElement("h2", { className: "heading-section" }, "Latest News")),
+        !fetchStatus.doneFetching && fetchStatus.startFetching ? (react_1.default.createElement(adaptiveLoader_1.default, null)) : fetchStatus.startFetching && fetchStatus.fetchSuccess !== '' ? (fetchStatus.fetchSuccess) : (react_1.default.createElement("ul", { className: "section-news__list" }, newsList.map((news, idx) => (react_1.default.createElement(newsListItem_1.default, { key: idx, news: news })))))));
 };
 exports.default = NewsList;
 
@@ -497,6 +539,7 @@ const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/rea
 const newsList_1 = __importDefault(__webpack_require__(/*! ./newsList */ "./frontend/components/chartNews/newsList.tsx"));
 const mapStateToProps = (state) => ({
     newsList: state.quotes.companyNews,
+    fetchStatus: state.fetchStatus.companyNews,
 });
 exports.default = react_redux_1.connect(mapStateToProps, null)(newsList_1.default);
 
@@ -523,9 +566,9 @@ const formatNewsTimeAgo = (timePublished) => {
 };
 const NewsListItem = ({ news }) => {
     const { datetime, url, headline, source } = news;
-    const timeAgo = formatNewsTimeAgo(Date.now() - datetime);
+    const timeAgo = formatNewsTimeAgo(Date.now() - (datetime ? datetime : 0));
     return (react_1.default.createElement("li", null,
-        react_1.default.createElement("a", { href: url, className: "section-news__list-link" },
+        react_1.default.createElement("a", { href: url ? url : undefined, className: "section-news__list-link" },
             headline,
             react_1.default.createElement("span", { className: "section-news__list-timestamp" },
                 timeAgo,
@@ -537,10 +580,40 @@ exports.default = NewsListItem;
 
 /***/ }),
 
-/***/ "./frontend/components/footer/footerContainer.tsx":
-/*!********************************************************!*\
-  !*** ./frontend/components/footer/footerContainer.tsx ***!
-  \********************************************************/
+/***/ "./frontend/components/footer/footerFavorite.tsx":
+/*!*******************************************************!*\
+  !*** ./frontend/components/footer/footerFavorite.tsx ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const priceOutput_1 = __importDefault(__webpack_require__(/*! ../header/priceOutput */ "./frontend/components/header/priceOutput.tsx"));
+const FooterFavorite = ({ favoriteList, fetchStatus, }) => {
+    return (react_1.default.createElement(react_1.default.Fragment, null, fetchStatus.startFetching && (react_1.default.createElement("div", { className: "section-footer__slice" },
+        react_1.default.createElement("h4", { className: "section-footer__heading" }, "Favorites"),
+        react_1.default.createElement("div", { className: "section-footer__content" }, Object.keys(favoriteList).map((symbol, idx) => {
+            const market = favoriteList[symbol];
+            return (react_1.default.createElement("div", { className: "section-market-favorite", key: idx },
+                react_1.default.createElement("span", null, market.symbol),
+                react_1.default.createElement(priceOutput_1.default, { latestPrice: market.latestPrice, change: market.change, changePercent: market.changePercent })));
+        }))))));
+};
+exports.default = FooterFavorite;
+
+
+/***/ }),
+
+/***/ "./frontend/components/footer/footerFavoriteContainer.tsx":
+/*!****************************************************************!*\
+  !*** ./frontend/components/footer/footerFavoriteContainer.tsx ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -551,8 +624,90 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-const footerLayout_1 = __importDefault(__webpack_require__(/*! ./footerLayout */ "./frontend/components/footer/footerLayout.tsx"));
-const harcodedData = {
+const footerFavorite_1 = __importDefault(__webpack_require__(/*! ./footerFavorite */ "./frontend/components/footer/footerFavorite.tsx"));
+const selectors_1 = __webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts");
+const mapStateToProps = (state) => ({
+    favoriteList: state.quotes.favorites,
+    fetchStatus: selectors_1.selectFetchingStatus(state, 'favoritePrices'),
+});
+exports.default = react_redux_1.connect(mapStateToProps, null)(footerFavorite_1.default);
+
+
+/***/ }),
+
+/***/ "./frontend/components/footer/footerLayout.tsx":
+/*!*****************************************************!*\
+  !*** ./frontend/components/footer/footerLayout.tsx ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const footerMarketContainer_1 = __importDefault(__webpack_require__(/*! ./footerMarketContainer */ "./frontend/components/footer/footerMarketContainer.tsx"));
+const footerFavoriteContainer_1 = __importDefault(__webpack_require__(/*! ./footerFavoriteContainer */ "./frontend/components/footer/footerFavoriteContainer.tsx"));
+const FooterLayout = () => {
+    return (react_1.default.createElement("div", { className: "section-footer" },
+        react_1.default.createElement(footerMarketContainer_1.default, null),
+        react_1.default.createElement(footerFavoriteContainer_1.default, null)));
+};
+exports.default = FooterLayout;
+
+
+/***/ }),
+
+/***/ "./frontend/components/footer/footerMarket.tsx":
+/*!*****************************************************!*\
+  !*** ./frontend/components/footer/footerMarket.tsx ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const priceOutput_1 = __importDefault(__webpack_require__(/*! ../header/priceOutput */ "./frontend/components/header/priceOutput.tsx"));
+const FooterMarket = ({ marketList, fetchStatus, }) => {
+    return (react_1.default.createElement(react_1.default.Fragment, null, fetchStatus.startFetching && (react_1.default.createElement("div", { className: "section-footer__slice" },
+        react_1.default.createElement("h4", { className: "section-footer__heading" }, "Market"),
+        react_1.default.createElement("div", { className: "section-footer__content" }, Object.keys(marketList).map((symbol, idx) => {
+            const market = marketList[symbol];
+            return (react_1.default.createElement("div", { className: "section-market-favorite", key: idx },
+                react_1.default.createElement("span", null, market.symbol),
+                react_1.default.createElement(priceOutput_1.default, { latestPrice: market.latestPrice, change: market.change, changePercent: market.changePercent })));
+        }))))));
+};
+exports.default = FooterMarket;
+
+
+/***/ }),
+
+/***/ "./frontend/components/footer/footerMarketContainer.tsx":
+/*!**************************************************************!*\
+  !*** ./frontend/components/footer/footerMarketContainer.tsx ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const footerMarket_1 = __importDefault(__webpack_require__(/*! ./footerMarket */ "./frontend/components/footer/footerMarket.tsx"));
+const selectors_1 = __webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts");
+exports.harcodedData = {
     nasdaq: {
         symbol: 'nasdaq',
         latestPrice: 6850.05,
@@ -573,64 +728,10 @@ const harcodedData = {
     },
 };
 const mapStateToProps = (state) => ({
-    marketList: harcodedData,
-    favoriteList: state.quotes.favorites,
+    marketList: exports.harcodedData,
+    fetchStatus: selectors_1.selectFetchingStatus(state, 'favoritePrices'),
 });
-exports.default = react_redux_1.connect(mapStateToProps, null)(footerLayout_1.default);
-
-
-/***/ }),
-
-/***/ "./frontend/components/footer/footerLayout.tsx":
-/*!*****************************************************!*\
-  !*** ./frontend/components/footer/footerLayout.tsx ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const marketFavorite_1 = __importDefault(__webpack_require__(/*! ./marketFavorite */ "./frontend/components/footer/marketFavorite.tsx"));
-const FooterLayout = ({ marketList, favoriteList }) => {
-    return (react_1.default.createElement("div", null,
-        "FOOTER",
-        react_1.default.createElement(marketFavorite_1.default, { sectionTitle: 'us market', symbolsList: marketList }),
-        react_1.default.createElement(marketFavorite_1.default, { sectionTitle: 'favorites', symbolsList: favoriteList })));
-};
-exports.default = FooterLayout;
-
-
-/***/ }),
-
-/***/ "./frontend/components/footer/marketFavorite.tsx":
-/*!*******************************************************!*\
-  !*** ./frontend/components/footer/marketFavorite.tsx ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const priceOutput_1 = __importDefault(__webpack_require__(/*! ../header/priceOutput */ "./frontend/components/header/priceOutput.tsx"));
-const MarketFavorite = ({ sectionTitle, symbolsList, }) => {
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("span", null, sectionTitle),
-        Object.keys(symbolsList).map((symbol, idx) => {
-            const market = symbolsList[symbol];
-            return (react_1.default.createElement(priceOutput_1.default, { key: idx, latestPrice: market.latestPrice, change: market.change, changePercent: market.changePercent }));
-        })));
-};
-exports.default = MarketFavorite;
+exports.default = react_redux_1.connect(mapStateToProps, null)(footerMarket_1.default);
 
 
 /***/ }),
@@ -679,21 +780,46 @@ exports.default = AdaptiveLogo;
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const tabsLogoLayout_1 = __importDefault(__webpack_require__(/*! ./tabsLogoLayout */ "./frontend/components/header/tabsLogoLayout.tsx"));
 const searchPriceLayout_1 = __importDefault(__webpack_require__(/*! ./searchPriceLayout */ "./frontend/components/header/searchPriceLayout.tsx"));
 const tagsMarketLayout_1 = __importDefault(__webpack_require__(/*! ./tagsMarketLayout */ "./frontend/components/header/tagsMarketLayout.tsx"));
-const HeaderLayout = () => {
+const marketStatusUtil_1 = __webpack_require__(/*! ../../utilities/marketStatusUtil */ "./frontend/utilities/marketStatusUtil.ts");
+const quotesActions_1 = __webpack_require__(/*! ../../actions/quotesActions */ "./frontend/actions/quotesActions.ts");
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const HeaderLayout = ({ companySymbol, fetchTicker, }) => {
+    react_1.useEffect(() => {
+        let intervalId;
+        if (marketStatusUtil_1.isMarketOpen() && companySymbol) {
+            intervalId = setInterval(() => {
+                fetchTicker(companySymbol);
+            }, 5000);
+        }
+        return () => clearInterval(intervalId);
+    });
     return (react_1.default.createElement("div", { className: "header" },
         react_1.default.createElement(tabsLogoLayout_1.default, null),
         react_1.default.createElement(searchPriceLayout_1.default, null),
         react_1.default.createElement(tagsMarketLayout_1.default, null)));
 };
-exports.default = HeaderLayout;
+const mapStateToProps = ({ quotes }) => ({
+    companySymbol: quotes.companyInfo.symbol,
+});
+const mapDispatchToProps = (dispatch) => ({
+    fetchTicker: (symbol) => dispatch(quotesActions_1.fetchCompanyStats(symbol)),
+});
+exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(HeaderLayout);
 
 
 /***/ }),
@@ -712,25 +838,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const isMarketOpen = () => {
-    const dateNow = new Date();
-    const marketOpen = new Date().setUTCHours(13, 30, 0, 0);
-    const marketClose = new Date().setUTCHours(20, 0, 0, 0);
-    return dateNow.getTime() > marketOpen && dateNow.getTime() < marketClose;
-};
+const marketStatusUtil_1 = __webpack_require__(/*! ../../utilities/marketStatusUtil */ "./frontend/utilities/marketStatusUtil.ts");
 const getLocalTimeZone = () => {
     const date = new Date().toString();
     let timeZone = date.match(/\(([^)]+)\)/)[1];
     timeZone = timeZone.split(' ').map((el) => el[0]);
     return timeZone.join('');
 };
-const MarketStatus = ({ updateTime }) => {
+const MarketStatus = ({ updateTime, fetchStatus, }) => {
     const localTimeZone = getLocalTimeZone() && updateTime
         ? getLocalTimeZone()
         : new Date().toUTCString();
     const sun = react_1.default.createElement("i", { className: "far fa-sun" });
     const moon = react_1.default.createElement("i", { className: "far fa-moon" });
-    return (react_1.default.createElement("div", { className: "header__bottom-status" },
+    return (react_1.default.createElement("div", null, fetchStatus.startFetching ? (fetchStatus.fetchSuccess !== '' ? null : (react_1.default.createElement("div", { className: "header__bottom-status" },
         react_1.default.createElement("span", null,
             "Real-Time Price as of ",
             updateTime,
@@ -738,10 +859,10 @@ const MarketStatus = ({ updateTime }) => {
             localTimeZone),
         react_1.default.createElement("span", null, ` `),
         react_1.default.createElement("span", null,
-            isMarketOpen() ? sun : moon,
+            marketStatusUtil_1.isMarketOpen() ? sun : moon,
             " Market",
             ' ',
-            isMarketOpen() ? 'Open' : 'Closed')));
+            marketStatusUtil_1.isMarketOpen() ? 'Open' : 'Closed')))) : null));
 };
 exports.default = MarketStatus;
 
@@ -763,8 +884,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const marketStatus_1 = __importDefault(__webpack_require__(/*! ./marketStatus */ "./frontend/components/header/marketStatus.tsx"));
-const mapStateToProps = ({ updateTime }) => ({
-    updateTime,
+const selectors_1 = __webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts");
+const mapStateToProps = (state) => ({
+    updateTime: state.updateTime,
+    fetchStatus: selectors_1.selectFetchingStatus(state, 'companyInfo'),
 });
 exports.default = react_redux_1.connect(mapStateToProps)(marketStatus_1.default);
 
@@ -787,18 +910,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const numberFormatters_1 = __webpack_require__(/*! ../../utilities/numberFormatters */ "./frontend/utilities/numberFormatters.ts");
 const PriceOutput = ({ latestPrice, change, changePercent, }) => {
-    const isNegative = change <= 0;
+    const isNegative = change ? change <= 0 : false;
     const headerClassName = isNegative ? 'negative' : 'positive';
     return (react_1.default.createElement("div", { className: "header__top-price" },
         react_1.default.createElement("span", null,
             react_1.default.createElement("span", { className: "icon--small" }, "$"),
-            latestPrice != null ? Math.abs(latestPrice) : '0'),
+            latestPrice != null ? Math.abs(latestPrice).toFixed(2) : '0'),
         react_1.default.createElement("div", { className: `header__top-price--change ` + headerClassName },
             react_1.default.createElement("span", null,
                 react_1.default.createElement("span", { className: "icon--small" }, isNegative ? '\u2193' : '\u2191'),
                 change != null ? Math.abs(change) : '0'),
             react_1.default.createElement("span", null,
-                numberFormatters_1.changeToPercent(Math.abs(changePercent)),
+                numberFormatters_1.changeToPercent(Math.abs(changePercent ? changePercent : 0)),
                 react_1.default.createElement("span", { className: "icon--small" }, "%")))));
 };
 exports.default = PriceOutput;
@@ -821,10 +944,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const priceOutput_1 = __importDefault(__webpack_require__(/*! ./priceOutput */ "./frontend/components/header/priceOutput.tsx"));
-const mapStateToProps = ({ quotes }) => ({
-    latestPrice: quotes.companyStats.latestPrice,
-    change: quotes.companyStats.change,
-    changePercent: quotes.companyStats.changePercent,
+const mapStateToProps = (state) => ({
+    latestPrice: state.quotes.companyStats.latestPrice,
+    change: state.quotes.companyStats.change,
+    changePercent: state.quotes.companyStats.changePercent,
 });
 exports.default = react_redux_1.connect(mapStateToProps)(priceOutput_1.default);
 
@@ -847,27 +970,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const SearchInput = ({ companyName, companySymbol, searchAction, fetchCompanyNames, }) => {
-    const [searchText, setSearchText] = react_1.useState('');
+const searchList_1 = __importDefault(__webpack_require__(/*! ./searchList */ "./frontend/components/header/searchList.tsx"));
+const downshift_1 = __importDefault(__webpack_require__(/*! downshift */ "./node_modules/downshift/dist/downshift.esm.js"));
+const SearchInput = ({ companyNames, companyName, companySymbol, searchAction, fetchCompanyNames, }) => {
     react_1.useEffect(() => {
         fetchCompanyNames();
     }, []);
-    const handleChange = (e) => {
-        setSearchText(e.target.value);
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        searchAction(searchText);
-    };
-    return (react_1.default.createElement("form", { onSubmit: handleSubmit },
+    return (react_1.default.createElement("div", { className: "header__top-search-bar" },
         react_1.default.createElement("i", { className: "fas fa-search" }),
-        react_1.default.createElement("div", { className: "input__placeholder-wrap" },
-            react_1.default.createElement("input", { type: "text", onChange: handleChange, value: searchText, required: true }),
+        react_1.default.createElement(downshift_1.default, { onChange: (selection) => selection ? searchAction(selection.symbol) : '', itemToString: () => '', defaultHighlightedIndex: 0, initialHighlightedIndex: null }, ({ getInputProps, getItemProps, getLabelProps, isOpen, inputValue, highlightedIndex, selectedItem, }) => (react_1.default.createElement("div", { className: "input__placeholder-wrap" },
+            react_1.default.createElement("label", Object.assign({ htmlFor: "search" }, getLabelProps())),
+            react_1.default.createElement("input", Object.assign({ id: "search", type: "text" }, getInputProps(), { required: true })),
             react_1.default.createElement("span", { className: "input__placeholder-wrap--name" },
                 companyName ? companyName : 'Search...',
-                companyName && companySymbol ? (react_1.default.createElement("b", { className: "input__placeholder-wrap--symbol" }, ` (${companySymbol})`)) : ('')))));
+                companyName && companySymbol ? (react_1.default.createElement("b", { className: "input__placeholder-wrap--symbol" }, ` (${companySymbol})`)) : ('')),
+            react_1.default.createElement(searchList_1.default, { companyNames: companyNames, getItemProps: getItemProps, isOpen: isOpen, inputValue: inputValue, highlightedIndex: highlightedIndex, selectedItem: selectedItem }))))));
 };
 exports.default = SearchInput;
 
@@ -891,6 +1013,7 @@ const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/rea
 const searchInput_1 = __importDefault(__webpack_require__(/*! ./searchInput */ "./frontend/components/header/searchInput.tsx"));
 const quotesActions_1 = __webpack_require__(/*! ../../actions/quotesActions */ "./frontend/actions/quotesActions.ts");
 const mapStateToProps = ({ quotes }) => ({
+    companyNames: quotes.companyNames,
     companyName: quotes.companyInfo.companyName,
     companySymbol: quotes.companyInfo.symbol,
 });
@@ -899,6 +1022,69 @@ const mapDispatchToProps = (dispatch) => ({
     fetchCompanyNames: () => dispatch(quotesActions_1.fetchCompanyNames()),
 });
 exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(searchInput_1.default);
+
+
+/***/ }),
+
+/***/ "./frontend/components/header/searchList.tsx":
+/*!***************************************************!*\
+  !*** ./frontend/components/header/searchList.tsx ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const searchListItem_1 = __importDefault(__webpack_require__(/*! ./searchListItem */ "./frontend/components/header/searchListItem.tsx"));
+const SearchList = ({ companyNames, getItemProps, isOpen, inputValue, highlightedIndex, selectedItem, }) => {
+    return (react_1.default.createElement("ul", { className: "header__top-search-list" }, isOpen
+        ? companyNames
+            .filter((company) => !inputValue ||
+            company.name
+                .toLowerCase()
+                .startsWith(inputValue.toLowerCase()) ||
+            company.symbol
+                .toLowerCase()
+                .startsWith(inputValue.toLowerCase()))
+            .slice(0, 6)
+            .map((company, index) => (react_1.default.createElement(searchListItem_1.default, { key: company.symbol, company: company, getItemProps: getItemProps, highlightedIndex: highlightedIndex, index: index, selectedItem: selectedItem })))
+        : null));
+};
+exports.default = SearchList;
+
+
+/***/ }),
+
+/***/ "./frontend/components/header/searchListItem.tsx":
+/*!*******************************************************!*\
+  !*** ./frontend/components/header/searchListItem.tsx ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const SearchList = ({ company, getItemProps, highlightedIndex, index, selectedItem, }) => {
+    return (react_1.default.createElement("li", Object.assign({}, getItemProps({
+        index,
+        item: company,
+        style: {
+            backgroundColor: highlightedIndex === index ? '#8e939f' : '#102238',
+            fontWeight: selectedItem === company ? 'bold' : 'normal',
+        },
+    })), `${company.name} (${company.symbol})`));
+};
+exports.default = SearchList;
 
 
 /***/ }),
@@ -919,12 +1105,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const searchInputContainer_1 = __importDefault(__webpack_require__(/*! ./searchInputContainer */ "./frontend/components/header/searchInputContainer.tsx"));
 const priceOutputContainer_1 = __importDefault(__webpack_require__(/*! ./priceOutputContainer */ "./frontend/components/header/priceOutputContainer.tsx"));
-const SearchPriceLayout = () => {
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const selectors_1 = __webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts");
+const SearchPriceLayout = ({ fetchStatus, }) => {
     return (react_1.default.createElement("div", { className: "header__top-search-area" },
         react_1.default.createElement(searchInputContainer_1.default, null),
-        react_1.default.createElement(priceOutputContainer_1.default, null)));
+        fetchStatus.startFetching ? (fetchStatus.fetchSuccess !== '' ? ('N/A') : (react_1.default.createElement(priceOutputContainer_1.default, null))) : null));
 };
-exports.default = SearchPriceLayout;
+const mapStateToProps = (state) => ({
+    fetchStatus: selectors_1.selectFetchingStatus(state, 'companyStats'),
+});
+exports.default = react_redux_1.connect(mapStateToProps, null)(SearchPriceLayout);
 
 
 /***/ }),
@@ -994,11 +1185,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const Tags = ({ exchange, sector }) => {
-    return (react_1.default.createElement("div", { className: "header__bottom-tags" },
+const Tags = ({ exchange, sector, fetchStatus, }) => {
+    return (react_1.default.createElement("div", null, fetchStatus.startFetching ? (fetchStatus.fetchSuccess !== '' ? null : (react_1.default.createElement("div", { className: "header__bottom-tags" },
         react_1.default.createElement("span", null, exchange),
         react_1.default.createElement("span", null, sector),
-        react_1.default.createElement("span", null, "USD")));
+        react_1.default.createElement("span", null, "USD")))) : ('')));
 };
 exports.default = Tags;
 
@@ -1020,11 +1211,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const tags_1 = __importDefault(__webpack_require__(/*! ./tags */ "./frontend/components/header/tags.tsx"));
+const selectors_1 = __webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts");
 const mapStateToProps = (state) => {
     const { companyInfo } = state.quotes;
     return {
         exchange: companyInfo.exchange,
         sector: companyInfo.sector,
+        fetchStatus: selectors_1.selectFetchingStatus(state, 'companyInfo'),
     };
 };
 exports.default = react_redux_1.connect(mapStateToProps)(tags_1.default);
@@ -1072,17 +1265,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const CompanyInfo = ({ companyInfo }) => {
+const adaptiveLoader_1 = __importDefault(__webpack_require__(/*! ../adaptiveLoader/adaptiveLoader */ "./frontend/components/adaptiveLoader/adaptiveLoader.tsx"));
+const CompanyInfo = ({ companyInfo, fetchStatus, }) => {
     const { description, website, symbol, companyName } = companyInfo;
     const urlFormatter = (url) => url == null ? null : url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-    return (react_1.default.createElement("div", { className: "section-info" },
+    return (react_1.default.createElement("div", { className: "section-info" }, fetchStatus.startFetching && (react_1.default.createElement("div", null,
         react_1.default.createElement("h2", { className: "heading-section" }, "Company Overview"),
-        react_1.default.createElement("h2", null,
-            companyName,
-            " ",
-            symbol ? `(${symbol})` : ''),
-        react_1.default.createElement("a", { href: website, className: "section-info__link" }, urlFormatter(website)),
-        react_1.default.createElement("p", null, description)));
+        !fetchStatus.doneFetching ? (react_1.default.createElement(adaptiveLoader_1.default, null)) : fetchStatus.fetchSuccess !== '' ? (fetchStatus.fetchSuccess) : (react_1.default.createElement("div", null,
+            react_1.default.createElement("h2", null,
+                companyName,
+                " ",
+                symbol ? `(${symbol})` : ''),
+            react_1.default.createElement("a", { href: website ? website : undefined, className: "section-info__link" }, urlFormatter(website)),
+            react_1.default.createElement("p", null, description)))))));
 };
 exports.default = CompanyInfo;
 
@@ -1106,6 +1301,7 @@ const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/rea
 const companyInfo_1 = __importDefault(__webpack_require__(/*! ./companyInfo */ "./frontend/components/statsInfoPeers/companyInfo.tsx"));
 const mapStateToProps = (state) => ({
     companyInfo: state.quotes.companyInfo,
+    fetchStatus: state.fetchStatus.companyInfo,
 });
 exports.default = react_redux_1.connect(mapStateToProps, null)(companyInfo_1.default);
 
@@ -1121,18 +1317,37 @@ exports.default = react_redux_1.connect(mapStateToProps, null)(companyInfo_1.def
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const keyStatsListItem_1 = __importDefault(__webpack_require__(/*! ./keyStatsListItem */ "./frontend/components/statsInfoPeers/keyStatsListItem.tsx"));
-const KeyStatsList = ({ companyStatsLeft, companyStatsRight, }) => {
-    return (react_1.default.createElement("div", null,
+const adaptiveLoader_1 = __importDefault(__webpack_require__(/*! ../adaptiveLoader/adaptiveLoader */ "./frontend/components/adaptiveLoader/adaptiveLoader.tsx"));
+const KeyStatsList = ({ companySymbol, companyStatsLeft, companyStatsRight, fetchStatus, }) => {
+    const [firstLoad, setFirstLoad] = react_1.useState(true);
+    react_1.useEffect(() => {
+        if (fetchStatus.doneFetching) {
+            setFirstLoad(false);
+        }
+    }, [fetchStatus.doneFetching]);
+    react_1.useEffect(() => {
+        if (!fetchStatus.doneFetching) {
+            setFirstLoad(true);
+        }
+    }, [companySymbol]);
+    return (react_1.default.createElement("div", null, fetchStatus.startFetching && (react_1.default.createElement("div", null,
         react_1.default.createElement("h2", { className: "heading-section" }, "Key Stats"),
-        react_1.default.createElement("div", { className: "section-stats__list" },
-            react_1.default.createElement("ul", null, companyStatsLeft.map(({ name, value }) => (react_1.default.createElement(keyStatsListItem_1.default, { key: name, name: name, value: value })))),
-            react_1.default.createElement("ul", null, companyStatsRight.map(({ name, value }) => (react_1.default.createElement(keyStatsListItem_1.default, { key: name, name: name, value: value })))))));
+        !fetchStatus.doneFetching && firstLoad === true ? (react_1.default.createElement(adaptiveLoader_1.default, null)) : fetchStatus.fetchSuccess !== '' ? (fetchStatus.fetchSuccess) : (react_1.default.createElement("div", { className: "section-stats__list" },
+            react_1.default.createElement("ul", null, companyStatsLeft.map(({ name, value }, index) => (react_1.default.createElement(keyStatsListItem_1.default, { key: name ? name : index, name: name, value: value })))),
+            react_1.default.createElement("ul", null, companyStatsRight.map(({ name, value }, index) => (react_1.default.createElement(keyStatsListItem_1.default, { key: name ? name : index, name: name, value: value }))))))))));
 };
 exports.default = KeyStatsList;
 
@@ -1156,10 +1371,12 @@ const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/rea
 const keyStatsList_1 = __importDefault(__webpack_require__(/*! ./keyStatsList */ "./frontend/components/statsInfoPeers/keyStatsList.tsx"));
 const selectors_1 = __webpack_require__(/*! ../../utilities/selectors */ "./frontend/utilities/selectors.ts");
 const mapStateToProps = (state) => ({
+    companySymbol: state.quotes.companyInfo.symbol,
     companyStatsLeft: selectors_1.selectCompanyStats(state.quotes.companyStats)
         .companyStatsLeft,
     companyStatsRight: selectors_1.selectCompanyStats(state.quotes.companyStats)
         .companyStatsRight,
+    fetchStatus: state.fetchStatus.companyStats,
 });
 exports.default = react_redux_1.connect(mapStateToProps, null)(keyStatsList_1.default);
 
@@ -1234,10 +1451,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const TopPeers = ({ topPeers }) => {
-    return (react_1.default.createElement("div", { className: "section-peers" },
+const adaptiveLoader_1 = __importDefault(__webpack_require__(/*! ../adaptiveLoader/adaptiveLoader */ "./frontend/components/adaptiveLoader/adaptiveLoader.tsx"));
+const TopPeers = ({ topPeers, fetchStatus, }) => {
+    return (react_1.default.createElement("div", { className: "section-peers" }, fetchStatus.startFetching && (react_1.default.createElement("div", null,
         react_1.default.createElement("h2", { className: "heading-section" }, "Top Peers"),
-        topPeers.map((peer, idx) => (react_1.default.createElement("span", { className: "section-peers__peer", key: idx }, peer)))));
+        !fetchStatus.doneFetching ? (react_1.default.createElement(adaptiveLoader_1.default, null)) : fetchStatus.fetchSuccess !== '' ? (fetchStatus.fetchSuccess) : (react_1.default.createElement("div", null, topPeers.map((peer, idx) => (react_1.default.createElement("span", { className: "section-peers__peer", key: idx }, peer)))))))));
 };
 exports.default = TopPeers;
 
@@ -1261,6 +1479,7 @@ const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/rea
 const topPeers_1 = __importDefault(__webpack_require__(/*! ./topPeers */ "./frontend/components/statsInfoPeers/topPeers.tsx"));
 const mapStateToProps = (state) => ({
     topPeers: state.quotes.topPeers,
+    fetchStatus: state.fetchStatus.topPeers,
 });
 exports.default = react_redux_1.connect(mapStateToProps, null)(topPeers_1.default);
 
@@ -1294,20 +1513,22 @@ var QUOTES_ACTION_TYPES;
 
 /***/ }),
 
-/***/ "./frontend/constants/errorTypes.ts":
-/*!******************************************!*\
-  !*** ./frontend/constants/errorTypes.ts ***!
-  \******************************************/
+/***/ "./frontend/constants/fetchStatusTypes.ts":
+/*!************************************************!*\
+  !*** ./frontend/constants/fetchStatusTypes.ts ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ERROR_ACTION_TYPE;
-(function (ERROR_ACTION_TYPE) {
-    ERROR_ACTION_TYPE["SET_API_ERROR"] = "SET_API_ERROR";
-})(ERROR_ACTION_TYPE = exports.ERROR_ACTION_TYPE || (exports.ERROR_ACTION_TYPE = {}));
+var FETCH_STATUS_ACTION_TYPE;
+(function (FETCH_STATUS_ACTION_TYPE) {
+    FETCH_STATUS_ACTION_TYPE["SET_API_ERROR"] = "SET_API_ERROR";
+    FETCH_STATUS_ACTION_TYPE["SET_API_START"] = "SET_API_START";
+    FETCH_STATUS_ACTION_TYPE["SET_API_SUCCESS"] = "SET_API_SUCCESS";
+})(FETCH_STATUS_ACTION_TYPE = exports.FETCH_STATUS_ACTION_TYPE || (exports.FETCH_STATUS_ACTION_TYPE = {}));
 
 
 /***/ }),
@@ -1330,26 +1551,84 @@ var UPDATE_ACTION_TYPES;
 
 /***/ }),
 
-/***/ "./frontend/reducers/errors/errorsReducer.ts":
-/*!***************************************************!*\
-  !*** ./frontend/reducers/errors/errorsReducer.ts ***!
-  \***************************************************/
+/***/ "./frontend/reducers/fetches/fetchStatusReducer.ts":
+/*!*********************************************************!*\
+  !*** ./frontend/reducers/fetches/fetchStatusReducer.ts ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const errorTypes_1 = __webpack_require__(/*! ../../constants/errorTypes */ "./frontend/constants/errorTypes.ts");
-const errorsReducer = (state = '', action) => {
+const fetchStatusTypes_1 = __webpack_require__(/*! ../../constants/fetchStatusTypes */ "./frontend/constants/fetchStatusTypes.ts");
+const INITIAL_STATE = {
+    companyInfo: {
+        startFetching: false,
+        doneFetching: false,
+        fetchSuccess: '',
+    },
+    companyNews: {
+        doneFetching: false,
+        startFetching: false,
+        fetchSuccess: '',
+    },
+    companyStats: {
+        startFetching: false,
+        doneFetching: false,
+        fetchSuccess: '',
+    },
+    companyEPS: {
+        startFetching: false,
+        doneFetching: false,
+        fetchSuccess: '',
+    },
+    dividendYield: {
+        startFetching: false,
+        doneFetching: false,
+        fetchSuccess: '',
+    },
+    topPeers: {
+        startFetching: false,
+        doneFetching: false,
+        fetchSuccess: '',
+    },
+    chartData: {
+        startFetching: false,
+        doneFetching: false,
+        fetchSuccess: '',
+    },
+    favoritePrices: {
+        startFetching: false,
+        doneFetching: false,
+        fetchSuccess: '',
+    },
+};
+const fetchStatusReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case errorTypes_1.ERROR_ACTION_TYPE.SET_API_ERROR:
-            return action.message;
+        case fetchStatusTypes_1.FETCH_STATUS_ACTION_TYPE.SET_API_ERROR:
+            return Object.assign({}, state, { [action.payload.section]: {
+                    startFetching: true,
+                    doneFetching: true,
+                    fetchSuccess: action.payload.message,
+                } });
+        case fetchStatusTypes_1.FETCH_STATUS_ACTION_TYPE.SET_API_START:
+            return Object.assign({}, state, { [action.payload]: {
+                    startFetching: true,
+                    doneFetching: false,
+                    fetchSuccess: '',
+                } });
+        case fetchStatusTypes_1.FETCH_STATUS_ACTION_TYPE.SET_API_SUCCESS:
+            return Object.assign({}, state, { [action.payload]: {
+                    startFetching: true,
+                    doneFetching: true,
+                    fetchSuccess: '',
+                } });
         default:
             return state;
     }
 };
-exports.default = errorsReducer;
+exports.default = fetchStatusReducer;
 
 
 /***/ }),
@@ -1366,7 +1645,6 @@ exports.default = errorsReducer;
 Object.defineProperty(exports, "__esModule", { value: true });
 const actionTypes_1 = __webpack_require__(/*! ../../constants/actionTypes */ "./frontend/constants/actionTypes.ts");
 const chartDataDayReducer = (state = [], action) => {
-    Object.freeze(state);
     switch (action.type) {
         case actionTypes_1.QUOTES_ACTION_TYPES.SET_CHART_DATA_DAY:
             return action.payload;
@@ -1399,13 +1677,10 @@ const INITIAL_STATE = {
     max: [],
 };
 const chartDataReducer = (state = INITIAL_STATE, action) => {
-    Object.freeze(state);
     switch (action.type) {
         case actionTypes_1.QUOTES_ACTION_TYPES.SET_CHART_DATA:
             const timeFrame = chartTimeFrameFormatter_1.chartTimeFrameFormatter(action.payload.timeFrame);
-            return Object.assign({}, state, {
-                [timeFrame]: action.payload.chartData,
-            });
+            return Object.assign({}, state, { [timeFrame]: action.payload.chartData });
         default:
             return state;
     }
@@ -1435,10 +1710,9 @@ const INITIAL_STATE = {
     companyName: null,
 };
 const companyInfoReducer = (state = INITIAL_STATE, action) => {
-    Object.freeze(state);
     switch (action.type) {
         case actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_INFO:
-            return Object.assign({}, state, action.payload);
+            return action.payload;
         default:
             return state;
     }
@@ -1460,7 +1734,6 @@ exports.default = companyInfoReducer;
 Object.defineProperty(exports, "__esModule", { value: true });
 const actionTypes_1 = __webpack_require__(/*! ../../constants/actionTypes */ "./frontend/constants/actionTypes.ts");
 const companyNamesReducer = (state = [], action) => {
-    Object.freeze(state);
     switch (action.type) {
         case actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_NAMES:
             return action.payload;
@@ -1485,7 +1758,6 @@ exports.default = companyNamesReducer;
 Object.defineProperty(exports, "__esModule", { value: true });
 const actionTypes_1 = __webpack_require__(/*! ../../constants/actionTypes */ "./frontend/constants/actionTypes.ts");
 const companyNewsReducer = (state = [], action) => {
-    Object.freeze(state);
     switch (action.type) {
         case actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_NEWS:
             return action.payload;
@@ -1511,22 +1783,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const actionTypes_1 = __webpack_require__(/*! ../../constants/actionTypes */ "./frontend/constants/actionTypes.ts");
 const INITIAL_STATE = {
     avgTotalVolume: 0,
-    change: null,
-    changePercent: null,
-    close: null,
-    companyName: null,
-    high: null,
+    change: 0,
+    changePercent: 0,
+    previousClose: 0,
+    companyName: '',
+    high: 0,
     latestPrice: 0,
     latestVolume: 0,
-    low: null,
+    low: 0,
     marketCap: 0,
-    open: null,
-    peRatio: null,
-    symbol: null,
-    week52High: null,
-    week52Low: null,
-    dividendYield: null,
-    actualEPS: null,
+    open: 0,
+    peRatio: 0,
+    symbol: '',
+    week52High: 0,
+    week52Low: 0,
+    dividendYield: 0,
+    actualEPS: 0,
 };
 const companyStatsReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -1534,9 +1806,7 @@ const companyStatsReducer = (state = INITIAL_STATE, action) => {
             return Object.assign({}, state, action.payload);
         case actionTypes_1.QUOTES_ACTION_TYPES.SET_COMPANY_EPS:
             if (typeof action.payload === 'object') {
-                return Object.assign({}, state, {
-                    actualEPS: action.payload.earnings[0].actualEPS,
-                });
+                return Object.assign({}, state, { actualEPS: action.payload.earnings[0].actualEPS });
             }
             else {
                 return Object.assign({}, state, { actualEPS: action.payload });
@@ -1564,12 +1834,9 @@ exports.default = companyStatsReducer;
 Object.defineProperty(exports, "__esModule", { value: true });
 const actionTypes_1 = __webpack_require__(/*! ../../constants/actionTypes */ "./frontend/constants/actionTypes.ts");
 const favoriteReducer = (state = {}, action) => {
-    Object.freeze(state);
     switch (action.type) {
         case actionTypes_1.QUOTES_ACTION_TYPES.SET_FAVORITES:
-            return Object.assign({}, state, {
-                [action.payload.symbol]: action.payload,
-            });
+            return Object.assign({}, state, { [action.payload.symbol]: action.payload });
         default:
             return state;
     }
@@ -1655,11 +1922,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const redux_1 = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 const quotesReducer_1 = __importDefault(__webpack_require__(/*! ./quotes/quotesReducer */ "./frontend/reducers/quotes/quotesReducer.ts"));
-const errorsReducer_1 = __importDefault(__webpack_require__(/*! ./errors/errorsReducer */ "./frontend/reducers/errors/errorsReducer.ts"));
 const updateTimeReducer_1 = __importDefault(__webpack_require__(/*! ./updates/updateTimeReducer */ "./frontend/reducers/updates/updateTimeReducer.ts"));
+const fetchStatusReducer_1 = __importDefault(__webpack_require__(/*! ./fetches/fetchStatusReducer */ "./frontend/reducers/fetches/fetchStatusReducer.ts"));
 const rootReducer = redux_1.combineReducers({
     quotes: quotesReducer_1.default,
-    errors: errorsReducer_1.default,
+    fetchStatus: fetchStatusReducer_1.default,
     updateTime: updateTimeReducer_1.default,
 });
 exports.default = rootReducer;
@@ -1691,35 +1958,29 @@ exports.default = updateTimeReducer;
 
 /***/ }),
 
-/***/ "./frontend/stockTracker.js":
-/*!**********************************!*\
-  !*** ./frontend/stockTracker.js ***!
-  \**********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./frontend/stockTracker.tsx":
+/*!***********************************!*\
+  !*** ./frontend/stockTracker.tsx ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ "./frontend/components/App.js");
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/store */ "./frontend/store/store.ts");
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_store_store__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _assets_css_App_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/css/App.css */ "./assets/css/App.css");
-/* harmony import */ var _assets_css_App_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_assets_css_App_css__WEBPACK_IMPORTED_MODULE_4__);
 
-
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  var store = _store_store__WEBPACK_IMPORTED_MODULE_3___default()();
-  Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["render"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_App__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    store: store
-  }), document.getElementById('root'));
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_dom_1 = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+const App_1 = __importDefault(__webpack_require__(/*! ./components/App */ "./frontend/components/App.tsx"));
+const store_1 = __importDefault(__webpack_require__(/*! ./store/store */ "./frontend/store/store.ts"));
+__webpack_require__(/*! ../assets/css/App.css */ "./assets/css/App.css");
+document.addEventListener('DOMContentLoaded', () => {
+    const store = store_1.default();
+    react_dom_1.render(react_1.default.createElement(App_1.default, { store: store }), document.getElementById('root'));
 });
+
 
 /***/ }),
 
@@ -1738,9 +1999,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const redux_1 = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 const redux_thunk_1 = __importDefault(__webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js"));
-const redux_logger_1 = __importDefault(__webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js"));
 const rootReducer_1 = __importDefault(__webpack_require__(/*! ../reducers/rootReducer */ "./frontend/reducers/rootReducer.ts"));
-const configureStore = (preloadedState = {}) => redux_1.createStore(rootReducer_1.default, preloadedState, redux_1.applyMiddleware(redux_thunk_1.default, redux_logger_1.default));
+const configureStore = (preloadedState = {}) => redux_1.createStore(rootReducer_1.default, preloadedState, redux_1.applyMiddleware(redux_thunk_1.default));
 exports.default = configureStore;
 
 
@@ -1778,23 +2038,24 @@ exports.default = APIError;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(process) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // export const API_KEY = process.env.API_TOKEN;
 exports.API_KEY = "Tpk_048c58eccfa04f9aae0310d105574605";
 exports.iexApiSandboxUrl = "https://sandbox.iexapis.com/stable";
 exports.iexApiFreeUrl = "https://api.iextrading.com/1.0";
-exports.iexApiCloudUrl = "https://cloud.iexapis.com/stable";
+exports.iexApiCloudUrl = process.env.PAID_API_ENDPOINT;
 var Filters;
 (function (Filters) {
     Filters["newsFilters"] = "filter=datetime,headline,url,source";
-    Filters["quoteFilters"] = "filter=symbol,companyName,open,close,high,low,latestPrice,latestVolume,avgTotalVolume,marketCap,peRatio,week52High,week52Low,change,changePercent";
+    Filters["quoteFilters"] = "filter=symbol,companyName,open,previousClose,high,low,latestPrice,latestVolume,avgTotalVolume,marketCap,peRatio,week52High,week52Low,change,changePercent";
     Filters["favoritesQuoteFilters"] = "filter=symbol,latestPrice,change,changePercent";
     Filters["statsFilters"] = "filter=dividendYield";
     Filters["companyInfoFilters"] = "filter=description,exchange,sector,website,symbol,companyName";
     Filters["chartDataFilters"] = "filter=date,minute,label,close,average";
 })(Filters = exports.Filters || (exports.Filters = {}));
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -1846,6 +2107,26 @@ exports.getCurrentDate = () => {
 
 /***/ }),
 
+/***/ "./frontend/utilities/marketStatusUtil.ts":
+/*!************************************************!*\
+  !*** ./frontend/utilities/marketStatusUtil.ts ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isMarketOpen = () => {
+    const dateNow = new Date();
+    const marketOpen = new Date().setUTCHours(13, 30, 0, 0);
+    const marketClose = new Date().setUTCHours(20, 0, 0, 0);
+    return dateNow.getTime() > marketOpen && dateNow.getTime() < marketClose;
+};
+
+
+/***/ }),
+
 /***/ "./frontend/utilities/numberFormatters.ts":
 /*!************************************************!*\
   !*** ./frontend/utilities/numberFormatters.ts ***!
@@ -1857,7 +2138,7 @@ exports.getCurrentDate = () => {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.changeToPercent = (num) => {
-    return num ? (num * 100).toFixed(2) : null;
+    return num ? (num * 100).toFixed(2) : 0;
 };
 
 
@@ -1877,29 +2158,54 @@ const numberFormatters_1 = __webpack_require__(/*! ./numberFormatters */ "./fron
 exports.selectCompanyStats = (companyStats) => {
     return {
         companyStatsLeft: [
-            { name: 'Previous Close', value: companyStats.close },
+            {
+                name: 'Previous Close',
+                value: companyStats.previousClose ? companyStats.previousClose : `N/A`,
+            },
             {
                 name: 'Day Range',
-                value: `${companyStats.high} - ${companyStats.low}`,
+                value: `${companyStats.high && companyStats.low
+                    ? `${companyStats.high} -  ${companyStats.low}`
+                    : `N/A`}`,
             },
-            { name: 'Volume', value: companyStats.latestVolume.toLocaleString() },
-            { name: 'Market Cap', value: companyStats.marketCap.toLocaleString() },
-            { name: 'P/E Ratio', value: companyStats.peRatio },
+            {
+                name: 'Volume',
+                value: companyStats.latestVolume
+                    ? companyStats.latestVolume.toLocaleString()
+                    : `N/A`,
+            },
+            {
+                name: 'Market Cap',
+                value: companyStats.marketCap
+                    ? companyStats.marketCap.toLocaleString()
+                    : companyStats.marketCap,
+            },
+            {
+                name: 'P/E Ratio',
+                value: companyStats.peRatio ? companyStats.peRatio : `N/A`,
+            },
         ],
         companyStatsRight: [
-            { name: 'Open', value: companyStats.open },
+            { name: 'Open', value: companyStats.open ? companyStats.open : `N/A` },
             {
                 name: '52 Week Range',
-                value: `${companyStats.week52High} - ${companyStats.week52Low}`,
+                value: `${companyStats.week52High && companyStats.week52Low
+                    ? `${companyStats.week52High} - ${companyStats.week52Low}`
+                    : `N/A`}`,
             },
             {
                 name: 'Total Avg. Volume',
-                value: companyStats.avgTotalVolume.toLocaleString(),
+                value: companyStats.avgTotalVolume
+                    ? companyStats.avgTotalVolume.toLocaleString()
+                    : `N/A`,
             },
-            { name: 'Earnings Per Share', value: companyStats.actualEPS },
+            {
+                name: 'Earnings Per Share',
+                value: companyStats.actualEPS ? companyStats.actualEPS : `N/A`,
+            },
             {
                 name: 'Dividend & Yield',
-                value: `${numberFormatters_1.changeToPercent(companyStats.dividendYield)}%`,
+                value: `${Number(numberFormatters_1.changeToPercent(companyStats.dividendYield ? companyStats.dividendYield : 0)).toFixed(2)}%`,
             },
         ],
     };
@@ -1909,15 +2215,25 @@ exports.selectChartDataDay = (chartDataDay) => {
         .filter(data => data.average)
         .map(data => ({ dateTime: data.label, price: data.average }));
 };
-const dateFormatter = (date) => date.split('-')[1] + '-' + date.split('-')[2];
+const dateFormatter = (date) => {
+    if (date === null) {
+        return null;
+    }
+    else {
+        return date.split('-')[1] + '-' + date.split('-')[2];
+    }
+};
 exports.selectChartDataFiveDay = (fiveDayDataArray) => fiveDayDataArray
     .filter(data => data.average)
     .map(data => ({ dateTime: dateFormatter(data.date), price: data.average }))
     .reverse();
 exports.selectChartDataOneMonth = (oneMonthDataArray) => oneMonthDataArray
     .filter(data => data.close)
-    .map(data => ({ dateTime: data.label.toString(), price: data.close }));
+    .map(data => ({ dateTime: data.label, price: data.close }));
 const yearDateFormatter = (date) => {
+    if (date === null) {
+        return null;
+    }
     const dateYearNow = new Date().getFullYear();
     let dateYear = date.split(' ')[2];
     dateYear = dateYear ? dateYear.toString() : String(dateYearNow).slice(2);
@@ -1931,9 +2247,17 @@ const yearDateFormatter = (date) => {
 exports.selectChartDataYear = (yearDataArray) => yearDataArray
     .filter(data => data.close)
     .map(data => ({
-    dateTime: yearDateFormatter(data.label.toString()),
+    dateTime: yearDateFormatter(data.label),
     price: data.close,
 }));
+exports.selectFetchingStatus = (state, section) => {
+    const status = {
+        startFetching: state.fetchStatus[section].startFetching,
+        doneFetching: state.fetchStatus[section].doneFetching,
+        fetchSuccess: state.fetchStatus[section].fetchSuccess,
+    };
+    return status;
+};
 
 
 /***/ }),
@@ -2109,6 +2433,193 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	} else {}
 }());
 
+
+/***/ }),
+
+/***/ "./node_modules/compute-scroll-into-view/es/index.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/compute-scroll-into-view/es/index.js ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function isElement(el) {
+  return el != null && typeof el === 'object' && el.nodeType === 1;
+}
+
+function canOverflow(overflow, skipOverflowHiddenElements) {
+  if (skipOverflowHiddenElements && overflow === 'hidden') {
+    return false;
+  }
+
+  return overflow !== 'visible' && overflow !== 'clip';
+}
+
+function isScrollable(el, skipOverflowHiddenElements) {
+  if (el.clientHeight < el.scrollHeight || el.clientWidth < el.scrollWidth) {
+    var style = getComputedStyle(el, null);
+    return canOverflow(style.overflowY, skipOverflowHiddenElements) || canOverflow(style.overflowX, skipOverflowHiddenElements);
+  }
+
+  return false;
+}
+
+function alignNearest(scrollingEdgeStart, scrollingEdgeEnd, scrollingSize, scrollingBorderStart, scrollingBorderEnd, elementEdgeStart, elementEdgeEnd, elementSize) {
+  if (elementEdgeStart < scrollingEdgeStart && elementEdgeEnd > scrollingEdgeEnd || elementEdgeStart > scrollingEdgeStart && elementEdgeEnd < scrollingEdgeEnd) {
+    return 0;
+  }
+
+  if (elementEdgeStart <= scrollingEdgeStart && elementSize <= scrollingSize || elementEdgeEnd >= scrollingEdgeEnd && elementSize >= scrollingSize) {
+    return elementEdgeStart - scrollingEdgeStart - scrollingBorderStart;
+  }
+
+  if (elementEdgeEnd > scrollingEdgeEnd && elementSize < scrollingSize || elementEdgeStart < scrollingEdgeStart && elementSize > scrollingSize) {
+    return elementEdgeEnd - scrollingEdgeEnd + scrollingBorderEnd;
+  }
+
+  return 0;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (function (target, options) {
+  var scrollMode = options.scrollMode,
+      block = options.block,
+      inline = options.inline,
+      boundary = options.boundary,
+      skipOverflowHiddenElements = options.skipOverflowHiddenElements;
+  var checkBoundary = typeof boundary === 'function' ? boundary : function (node) {
+    return node !== boundary;
+  };
+
+  if (!isElement(target)) {
+    throw new TypeError('Invalid target');
+  }
+
+  var scrollingElement = document.scrollingElement || document.documentElement;
+  var frames = [];
+  var cursor = target;
+
+  while (isElement(cursor) && checkBoundary(cursor)) {
+    cursor = cursor.parentNode;
+
+    if (cursor === scrollingElement) {
+      frames.push(cursor);
+      break;
+    }
+
+    if (cursor === document.body && isScrollable(cursor) && !isScrollable(document.documentElement)) {
+      continue;
+    }
+
+    if (isScrollable(cursor, skipOverflowHiddenElements)) {
+      frames.push(cursor);
+    }
+  }
+
+  var viewportWidth = window.visualViewport ? visualViewport.width : innerWidth;
+  var viewportHeight = window.visualViewport ? visualViewport.height : innerHeight;
+  var viewportX = window.scrollX || pageXOffset;
+  var viewportY = window.scrollY || pageYOffset;
+
+  var _target$getBoundingCl = target.getBoundingClientRect(),
+      targetHeight = _target$getBoundingCl.height,
+      targetWidth = _target$getBoundingCl.width,
+      targetTop = _target$getBoundingCl.top,
+      targetRight = _target$getBoundingCl.right,
+      targetBottom = _target$getBoundingCl.bottom,
+      targetLeft = _target$getBoundingCl.left;
+
+  var targetBlock = block === 'start' || block === 'nearest' ? targetTop : block === 'end' ? targetBottom : targetTop + targetHeight / 2;
+  var targetInline = inline === 'center' ? targetLeft + targetWidth / 2 : inline === 'end' ? targetRight : targetLeft;
+  var computations = [];
+
+  for (var index = 0; index < frames.length; index++) {
+    var frame = frames[index];
+
+    var _frame$getBoundingCli = frame.getBoundingClientRect(),
+        _height = _frame$getBoundingCli.height,
+        _width = _frame$getBoundingCli.width,
+        _top = _frame$getBoundingCli.top,
+        right = _frame$getBoundingCli.right,
+        bottom = _frame$getBoundingCli.bottom,
+        _left = _frame$getBoundingCli.left;
+
+    if (scrollMode === 'if-needed' && targetTop >= 0 && targetLeft >= 0 && targetBottom <= viewportHeight && targetRight <= viewportWidth && targetTop >= _top && targetBottom <= bottom && targetLeft >= _left && targetRight <= right) {
+      return computations;
+    }
+
+    var frameStyle = getComputedStyle(frame);
+    var borderLeft = parseInt(frameStyle.borderLeftWidth, 10);
+    var borderTop = parseInt(frameStyle.borderTopWidth, 10);
+    var borderRight = parseInt(frameStyle.borderRightWidth, 10);
+    var borderBottom = parseInt(frameStyle.borderBottomWidth, 10);
+    var blockScroll = 0;
+    var inlineScroll = 0;
+    var scrollbarWidth = 'offsetWidth' in frame ? frame.offsetWidth - frame.clientWidth - borderLeft - borderRight : 0;
+    var scrollbarHeight = 'offsetHeight' in frame ? frame.offsetHeight - frame.clientHeight - borderTop - borderBottom : 0;
+
+    if (scrollingElement === frame) {
+      if (block === 'start') {
+        blockScroll = targetBlock;
+      } else if (block === 'end') {
+        blockScroll = targetBlock - viewportHeight;
+      } else if (block === 'nearest') {
+        blockScroll = alignNearest(viewportY, viewportY + viewportHeight, viewportHeight, borderTop, borderBottom, viewportY + targetBlock, viewportY + targetBlock + targetHeight, targetHeight);
+      } else {
+        blockScroll = targetBlock - viewportHeight / 2;
+      }
+
+      if (inline === 'start') {
+        inlineScroll = targetInline;
+      } else if (inline === 'center') {
+        inlineScroll = targetInline - viewportWidth / 2;
+      } else if (inline === 'end') {
+        inlineScroll = targetInline - viewportWidth;
+      } else {
+        inlineScroll = alignNearest(viewportX, viewportX + viewportWidth, viewportWidth, borderLeft, borderRight, viewportX + targetInline, viewportX + targetInline + targetWidth, targetWidth);
+      }
+
+      blockScroll = Math.max(0, blockScroll + viewportY);
+      inlineScroll = Math.max(0, inlineScroll + viewportX);
+    } else {
+      if (block === 'start') {
+        blockScroll = targetBlock - _top - borderTop;
+      } else if (block === 'end') {
+        blockScroll = targetBlock - bottom + borderBottom + scrollbarHeight;
+      } else if (block === 'nearest') {
+        blockScroll = alignNearest(_top, bottom, _height, borderTop, borderBottom + scrollbarHeight, targetBlock, targetBlock + targetHeight, targetHeight);
+      } else {
+        blockScroll = targetBlock - (_top + _height / 2) + scrollbarHeight / 2;
+      }
+
+      if (inline === 'start') {
+        inlineScroll = targetInline - _left - borderLeft;
+      } else if (inline === 'center') {
+        inlineScroll = targetInline - (_left + _width / 2) + scrollbarWidth / 2;
+      } else if (inline === 'end') {
+        inlineScroll = targetInline - right + borderRight + scrollbarWidth;
+      } else {
+        inlineScroll = alignNearest(_left, right, _width, borderLeft, borderRight + scrollbarWidth, targetInline, targetInline + targetWidth, targetWidth);
+      }
+
+      var scrollLeft = frame.scrollLeft,
+          scrollTop = frame.scrollTop;
+      blockScroll = Math.max(0, Math.min(scrollTop + blockScroll, frame.scrollHeight - _height + scrollbarHeight));
+      inlineScroll = Math.max(0, Math.min(scrollLeft + inlineScroll, frame.scrollWidth - _width + scrollbarWidth));
+      targetBlock += scrollTop - blockScroll;
+      targetInline += scrollLeft - inlineScroll;
+    }
+
+    computations.push({
+      el: frame,
+      top: blockScroll,
+      left: inlineScroll
+    });
+  }
+
+  return computations;
+});
 
 /***/ }),
 
@@ -4023,7 +4534,21 @@ $export($export.P + $export.F * ($fails(function () {
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "* {\n    margin: 0;\n    padding: 0;\n    box-sizing: inherit;\n    --color-primary: #1d3c62;\n    --color-secondary: #102238;\n    --color-white: #f4f6f9;\n    --color-light-grey: #8e939f;\n    --color-heading-primary: #5193fd;\n    --color-heading-secondary: #a8c9fe;\n    --color-hover-yellow: #ffb828;\n    --color-hover-blue: #1351b5;\n    --color-red: #cc2a34;\n    --color-green: #00cd82;\n    --tags-color: #476088;\n    --u-margin: 3rem;\n}\n\nhtml {\n    font-size: 100%;\n    box-sizing: border-box;\n}\n\nhtml,\nbody {\n    height: auto;\n    min-height: 100vh;\n    min-width: 70rem;\n}\n\nbody {\n    background-image: linear-gradient(to bottom right, var(--color-primary), var(--color-secondary));\n    background-repeat: no-repeat;\n    color: var(--color-white);\n    font-family: 'Lato', sans-serif;\n    padding: 2rem 5rem;\n}\n\n.heading-section {\n    text-transform: uppercase;\n    color: var(--color-heading-secondary);\n    font-size: 1rem;\n    padding-bottom: 0.5rem;\n    border-bottom: 2px solid var(--color-heading-secondary);\n    margin-bottom: 0.5rem;\n}\n\n\n/* HEADER STYLES */\n\n.header {\n    margin-bottom: 2rem;\n}\n\n.header__top {\n    display: flex;\n    justify-content: space-between;\n    padding-bottom: 1.5rem;\n}\n\n\n/* QUOTES MARKETS WATCHLISTS */\n\n.header__top-tabs>a {\n    color: inherit;\n    text-decoration: none;\n    text-transform: uppercase;\n    padding: 0.3rem 0.5rem;\n    border-radius: 5px;\n    font-weight: 300;\n}\n\n.header__top-tabs>a.active,\n.header__top-tabs>a:hover {\n    background-color: var(--color-hover-blue);\n}\n\n.header__top-tabs>a:not(:last-child) {\n    margin-right: 1.5rem;\n}\n\n\n/* SEARCH BAR AREA */\n\n.header__top-search-area {\n    font-size: 1.75rem;\n    display: flex;\n    justify-content: space-between;\n    border-bottom: solid var(--color-heading-primary) 1px;\n    padding-bottom: 0.5rem;\n    margin-bottom: 1rem;\n}\n\n.header__top-search-area form {\n    width: 65%;\n}\n\n\n/* SEARCH ICON */\n\n.header__top-search-area i {\n    margin-right: 0.5rem;\n    color: var(--color-heading-secondary);\n}\n\n\n/* INPUT */\n\n.input__placeholder-wrap {\n    display: inline-block;\n    position: relative;\n    width: 90%;\n}\n\n.input__placeholder-wrap input {\n    position: relative;\n    display: inline-block;\n    background-color: transparent;\n    border: none;\n    outline: none;\n    color: inherit;\n    font-size: 1.75rem;\n    font-weight: 200;\n    width: 100%;\n    z-index: 3;\n}\n\n.input__placeholder-wrap--name {\n    position: absolute;\n    top: 0;\n    left: 5px;\n    font-weight: 300;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    z-index: 1;\n}\n\n.input__placeholder-wrap--symbol {\n    color: var(--color-light-grey);\n    font-weight: 200;\n}\n\n.input__placeholder-wrap input:focus+.input__placeholder-wrap--name,\n.input__placeholder-wrap input[required]:valid+.input__placeholder-wrap--name {\n    display: none;\n}\n\n\n/* PRICE & CHANGE & PERCENT CHANGE */\n\n.header__top-price .icon--small {\n    padding: 0;\n    font-size: 0.65em;\n    display: inline-block;\n    transform: translateY(-30%);\n}\n\n.header__top-price>span:first-child {\n    margin-right: 1rem;\n}\n\n.header__top-price--change>span:last-child {\n    padding-left: 0.5rem;\n}\n\n.header__top-price--change>span:first-child {\n    border-right: solid rgba(178, 37, 46, 0.45) 2px;\n    padding-right: 0.5rem;\n}\n\n.header__top-price--change.positive>span:first-child {\n    border-right: solid rgba(37, 178, 112, 0.45) 2px;\n}\n\n.header__top-price--change.positive {\n    color: var(--color-green);\n}\n\n.header__top-price--change.negative {\n    color: var(--color-red);\n}\n\n.header__top-price--change {\n    display: inline-block;\n}\n\n\n/* TAGS MARKET-STATUS STYLES*/\n\n.header__bottom {\n    display: flex;\n    justify-content: space-between;\n}\n\n.header__bottom-tags>span {\n    background-color: var(--tags-color);\n    margin-right: 1rem;\n    padding: 0.25rem 1rem;\n}\n\n.header__bottom-status>span:first-child {\n    font-weight: 200;\n    margin-right: 0.5rem;\n}\n\n.header__bottom-status i.fa-sun {\n    color: var(--color-hover-yellow);\n}\n\n.header__bottom-status i.fa-moon {\n    color: var(--color-hover-blue);\n}\n\n\n/* CHART && NEWS STYLING */\n\n.section-chart-news {\n    display: flex;\n    justify-content: space-between;\n    width: 100%;\n}\n\n\n/* CHART STYLING */\n\n.section-chart {\n    width: 70%;\n    margin-right: var(--u-margin);\n}\n\n.section-chart__timelines {\n    text-align: right;\n    margin-bottom: 1rem;\n}\n\n.section-chart__timelines a {\n    color: inherit;\n    font-weight: 100;\n    text-decoration: none;\n}\n\n.section-chart__timelines a:not(:first-child) {\n    margin-left: 0.5rem;\n}\n\n\n/* NEWS STYLING */\n\n.section-news {\n    width: 30%;\n    margin-top: 2rem;\n}\n\n.section-news__list {\n    list-style: none;\n    margin-top: 1rem;\n    height: 95%;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-around;\n}\n\n.section-news__list li {\n    height: 100%;\n    width: 100%;\n    /* margin: 0.5rem 0 1rem 0; */\n}\n\n.section-news__list li a {\n    text-decoration: none;\n    color: var(--color-white);\n}\n\n.section-news__list li a:hover {\n    color: var(--color-hover-yellow);\n}\n\n.section-news__list-timestamp {\n    display: block;\n    font-weight: 300;\n    color: var(--color-light-grey);\n    margin-top: 0.3rem;\n}\n\n\n/* STATS INFO PEERS STYLING */\n\n.section-stats-info-peers {\n    height: 100%;\n    margin-top: var(--u-margin);\n    display: flex;\n    justify-content: space-between;\n}\n\n\n/* KEY STATS STYLING */\n\n.section-stats {\n    width: 70%;\n    margin-right: var(--u-margin);\n}\n\n.section-stats__list {\n    display: flex;\n    justify-content: space-between;\n}\n\n.section-stats__list ul {\n    list-style: none;\n    width: 48%;\n}\n\n.section-stats__list ul li {\n    display: flex;\n    justify-content: space-between;\n    margin: 0.8rem 0;\n    padding-bottom: 1rem;\n    border-bottom: 1px solid var(--color-light-grey);\n}\n\n.section-stats__list-item--label {\n    font-weight: 100;\n}\n\n\n/* OVERVIEW && PEERS STYLING */\n\n.section-info-peers {\n    min-height: 100%;\n    width: 30%;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n}\n\n\n/* OVERVIEW STYLING */\n\n.section-info {}\n\n.section-info__link {\n    display: block;\n    padding: 1rem 0;\n    text-decoration: none;\n    color: inherit;\n    font-weight: 300;\n    font-style: italic;\n}\n\n.section-info__link:hover {\n    color: var(--color-hover-yellow);\n}\n\n\n/* PEERS STYLING */\n\n.section-peers {\n    margin-top: 1rem;\n}\n\n.section-peers__peer:not(:last-child) {\n    margin-right: 1rem;\n}\n\n.section-peers__peer {\n    font-weight: 300;\n}", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: inherit;\n  --color-primary: #1d3c62;\n  --color-secondary: #102238;\n  --color-white: #f4f6f9;\n  --color-light-grey: #8e939f;\n  --color-heading-primary: #5193fd;\n  --color-heading-secondary: #a8c9fe;\n  --color-hover-yellow: #ffb828;\n  --color-hover-blue: #1351b5;\n  --color-red: #cc2a34;\n  --color-green: #00cd82;\n  --tags-color: #476088;\n  --u-margin: 3rem;\n}\n\n#root {\n  position: relative;\n  min-height: 100vh;\n}\n\nhtml {\n  font-size: 100%;\n  box-sizing: border-box;\n  min-height: 100vh;\n  min-width: 70rem;\n}\n\nbody {\n  background-image: linear-gradient(\n    to bottom right,\n    var(--color-primary),\n    var(--color-secondary)\n  );\n  background-repeat: no-repeat;\n  color: var(--color-white);\n  font-family: 'Lato', sans-serif;\n  min-height: 100vh;\n}\n\n.section-main {\n  height: 100%;\n  padding: 2rem 5rem;\n}\n\n.heading-section {\n  text-transform: uppercase;\n  color: var(--color-heading-secondary);\n  font-size: 1rem;\n  padding-bottom: 0.5rem;\n  border-bottom: 2px solid var(--color-heading-secondary);\n  margin-bottom: 0.5rem;\n}\n\n/* HEADER STYLES */\n\n.header {\n  margin-bottom: 2rem;\n}\n\n.header__top {\n  display: flex;\n  justify-content: space-between;\n  padding-bottom: 1.5rem;\n}\n\n/* QUOTES MARKETS WATCHLISTS */\n\n.header__top-tabs > a {\n  color: inherit;\n  text-decoration: none;\n  text-transform: uppercase;\n  padding: 0.3rem 0.5rem;\n  border-radius: 5px;\n  font-weight: 300;\n}\n\n.header__top-tabs > a.active,\n.header__top-tabs > a:hover {\n  background-color: var(--color-hover-blue);\n}\n\n.header__top-tabs > a:not(:last-child) {\n  margin-right: 1.5rem;\n}\n\n/* SEARCH BAR AREA */\n\n.header__top-search-area {\n  position: relative;\n  font-size: 1.75rem;\n  display: flex;\n  justify-content: space-between;\n  border-bottom: solid var(--color-heading-primary) 1px;\n  padding-bottom: 0.5rem;\n  margin-bottom: 1rem;\n}\n\n.header__top-search-bar {\n  width: 65%;\n}\n\n.header__top-search-list {\n  position: absolute;\n  top: 150%;\n  left: 0;\n  z-index: 10;\n  list-style: none;\n  width: 50%;\n}\n\n.header__top-search-list li {\n  padding: 1rem;\n  font-size: 1rem;\n}\n\n/* SEARCH ICON */\n\n.header__top-search-area i {\n  margin-right: 0.5rem;\n  color: var(--color-heading-secondary);\n}\n\n/* INPUT */\n\n.input__placeholder-wrap {\n  display: inline-block;\n  position: relative;\n  width: 90%;\n}\n\n.input__placeholder-wrap input {\n  position: relative;\n  display: inline-block;\n  background-color: transparent;\n  border: none;\n  outline: none;\n  color: inherit;\n  font-size: 1.75rem;\n  font-weight: 200;\n  width: 100%;\n  z-index: 3;\n}\n\n.input__placeholder-wrap--name {\n  position: absolute;\n  top: 0;\n  left: 5px;\n  font-weight: 300;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  z-index: 1;\n}\n\n.input__placeholder-wrap--symbol {\n  color: var(--color-light-grey);\n  font-weight: 200;\n}\n\n.input__placeholder-wrap input:focus + .input__placeholder-wrap--name,\n.input__placeholder-wrap\n  input[required]:valid\n  + .input__placeholder-wrap--name {\n  display: none;\n}\n\n/* PRICE & CHANGE & PERCENT CHANGE */\n\n.header__top-price .icon--small {\n  padding: 0;\n  font-size: 0.65em;\n  display: inline-block;\n  transform: translateY(-30%);\n}\n\n.header__top-price > span:first-child {\n  margin-right: 1rem;\n}\n\n.header__top-price--change > span:last-child {\n  padding-left: 0.5rem;\n}\n\n.header__top-price--change > span:first-child {\n  border-right: solid rgba(178, 37, 46, 0.45) 2px;\n  padding-right: 0.5rem;\n}\n\n.header__top-price--change.positive > span:first-child {\n  border-right: solid rgba(37, 178, 112, 0.45) 2px;\n}\n\n.header__top-price--change.positive {\n  color: var(--color-green);\n}\n\n.header__top-price--change.negative {\n  color: var(--color-red);\n}\n\n.header__top-price--change {\n  display: inline-block;\n}\n\n/* TAGS MARKET-STATUS STYLES*/\n\n.header__bottom {\n  display: flex;\n  justify-content: space-between;\n}\n\n.header__bottom-tags > span {\n  background-color: var(--tags-color);\n  margin-right: 1rem;\n  padding: 0.25rem 1rem;\n}\n\n.header__bottom-status > span:first-child {\n  font-weight: 200;\n  margin-right: 0.5rem;\n}\n\n.header__bottom-status i.fa-sun {\n  color: var(--color-hover-yellow);\n}\n\n.header__bottom-status i.fa-moon {\n  color: var(--color-hover-blue);\n}\n\n/* CHART && NEWS STYLING */\n\n.section-chart-news {\n  height: auto;\n  width: 100%;\n  overflow: hidden;\n}\n\n/* CHART STYLING */\n\n.section-chart {\n  float: left;\n  width: 65%;\n}\n\n.section-chart__timelines {\n  text-align: right;\n  margin-bottom: 1rem;\n}\n\n.section-chart__timelines label {\n  margin: 0rem 0rem 1rem 0.5rem;\n  display: inline-block;\n  color: inherit;\n  text-decoration: none;\n  font-weight: 100;\n  text-transform: uppercase;\n  cursor: pointer;\n}\n\n.section-chart__timelines label input {\n  display: none;\n}\n\n.section-chart__timelines input:checked ~ .section-chart__timelines--btn,\n.section-chart__timelines label:hover {\n  /* font-weight: bold; */\n  color: var(--color-white);\n}\n\n/* NEWS STYLING */\n\n.section-news {\n  width: 30%;\n  float: right;\n  margin-top: 2rem;\n}\n\n.section-news__list {\n  list-style: none;\n  margin-top: 1rem;\n  height: 95%;\n}\n\n.section-news__list li {\n  height: 100%;\n  width: 100%;\n  margin: 1rem 0 2rem 0;\n}\n\n.section-news__list li a {\n  text-decoration: none;\n  color: var(--color-white);\n}\n\n.section-news__list li a:hover {\n  color: var(--color-hover-yellow);\n}\n\n.section-news__list-timestamp {\n  display: block;\n  font-weight: 300;\n  color: var(--color-light-grey);\n  margin-top: 0.3rem;\n}\n\n/* STATS INFO PEERS STYLING */\n\n.section-stats-info-peers {\n  height: 100%;\n  margin-top: var(--u-margin);\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n}\n\n/* KEY STATS STYLING */\n\n.section-stats {\n  width: 65%;\n}\n\n.section-stats__list {\n  display: flex;\n  justify-content: space-between;\n}\n\n.section-stats__list ul {\n  list-style: none;\n  width: 48%;\n}\n\n.section-stats__list ul li {\n  display: flex;\n  justify-content: space-between;\n  margin: 0.8rem 0;\n  padding-bottom: 1rem;\n  border-bottom: 1px solid var(--color-light-grey);\n}\n\n.section-stats__list-item--label {\n  font-weight: 100;\n}\n\n/* OVERVIEW && PEERS STYLING */\n\n.section-info-peers {\n  min-height: 100%;\n  width: 30%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n/* OVERVIEW STYLING */\n\n.section-info__link {\n  display: block;\n  padding: 1rem 0;\n  text-decoration: none;\n  color: inherit;\n  font-weight: 300;\n  font-style: italic;\n}\n\n.section-info__link:hover {\n  color: var(--color-hover-yellow);\n}\n\n/* PEERS STYLING */\n\n.section-peers {\n  margin-top: 1rem;\n}\n\n.section-peers__peer:not(:last-child) {\n  margin-right: 1rem;\n}\n\n.section-peers__peer {\n  font-weight: 300;\n}\n\n/* FOOTER STYLING */\n\n.section-footer {\n  min-width: 70rem;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  background-color: #082a61;\n  display: flex;\n  justify-content: space-between;\n  position: absolute;\n  --webkit-transform: translateY(100%);\n  transform: translateY(100%);\n}\n\n.section-footer__slice {\n  width: 50%;\n  padding: 1rem;\n  overflow: hidden;\n  white-space: nowrap;\n}\n\n.section-footer__slice:first-child {\n  border-right: 1px solid #1d3c62;\n}\n\n.section-footer__content {\n  position: relative;\n  animation: footerAnimation 15s linear infinite;\n}\n\n.section-footer__slice div {\n  display: inline-block;\n  margin-right: 1rem;\n}\n\n.section-footer__heading {\n  text-transform: uppercase;\n  margin-bottom: 0.5rem;\n}\n\n.section-market-favorite > span {\n  text-transform: uppercase;\n  margin-right: 0.5rem;\n}\n\n@keyframes footerAnimation {\n  0% {\n    transform: translateX(0%);\n    left: 100%;\n  }\n  100% {\n    transform: translateX(-100%);\n    left: 0;\n  }\n}\n\n@media only screen and (max-width: 900px) {\n  .section-main {\n  }\n  .section-chart,\n  .section-news,\n  .section-stats-info-peers,\n  .section-info-peers,\n  .section-info,\n  .section-peers,\n  .section-stats {\n    width: 100%;\n    display: block;\n  }\n  .section-stats-info-peers {\n    margin-top: 0;\n  }\n  .section-stats,\n  .section-info,\n  .section-peers {\n    margin-top: 1rem;\n  }\n}\n", ""]);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./frontend/components/adaptiveLoader/adaptiveLoader.css":
+/*!*****************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./frontend/components/adaptiveLoader/adaptiveLoader.css ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
+// Module
+exports.push([module.i, ".lds-facebook {\n    width: 64px;\n    height: 64px;\n}\n\n.lds-facebook div {\n    display: inline-block;\n    position: relative;\n    left: 6px;\n    width: 13px;\n    background: white;\n    animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;\n}\n\n.lds-facebook div:nth-child(1) {\n    left: 6px;\n    animation-delay: -0.36s;\n}\n\n.lds-facebook div:nth-child(2) {\n    left: 26px;\n    animation-delay: -0.24s;\n}\n\n.lds-facebook div:nth-child(3) {\n    left: 45px;\n    animation-delay: -0.12s;\n}\n\n.lds-facebook div:nth-child(4) {\n    left: 65px;\n    animation-delay: 0s;\n}\n\n@keyframes lds-facebook {\n    0% {\n        top: 6px;\n        height: 51px;\n    }\n    50%,\n    100% {\n        top: 19px;\n        height: 26px;\n    }\n}", ""]);
 
 
 /***/ }),
@@ -16247,6 +16772,1604 @@ module.exports = function removeClass(element, className) {
 
 /***/ }),
 
+/***/ "./node_modules/downshift/dist/downshift.esm.js":
+/*!******************************************************!*\
+  !*** ./node_modules/downshift/dist/downshift.esm.js ***!
+  \******************************************************/
+/*! exports provided: default, resetIdCounter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetIdCounter", function() { return resetIdCounter; });
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_is__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var compute_scroll_into_view__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! compute-scroll-into-view */ "./node_modules/compute-scroll-into-view/es/index.js");
+
+
+
+
+
+
+
+
+
+// istanbul ignore next
+var statusDiv = typeof document === 'undefined' ? null : document.getElementById('a11y-status-message');
+var cleanupTimerID;
+/**
+ * @param {String} status the status message
+ */
+
+function setStatus(status) {
+  var div = getStatusDiv();
+
+  if (!status) {
+    return;
+  }
+
+  if (cleanupTimerID) {
+    clearTimeout(cleanupTimerID);
+    cleanupTimerID = null;
+  }
+
+  div.textContent = status;
+  cleanupTimerID = setTimeout(function () {
+    div.textContent = '';
+    cleanupTimerID = null;
+  }, 500);
+}
+/**
+ * Get the status node or create it if it does not already exist
+ * @return {HTMLElement} the status node
+ */
+
+
+function getStatusDiv() {
+  if (statusDiv) {
+    return statusDiv;
+  }
+
+  statusDiv = document.createElement('div');
+  statusDiv.setAttribute('id', 'a11y-status-message');
+  statusDiv.setAttribute('role', 'status');
+  statusDiv.setAttribute('aria-live', 'polite');
+  statusDiv.setAttribute('aria-relevant', 'additions text');
+  Object.assign(statusDiv.style, {
+    border: '0',
+    clip: 'rect(0 0 0 0)',
+    height: '1px',
+    margin: '-1px',
+    overflow: 'hidden',
+    padding: '0',
+    position: 'absolute',
+    width: '1px'
+  });
+  document.body.appendChild(statusDiv);
+  return statusDiv;
+}
+
+var unknown =  true ? '__autocomplete_unknown__' : undefined;
+var mouseUp =  true ? '__autocomplete_mouseup__' : undefined;
+var itemMouseEnter =  true ? '__autocomplete_item_mouseenter__' : undefined;
+var keyDownArrowUp =  true ? '__autocomplete_keydown_arrow_up__' : undefined;
+var keyDownArrowDown =  true ? '__autocomplete_keydown_arrow_down__' : undefined;
+var keyDownEscape =  true ? '__autocomplete_keydown_escape__' : undefined;
+var keyDownEnter =  true ? '__autocomplete_keydown_enter__' : undefined;
+var keyDownHome =  true ? '__autocomplete_keydown_home__' : undefined;
+var keyDownEnd =  true ? '__autocomplete_keydown_end__' : undefined;
+var clickItem =  true ? '__autocomplete_click_item__' : undefined;
+var blurInput =  true ? '__autocomplete_blur_input__' : undefined;
+var changeInput =  true ? '__autocomplete_change_input__' : undefined;
+var keyDownSpaceButton =  true ? '__autocomplete_keydown_space_button__' : undefined;
+var clickButton =  true ? '__autocomplete_click_button__' : undefined;
+var blurButton =  true ? '__autocomplete_blur_button__' : undefined;
+var controlledPropUpdatedSelectedItem =  true ? '__autocomplete_controlled_prop_updated_selected_item__' : undefined;
+var touchEnd =  true ? '__autocomplete_touchend__' : undefined;
+
+var stateChangeTypes = /*#__PURE__*/Object.freeze({
+  unknown: unknown,
+  mouseUp: mouseUp,
+  itemMouseEnter: itemMouseEnter,
+  keyDownArrowUp: keyDownArrowUp,
+  keyDownArrowDown: keyDownArrowDown,
+  keyDownEscape: keyDownEscape,
+  keyDownEnter: keyDownEnter,
+  keyDownHome: keyDownHome,
+  keyDownEnd: keyDownEnd,
+  clickItem: clickItem,
+  blurInput: blurInput,
+  changeInput: changeInput,
+  keyDownSpaceButton: keyDownSpaceButton,
+  clickButton: clickButton,
+  blurButton: blurButton,
+  controlledPropUpdatedSelectedItem: controlledPropUpdatedSelectedItem,
+  touchEnd: touchEnd
+});
+
+var idCounter = 0;
+/**
+ * Accepts a parameter and returns it if it's a function
+ * or a noop function if it's not. This allows us to
+ * accept a callback, but not worry about it if it's not
+ * passed.
+ * @param {Function} cb the callback
+ * @return {Function} a function
+ */
+
+function cbToCb(cb) {
+  return typeof cb === 'function' ? cb : noop;
+}
+
+function noop() {}
+/**
+ * Scroll node into view if necessary
+ * @param {HTMLElement} node the element that should scroll into view
+ * @param {HTMLElement} menuNode the menu element of the component
+ */
+
+
+function scrollIntoView(node, menuNode) {
+  if (node === null) {
+    return;
+  }
+
+  var actions = Object(compute_scroll_into_view__WEBPACK_IMPORTED_MODULE_7__["default"])(node, {
+    boundary: menuNode,
+    block: 'nearest',
+    scrollMode: 'if-needed'
+  });
+  actions.forEach(function (_ref) {
+    var el = _ref.el,
+        top = _ref.top,
+        left = _ref.left;
+    el.scrollTop = top;
+    el.scrollLeft = left;
+  });
+}
+/**
+ * @param {HTMLElement} parent the parent node
+ * @param {HTMLElement} child the child node
+ * @return {Boolean} whether the parent is the child or the child is in the parent
+ */
+
+
+function isOrContainsNode(parent, child) {
+  return parent === child || parent.contains && parent.contains(child);
+}
+/**
+ * Simple debounce implementation. Will call the given
+ * function once after the time given has passed since
+ * it was last called.
+ * @param {Function} fn the function to call after the time
+ * @param {Number} time the time to wait
+ * @return {Function} the debounced function
+ */
+
+
+function debounce(fn, time) {
+  var timeoutId;
+
+  function cancel() {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  function wrapper() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    cancel();
+    timeoutId = setTimeout(function () {
+      timeoutId = null;
+      fn.apply(void 0, args);
+    }, time);
+  }
+
+  wrapper.cancel = cancel;
+  return wrapper;
+}
+/**
+ * This is intended to be used to compose event handlers.
+ * They are executed in order until one of them sets
+ * `event.preventDownshiftDefault = true`.
+ * @param {...Function} fns the event handler functions
+ * @return {Function} the event handler to add to an element
+ */
+
+
+function callAllEventHandlers() {
+  for (var _len2 = arguments.length, fns = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    fns[_key2] = arguments[_key2];
+  }
+
+  return function (event) {
+    for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+      args[_key3 - 1] = arguments[_key3];
+    }
+
+    return fns.some(function (fn) {
+      if (fn) {
+        fn.apply(void 0, [event].concat(args));
+      }
+
+      return event.preventDownshiftDefault || event.hasOwnProperty('nativeEvent') && event.nativeEvent.preventDownshiftDefault;
+    });
+  };
+}
+/**
+ * This return a function that will call all the given functions with
+ * the arguments with which it's called. It does a null-check before
+ * attempting to call the functions and can take any number of functions.
+ * @param {...Function} fns the functions to call
+ * @return {Function} the function that calls all the functions
+ */
+
+
+function callAll() {
+  for (var _len4 = arguments.length, fns = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+    fns[_key4] = arguments[_key4];
+  }
+
+  return function () {
+    for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+      args[_key5] = arguments[_key5];
+    }
+
+    fns.forEach(function (fn) {
+      if (fn) {
+        fn.apply(void 0, args);
+      }
+    });
+  };
+}
+/**
+ * This generates a unique ID for an instance of Downshift
+ * @return {String} the unique ID
+ */
+
+
+function generateId() {
+  return String(idCounter++);
+}
+/**
+ * Resets idCounter to 0. Used for SSR.
+ */
+
+
+function resetIdCounter() {
+  idCounter = 0;
+}
+/**
+ * @param {Object} param the downshift state and other relevant properties
+ * @return {String} the a11y status message
+ */
+
+
+function getA11yStatusMessage(_ref2) {
+  var isOpen = _ref2.isOpen,
+      selectedItem = _ref2.selectedItem,
+      resultCount = _ref2.resultCount,
+      previousResultCount = _ref2.previousResultCount,
+      itemToString = _ref2.itemToString;
+
+  if (!isOpen) {
+    return selectedItem ? itemToString(selectedItem) : '';
+  }
+
+  if (!resultCount) {
+    return 'No results are available.';
+  }
+
+  if (resultCount !== previousResultCount) {
+    return resultCount + " result" + (resultCount === 1 ? ' is' : 's are') + " available, use up and down arrow keys to navigate. Press Enter key to select.";
+  }
+
+  return '';
+}
+/**
+ * Takes an argument and if it's an array, returns the first item in the array
+ * otherwise returns the argument
+ * @param {*} arg the maybe-array
+ * @param {*} defaultValue the value if arg is falsey not defined
+ * @return {*} the arg or it's first item
+ */
+
+
+function unwrapArray(arg, defaultValue) {
+  arg = Array.isArray(arg) ?
+  /* istanbul ignore next (preact) */
+  arg[0] : arg;
+
+  if (!arg && defaultValue) {
+    return defaultValue;
+  } else {
+    return arg;
+  }
+}
+/**
+ * @param {Object} element (P)react element
+ * @return {Boolean} whether it's a DOM element
+ */
+
+
+function isDOMElement(element) {
+  // then we assume this is react
+  return typeof element.type === 'string';
+}
+/**
+ * @param {Object} element (P)react element
+ * @return {Object} the props
+ */
+
+
+function getElementProps(element) {
+  return element.props;
+}
+/**
+ * Throws a helpful error message for required properties. Useful
+ * to be used as a default in destructuring or object params.
+ * @param {String} fnName the function name
+ * @param {String} propName the prop name
+ */
+
+
+function requiredProp(fnName, propName) {
+  // eslint-disable-next-line no-console
+  console.error("The property \"" + propName + "\" is required in \"" + fnName + "\"");
+}
+
+var stateKeys = ['highlightedIndex', 'inputValue', 'isOpen', 'selectedItem', 'type'];
+/**
+ * @param {Object} state the state object
+ * @return {Object} state that is relevant to downshift
+ */
+
+function pickState(state) {
+  if (state === void 0) {
+    state = {};
+  }
+
+  var result = {};
+  stateKeys.forEach(function (k) {
+    if (state.hasOwnProperty(k)) {
+      result[k] = state[k];
+    }
+  });
+  return result;
+}
+/**
+ * Normalizes the 'key' property of a KeyboardEvent in IE/Edge
+ * @param {Object} event a keyboardEvent object
+ * @return {String} keyboard key
+ */
+
+
+function normalizeArrowKey(event) {
+  var key = event.key,
+      keyCode = event.keyCode;
+  /* istanbul ignore next (ie) */
+
+  if (keyCode >= 37 && keyCode <= 40 && key.indexOf('Arrow') !== 0) {
+    return "Arrow" + key;
+  }
+
+  return key;
+}
+/**
+ * Simple check if the value passed is object literal
+ * @param {*} obj any things
+ * @return {Boolean} whether it's object literal
+ */
+
+
+function isPlainObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+}
+/**
+ * Returns the new index in the list, in a circular way. If next value is out of bonds from the total,
+ * it will wrap to either 0 or itemCount - 1.
+ *
+ * @param {number} moveAmount Number of positions to move. Negative to move backwards, positive forwards.
+ * @param {number} baseIndex The initial position to move from.
+ * @param {number} itemCount The total number of items.
+ * @returns {number} The new index after the move.
+ */
+
+
+function getNextWrappingIndex(moveAmount, baseIndex, itemCount) {
+  var itemsLastIndex = itemCount - 1;
+
+  if (typeof baseIndex !== 'number' || baseIndex < 0 || baseIndex >= itemCount) {
+    baseIndex = moveAmount > 0 ? -1 : itemsLastIndex + 1;
+  }
+
+  var newIndex = baseIndex + moveAmount;
+
+  if (newIndex < 0) {
+    newIndex = itemsLastIndex;
+  } else if (newIndex > itemsLastIndex) {
+    newIndex = 0;
+  }
+
+  return newIndex;
+}
+
+var Downshift =
+/*#__PURE__*/
+function (_Component) {
+  Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_3__["default"])(Downshift, _Component);
+
+  function Downshift(_props) {
+    var _this = _Component.call(this, _props) || this;
+
+    _this.id = _this.props.id || "downshift-" + generateId();
+    _this.menuId = _this.props.menuId || _this.id + "-menu";
+    _this.labelId = _this.props.labelId || _this.id + "-label";
+    _this.inputId = _this.props.inputId || _this.id + "-input";
+
+    _this.getItemId = _this.props.getItemId || function (index) {
+      return _this.id + "-item-" + index;
+    };
+
+    _this.input = null;
+    _this.items = [];
+    _this.itemCount = null;
+    _this.previousResultCount = 0;
+    _this.timeoutIds = [];
+
+    _this.internalSetTimeout = function (fn, time) {
+      var id = setTimeout(function () {
+        _this.timeoutIds = _this.timeoutIds.filter(function (i) {
+          return i !== id;
+        });
+        fn();
+      }, time);
+
+      _this.timeoutIds.push(id);
+    };
+
+    _this.setItemCount = function (count) {
+      _this.itemCount = count;
+    };
+
+    _this.unsetItemCount = function () {
+      _this.itemCount = null;
+    };
+
+    _this.setHighlightedIndex = function (highlightedIndex, otherStateToSet) {
+      if (highlightedIndex === void 0) {
+        highlightedIndex = _this.props.defaultHighlightedIndex;
+      }
+
+      if (otherStateToSet === void 0) {
+        otherStateToSet = {};
+      }
+
+      otherStateToSet = pickState(otherStateToSet);
+
+      _this.internalSetState(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+        highlightedIndex: highlightedIndex
+      }, otherStateToSet));
+    };
+
+    _this.clearSelection = function (cb) {
+      _this.internalSetState({
+        selectedItem: null,
+        inputValue: '',
+        highlightedIndex: _this.props.defaultHighlightedIndex,
+        isOpen: _this.props.defaultIsOpen
+      }, cb);
+    };
+
+    _this.selectItem = function (item, otherStateToSet, cb) {
+      otherStateToSet = pickState(otherStateToSet);
+
+      _this.internalSetState(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+        isOpen: _this.props.defaultIsOpen,
+        highlightedIndex: _this.props.defaultHighlightedIndex,
+        selectedItem: item,
+        inputValue: _this.props.itemToString(item)
+      }, otherStateToSet), cb);
+    };
+
+    _this.selectItemAtIndex = function (itemIndex, otherStateToSet, cb) {
+      var item = _this.items[itemIndex];
+
+      if (item == null) {
+        return;
+      }
+
+      _this.selectItem(item, otherStateToSet, cb);
+    };
+
+    _this.selectHighlightedItem = function (otherStateToSet, cb) {
+      return _this.selectItemAtIndex(_this.getState().highlightedIndex, otherStateToSet, cb);
+    };
+
+    _this.internalSetState = function (stateToSet, cb) {
+      var isItemSelected, onChangeArg;
+      var onStateChangeArg = {};
+      var isStateToSetFunction = typeof stateToSet === 'function'; // we want to call `onInputValueChange` before the `setState` call
+      // so someone controlling the `inputValue` state gets notified of
+      // the input change as soon as possible. This avoids issues with
+      // preserving the cursor position.
+      // See https://github.com/downshift-js/downshift/issues/217 for more info.
+
+      if (!isStateToSetFunction && stateToSet.hasOwnProperty('inputValue')) {
+        _this.props.onInputValueChange(stateToSet.inputValue, Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({}, _this.getStateAndHelpers(), stateToSet));
+      }
+
+      return _this.setState(function (state) {
+        state = _this.getState(state);
+        var newStateToSet = isStateToSetFunction ? stateToSet(state) : stateToSet; // Your own function that could modify the state that will be set.
+
+        newStateToSet = _this.props.stateReducer(state, newStateToSet); // checks if an item is selected, regardless of if it's different from
+        // what was selected before
+        // used to determine if onSelect and onChange callbacks should be called
+
+        isItemSelected = newStateToSet.hasOwnProperty('selectedItem'); // this keeps track of the object we want to call with setState
+
+        var nextState = {}; // this is just used to tell whether the state changed
+
+        var nextFullState = {}; // we need to call on change if the outside world is controlling any of our state
+        // and we're trying to update that state. OR if the selection has changed and we're
+        // trying to update the selection
+
+        if (isItemSelected && newStateToSet.selectedItem !== state.selectedItem) {
+          onChangeArg = newStateToSet.selectedItem;
+        }
+
+        newStateToSet.type = newStateToSet.type || unknown;
+        Object.keys(newStateToSet).forEach(function (key) {
+          // onStateChangeArg should only have the state that is
+          // actually changing
+          if (state[key] !== newStateToSet[key]) {
+            onStateChangeArg[key] = newStateToSet[key];
+          } // the type is useful for the onStateChangeArg
+          // but we don't actually want to set it in internal state.
+          // this is an undocumented feature for now... Not all internalSetState
+          // calls support it and I'm not certain we want them to yet.
+          // But it enables users controlling the isOpen state to know when
+          // the isOpen state changes due to mouseup events which is quite handy.
+
+
+          if (key === 'type') {
+            return;
+          }
+
+          nextFullState[key] = newStateToSet[key]; // if it's coming from props, then we don't care to set it internally
+
+          if (!_this.isControlledProp(key)) {
+            nextState[key] = newStateToSet[key];
+          }
+        }); // if stateToSet is a function, then we weren't able to call onInputValueChange
+        // earlier, so we'll call it now that we know what the inputValue state will be.
+
+        if (isStateToSetFunction && newStateToSet.hasOwnProperty('inputValue')) {
+          _this.props.onInputValueChange(newStateToSet.inputValue, Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({}, _this.getStateAndHelpers(), newStateToSet));
+        }
+
+        return nextState;
+      }, function () {
+        // call the provided callback if it's a function
+        cbToCb(cb)(); // only call the onStateChange and onChange callbacks if
+        // we have relevant information to pass them.
+
+        var hasMoreStateThanType = Object.keys(onStateChangeArg).length > 1;
+
+        if (hasMoreStateThanType) {
+          _this.props.onStateChange(onStateChangeArg, _this.getStateAndHelpers());
+        }
+
+        if (isItemSelected) {
+          _this.props.onSelect(stateToSet.selectedItem, _this.getStateAndHelpers());
+        }
+
+        if (onChangeArg !== undefined) {
+          _this.props.onChange(onChangeArg, _this.getStateAndHelpers());
+        } // this is currently undocumented and therefore subject to change
+        // We'll try to not break it, but just be warned.
+
+
+        _this.props.onUserAction(onStateChangeArg, _this.getStateAndHelpers());
+      });
+    };
+
+    _this.rootRef = function (node) {
+      return _this._rootNode = node;
+    };
+
+    _this.getRootProps = function (_temp, _temp2) {
+      var _extends2;
+
+      var _ref = _temp === void 0 ? {} : _temp,
+          _ref$refKey = _ref.refKey,
+          refKey = _ref$refKey === void 0 ? 'ref' : _ref$refKey,
+          rest = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref, ["refKey"]);
+
+      var _ref2 = _temp2 === void 0 ? {} : _temp2,
+          _ref2$suppressRefErro = _ref2.suppressRefError,
+          suppressRefError = _ref2$suppressRefErro === void 0 ? false : _ref2$suppressRefErro;
+
+      // this is used in the render to know whether the user has called getRootProps.
+      // It uses that to know whether to apply the props automatically
+      _this.getRootProps.called = true;
+      _this.getRootProps.refKey = refKey;
+      _this.getRootProps.suppressRefError = suppressRefError;
+
+      var _this$getState = _this.getState(),
+          isOpen = _this$getState.isOpen;
+
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])((_extends2 = {}, _extends2[refKey] = _this.rootRef, _extends2.role = 'combobox', _extends2['aria-expanded'] = isOpen, _extends2['aria-haspopup'] = 'listbox', _extends2['aria-owns'] = isOpen ? _this.menuId : null, _extends2['aria-labelledby'] = _this.labelId, _extends2), rest);
+    };
+
+    _this.keyDownHandlers = {
+      ArrowDown: function ArrowDown(event) {
+        var _this2 = this;
+
+        event.preventDefault();
+
+        if (this.getState().isOpen) {
+          var amount = event.shiftKey ? 5 : 1;
+          this.moveHighlightedIndex(amount, {
+            type: keyDownArrowDown
+          });
+        } else {
+          this.internalSetState({
+            isOpen: true,
+            type: keyDownArrowDown
+          }, function () {
+            var itemCount = _this2.getItemCount();
+
+            if (itemCount > 0) {
+              _this2.setHighlightedIndex(getNextWrappingIndex(1, _this2.getState().highlightedIndex, itemCount), {
+                type: keyDownArrowDown
+              });
+            }
+          });
+        }
+      },
+      ArrowUp: function ArrowUp(event) {
+        var _this3 = this;
+
+        event.preventDefault();
+
+        if (this.getState().isOpen) {
+          var amount = event.shiftKey ? -5 : -1;
+          this.moveHighlightedIndex(amount, {
+            type: keyDownArrowUp
+          });
+        } else {
+          this.internalSetState({
+            isOpen: true,
+            type: keyDownArrowUp
+          }, function () {
+            var itemCount = _this3.getItemCount();
+
+            if (itemCount > 0) {
+              _this3.setHighlightedIndex(getNextWrappingIndex(-1, _this3.getState().highlightedIndex, itemCount), {
+                type: keyDownArrowDown
+              });
+            }
+          });
+        }
+      },
+      Enter: function Enter(event) {
+        var _this$getState2 = this.getState(),
+            isOpen = _this$getState2.isOpen,
+            highlightedIndex = _this$getState2.highlightedIndex;
+
+        if (isOpen && highlightedIndex != null) {
+          event.preventDefault();
+          var item = this.items[highlightedIndex];
+          var itemNode = this.getItemNodeFromIndex(highlightedIndex);
+
+          if (item == null || itemNode && itemNode.hasAttribute('disabled')) {
+            return;
+          }
+
+          this.selectHighlightedItem({
+            type: keyDownEnter
+          });
+        }
+      },
+      Escape: function Escape(event) {
+        event.preventDefault();
+        this.reset({
+          type: keyDownEscape,
+          selectedItem: null,
+          inputValue: ''
+        });
+      }
+    };
+    _this.buttonKeyDownHandlers = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({}, _this.keyDownHandlers, {
+      ' ': function _(event) {
+        event.preventDefault();
+        this.toggleMenu({
+          type: keyDownSpaceButton
+        });
+      }
+    });
+    _this.inputKeyDownHandlers = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({}, _this.keyDownHandlers, {
+      Home: function Home(event) {
+        this.highlightFirstOrLastIndex(event, true, {
+          type: keyDownHome
+        });
+      },
+      End: function End(event) {
+        this.highlightFirstOrLastIndex(event, false, {
+          type: keyDownEnd
+        });
+      }
+    });
+
+    _this.getToggleButtonProps = function (_temp3) {
+      var _ref3 = _temp3 === void 0 ? {} : _temp3,
+          onClick = _ref3.onClick,
+          onPress = _ref3.onPress,
+          onKeyDown = _ref3.onKeyDown,
+          onKeyUp = _ref3.onKeyUp,
+          onBlur = _ref3.onBlur,
+          rest = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref3, ["onClick", "onPress", "onKeyDown", "onKeyUp", "onBlur"]);
+
+      var _this$getState3 = _this.getState(),
+          isOpen = _this$getState3.isOpen;
+
+      var enabledEventHandlers = {
+        onClick: callAllEventHandlers(onClick, _this.buttonHandleClick),
+        onKeyDown: callAllEventHandlers(onKeyDown, _this.buttonHandleKeyDown),
+        onKeyUp: callAllEventHandlers(onKeyUp, _this.buttonHandleKeyUp),
+        onBlur: callAllEventHandlers(onBlur, _this.buttonHandleBlur)
+      };
+      var eventHandlers = rest.disabled ? {} : enabledEventHandlers;
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+        type: 'button',
+        role: 'button',
+        'aria-label': isOpen ? 'close menu' : 'open menu',
+        'aria-haspopup': true,
+        'data-toggle': true
+      }, eventHandlers, rest);
+    };
+
+    _this.buttonHandleKeyUp = function (event) {
+      // Prevent click event from emitting in Firefox
+      event.preventDefault();
+    };
+
+    _this.buttonHandleKeyDown = function (event) {
+      var key = normalizeArrowKey(event);
+
+      if (_this.buttonKeyDownHandlers[key]) {
+        _this.buttonKeyDownHandlers[key].call(Object(_babel_runtime_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__["default"])(_this), event);
+      }
+    };
+
+    _this.buttonHandleClick = function (event) {
+      event.preventDefault(); // handle odd case for Safari and Firefox which
+      // don't give the button the focus properly.
+
+      /* istanbul ignore if (can't reasonably test this) */
+
+      if (_this.props.environment.document.activeElement === _this.props.environment.document.body) {
+        event.target.focus();
+      } // to simplify testing components that use downshift, we'll not wrap this in a setTimeout
+      // if the NODE_ENV is test. With the proper build system, this should be dead code eliminated
+      // when building for production and should therefore have no impact on production code.
+
+
+      if (false) {} else {
+        // Ensure that toggle of menu occurs after the potential blur event in iOS
+        _this.internalSetTimeout(function () {
+          return _this.toggleMenu({
+            type: clickButton
+          });
+        });
+      }
+    };
+
+    _this.buttonHandleBlur = function (event) {
+      var blurTarget = event.target; // Save blur target for comparison with activeElement later
+      // Need setTimeout, so that when the user presses Tab, the activeElement is the next focused element, not body element
+
+      _this.internalSetTimeout(function () {
+        if (!_this.isMouseDown && (_this.props.environment.document.activeElement == null || _this.props.environment.document.activeElement.id !== _this.inputId) && _this.props.environment.document.activeElement !== blurTarget // Do nothing if we refocus the same element again (to solve issue in Safari on iOS)
+        ) {
+            _this.reset({
+              type: blurButton
+            });
+          }
+      });
+    };
+
+    _this.getLabelProps = function (props) {
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+        htmlFor: _this.inputId,
+        id: _this.labelId
+      }, props);
+    };
+
+    _this.getInputProps = function (_temp4) {
+      var _ref4 = _temp4 === void 0 ? {} : _temp4,
+          onKeyDown = _ref4.onKeyDown,
+          onBlur = _ref4.onBlur,
+          onChange = _ref4.onChange,
+          onInput = _ref4.onInput,
+          onChangeText = _ref4.onChangeText,
+          rest = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref4, ["onKeyDown", "onBlur", "onChange", "onInput", "onChangeText"]);
+
+      var onChangeKey;
+      var eventHandlers = {};
+      /* istanbul ignore next (preact) */
+
+      onChangeKey = 'onChange';
+
+      var _this$getState4 = _this.getState(),
+          inputValue = _this$getState4.inputValue,
+          isOpen = _this$getState4.isOpen,
+          highlightedIndex = _this$getState4.highlightedIndex;
+
+      if (!rest.disabled) {
+        var _eventHandlers;
+
+        eventHandlers = (_eventHandlers = {}, _eventHandlers[onChangeKey] = callAllEventHandlers(onChange, onInput, _this.inputHandleChange), _eventHandlers.onKeyDown = callAllEventHandlers(onKeyDown, _this.inputHandleKeyDown), _eventHandlers.onBlur = callAllEventHandlers(onBlur, _this.inputHandleBlur), _eventHandlers);
+      }
+      /* istanbul ignore if (react-native) */
+
+
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+        'aria-autocomplete': 'list',
+        'aria-activedescendant': isOpen && typeof highlightedIndex === 'number' && highlightedIndex >= 0 ? _this.getItemId(highlightedIndex) : null,
+        'aria-controls': isOpen ? _this.menuId : null,
+        'aria-labelledby': _this.labelId,
+        // https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
+        // revert back since autocomplete="nope" is ignored on latest Chrome and Opera
+        autoComplete: 'off',
+        value: inputValue,
+        id: _this.inputId
+      }, eventHandlers, rest);
+    };
+
+    _this.inputHandleKeyDown = function (event) {
+      var key = normalizeArrowKey(event);
+
+      if (key && _this.inputKeyDownHandlers[key]) {
+        _this.inputKeyDownHandlers[key].call(Object(_babel_runtime_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__["default"])(_this), event);
+      }
+    };
+
+    _this.inputHandleChange = function (event) {
+      _this.internalSetState({
+        type: changeInput,
+        isOpen: true,
+        inputValue: event.target.value,
+        highlightedIndex: _this.props.defaultHighlightedIndex
+      });
+    };
+
+    _this.inputHandleTextChange
+    /* istanbul ignore next (react-native) */
+    = function (text) {
+      _this.internalSetState({
+        type: changeInput,
+        isOpen: true,
+        inputValue: text,
+        highlightedIndex: _this.props.defaultHighlightedIndex
+      });
+    };
+
+    _this.inputHandleBlur = function () {
+      // Need setTimeout, so that when the user presses Tab, the activeElement is the next focused element, not the body element
+      _this.internalSetTimeout(function () {
+        var downshiftButtonIsActive = _this.props.environment.document && !!_this.props.environment.document.activeElement && !!_this.props.environment.document.activeElement.dataset && _this.props.environment.document.activeElement.dataset.toggle && _this._rootNode && _this._rootNode.contains(_this.props.environment.document.activeElement);
+
+        if (!_this.isMouseDown && !downshiftButtonIsActive) {
+          _this.reset({
+            type: blurInput
+          });
+        }
+      });
+    };
+
+    _this.menuRef = function (node) {
+      _this._menuNode = node;
+    };
+
+    _this.getMenuProps = function (_temp5, _temp6) {
+      var _extends3;
+
+      var _ref5 = _temp5 === void 0 ? {} : _temp5,
+          _ref5$refKey = _ref5.refKey,
+          refKey = _ref5$refKey === void 0 ? 'ref' : _ref5$refKey,
+          ref = _ref5.ref,
+          props = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref5, ["refKey", "ref"]);
+
+      var _ref6 = _temp6 === void 0 ? {} : _temp6,
+          _ref6$suppressRefErro = _ref6.suppressRefError,
+          suppressRefError = _ref6$suppressRefErro === void 0 ? false : _ref6$suppressRefErro;
+
+      _this.getMenuProps.called = true;
+      _this.getMenuProps.refKey = refKey;
+      _this.getMenuProps.suppressRefError = suppressRefError;
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])((_extends3 = {}, _extends3[refKey] = callAll(ref, _this.menuRef), _extends3.role = 'listbox', _extends3['aria-labelledby'] = props && props['aria-label'] ? null : _this.labelId, _extends3.id = _this.menuId, _extends3), props);
+    };
+
+    _this.getItemProps = function (_temp7) {
+      var _enabledEventHandlers;
+
+      var _ref7 = _temp7 === void 0 ? {} : _temp7,
+          onMouseMove = _ref7.onMouseMove,
+          onMouseDown = _ref7.onMouseDown,
+          onClick = _ref7.onClick,
+          onPress = _ref7.onPress,
+          index = _ref7.index,
+          _ref7$item = _ref7.item,
+          item = _ref7$item === void 0 ?  false ?
+      /* istanbul ignore next */
+      undefined : requiredProp('getItemProps', 'item') : _ref7$item,
+          rest = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref7, ["onMouseMove", "onMouseDown", "onClick", "onPress", "index", "item"]);
+
+      if (index === undefined) {
+        _this.items.push(item);
+
+        index = _this.items.indexOf(item);
+      } else {
+        _this.items[index] = item;
+      }
+
+      var onSelectKey = 'onClick';
+      var customClickHandler = onClick;
+      var enabledEventHandlers = (_enabledEventHandlers = {
+        // onMouseMove is used over onMouseEnter here. onMouseMove
+        // is only triggered on actual mouse movement while onMouseEnter
+        // can fire on DOM changes, interrupting keyboard navigation
+        onMouseMove: callAllEventHandlers(onMouseMove, function () {
+          if (index === _this.getState().highlightedIndex) {
+            return;
+          }
+
+          _this.setHighlightedIndex(index, {
+            type: itemMouseEnter
+          }); // We never want to manually scroll when changing state based
+          // on `onMouseMove` because we will be moving the element out
+          // from under the user which is currently scrolling/moving the
+          // cursor
+
+
+          _this.avoidScrolling = true;
+
+          _this.internalSetTimeout(function () {
+            return _this.avoidScrolling = false;
+          }, 250);
+        }),
+        onMouseDown: callAllEventHandlers(onMouseDown, function (event) {
+          // This prevents the activeElement from being changed
+          // to the item so it can remain with the current activeElement
+          // which is a more common use case.
+          event.preventDefault();
+        })
+      }, _enabledEventHandlers[onSelectKey] = callAllEventHandlers(customClickHandler, function () {
+        _this.selectItemAtIndex(index, {
+          type: clickItem
+        });
+      }), _enabledEventHandlers); // Passing down the onMouseDown handler to prevent redirect
+      // of the activeElement if clicking on disabled items
+
+      var eventHandlers = rest.disabled ? {
+        onMouseDown: enabledEventHandlers.onMouseDown
+      } : enabledEventHandlers;
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+        id: _this.getItemId(index),
+        role: 'option',
+        'aria-selected': _this.getState().highlightedIndex === index
+      }, eventHandlers, rest);
+    };
+
+    _this.clearItems = function () {
+      _this.items = [];
+    };
+
+    _this.reset = function (otherStateToSet, cb) {
+      if (otherStateToSet === void 0) {
+        otherStateToSet = {};
+      }
+
+      otherStateToSet = pickState(otherStateToSet);
+
+      _this.internalSetState(function (_ref8) {
+        var selectedItem = _ref8.selectedItem;
+        return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+          isOpen: _this.props.defaultIsOpen,
+          highlightedIndex: _this.props.defaultHighlightedIndex,
+          inputValue: _this.props.itemToString(selectedItem)
+        }, otherStateToSet);
+      }, cb);
+    };
+
+    _this.toggleMenu = function (otherStateToSet, cb) {
+      if (otherStateToSet === void 0) {
+        otherStateToSet = {};
+      }
+
+      otherStateToSet = pickState(otherStateToSet);
+
+      _this.internalSetState(function (_ref9) {
+        var isOpen = _ref9.isOpen;
+        return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+          isOpen: !isOpen
+        }, isOpen && {
+          highlightedIndex: _this.props.defaultHighlightedIndex
+        }, otherStateToSet);
+      }, function () {
+        var _this$getState5 = _this.getState(),
+            isOpen = _this$getState5.isOpen,
+            highlightedIndex = _this$getState5.highlightedIndex;
+
+        if (isOpen) {
+          if (_this.getItemCount() > 0 && typeof highlightedIndex === 'number') {
+            _this.setHighlightedIndex(highlightedIndex, otherStateToSet);
+          }
+        }
+
+        cbToCb(cb)();
+      });
+    };
+
+    _this.openMenu = function (cb) {
+      _this.internalSetState({
+        isOpen: true
+      }, cb);
+    };
+
+    _this.closeMenu = function (cb) {
+      _this.internalSetState({
+        isOpen: false
+      }, cb);
+    };
+
+    _this.updateStatus = debounce(function () {
+      var state = _this.getState();
+
+      var item = _this.items[state.highlightedIndex];
+
+      var resultCount = _this.getItemCount();
+
+      var status = _this.props.getA11yStatusMessage(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+        itemToString: _this.props.itemToString,
+        previousResultCount: _this.previousResultCount,
+        resultCount: resultCount,
+        highlightedItem: item
+      }, state));
+
+      _this.previousResultCount = resultCount;
+      setStatus(status);
+    }, 200);
+
+    // fancy destructuring + defaults + aliases
+    // this basically says each value of state should either be set to
+    // the initial value or the default value if the initial value is not provided
+    var _this$props = _this.props,
+        defaultHighlightedIndex = _this$props.defaultHighlightedIndex,
+        _this$props$initialHi = _this$props.initialHighlightedIndex,
+        _highlightedIndex = _this$props$initialHi === void 0 ? defaultHighlightedIndex : _this$props$initialHi,
+        defaultIsOpen = _this$props.defaultIsOpen,
+        _this$props$initialIs = _this$props.initialIsOpen,
+        _isOpen = _this$props$initialIs === void 0 ? defaultIsOpen : _this$props$initialIs,
+        _this$props$initialIn = _this$props.initialInputValue,
+        _inputValue = _this$props$initialIn === void 0 ? '' : _this$props$initialIn,
+        _this$props$initialSe = _this$props.initialSelectedItem,
+        _selectedItem = _this$props$initialSe === void 0 ? null : _this$props$initialSe;
+
+    var _state = _this.getState({
+      highlightedIndex: _highlightedIndex,
+      isOpen: _isOpen,
+      inputValue: _inputValue,
+      selectedItem: _selectedItem
+    });
+
+    if (_state.selectedItem != null && _this.props.initialInputValue === undefined) {
+      _state.inputValue = _this.props.itemToString(_state.selectedItem);
+    }
+
+    _this.state = _state;
+    return _this;
+  }
+
+  var _proto = Downshift.prototype;
+
+  /**
+   * Clear all running timeouts
+   */
+  _proto.internalClearTimeouts = function internalClearTimeouts() {
+    this.timeoutIds.forEach(function (id) {
+      clearTimeout(id);
+    });
+    this.timeoutIds = [];
+  }
+  /**
+   * Gets the state based on internal state or props
+   * If a state value is passed via props, then that
+   * is the value given, otherwise it's retrieved from
+   * stateToMerge
+   *
+   * This will perform a shallow merge of the given state object
+   * with the state coming from props
+   * (for the controlled component scenario)
+   * This is used in state updater functions so they're referencing
+   * the right state regardless of where it comes from.
+   *
+   * @param {Object} stateToMerge defaults to this.state
+   * @return {Object} the state
+   */
+  ;
+
+  _proto.getState = function getState(stateToMerge) {
+    var _this4 = this;
+
+    if (stateToMerge === void 0) {
+      stateToMerge = this.state;
+    }
+
+    return Object.keys(stateToMerge).reduce(function (state, key) {
+      state[key] = _this4.isControlledProp(key) ? _this4.props[key] : stateToMerge[key];
+      return state;
+    }, {});
+  }
+  /**
+   * This determines whether a prop is a "controlled prop" meaning it is
+   * state which is controlled by the outside of this component rather
+   * than within this component.
+   * @param {String} key the key to check
+   * @return {Boolean} whether it is a controlled controlled prop
+   */
+  ;
+
+  _proto.isControlledProp = function isControlledProp(key) {
+    return this.props[key] !== undefined;
+  };
+
+  _proto.getItemCount = function getItemCount() {
+    // things read better this way. They're in priority order:
+    // 1. `this.itemCount`
+    // 2. `this.props.itemCount`
+    // 3. `this.items.length`
+    var itemCount = this.items.length;
+
+    if (this.itemCount != null) {
+      itemCount = this.itemCount;
+    } else if (this.props.itemCount !== undefined) {
+      itemCount = this.props.itemCount;
+    }
+
+    return itemCount;
+  };
+
+  _proto.getItemNodeFromIndex = function getItemNodeFromIndex(index) {
+    return this.props.environment.document.getElementById(this.getItemId(index));
+  };
+
+  _proto.scrollHighlightedItemIntoView = function scrollHighlightedItemIntoView() {
+    /* istanbul ignore else (react-native) */
+    {
+      var node = this.getItemNodeFromIndex(this.getState().highlightedIndex);
+      this.props.scrollIntoView(node, this._menuNode);
+    }
+  };
+
+  _proto.moveHighlightedIndex = function moveHighlightedIndex(amount, otherStateToSet) {
+    var itemCount = this.getItemCount();
+
+    if (itemCount > 0) {
+      var nextHighlightedIndex = getNextWrappingIndex(amount, this.getState().highlightedIndex, itemCount);
+      this.setHighlightedIndex(nextHighlightedIndex, otherStateToSet);
+    }
+  };
+
+  _proto.highlightFirstOrLastIndex = function highlightFirstOrLastIndex(event, first, otherStateToSet) {
+    var itemsLastIndex = this.getItemCount() - 1;
+
+    if (itemsLastIndex < 0 || !this.getState().isOpen) {
+      return;
+    }
+
+    event.preventDefault();
+    this.setHighlightedIndex(first ? 0 : itemsLastIndex, otherStateToSet);
+  };
+
+  _proto.getStateAndHelpers = function getStateAndHelpers() {
+    var _this$getState6 = this.getState(),
+        highlightedIndex = _this$getState6.highlightedIndex,
+        inputValue = _this$getState6.inputValue,
+        selectedItem = _this$getState6.selectedItem,
+        isOpen = _this$getState6.isOpen;
+
+    var itemToString = this.props.itemToString;
+    var id = this.id;
+    var getRootProps = this.getRootProps,
+        getToggleButtonProps = this.getToggleButtonProps,
+        getLabelProps = this.getLabelProps,
+        getMenuProps = this.getMenuProps,
+        getInputProps = this.getInputProps,
+        getItemProps = this.getItemProps,
+        openMenu = this.openMenu,
+        closeMenu = this.closeMenu,
+        toggleMenu = this.toggleMenu,
+        selectItem = this.selectItem,
+        selectItemAtIndex = this.selectItemAtIndex,
+        selectHighlightedItem = this.selectHighlightedItem,
+        setHighlightedIndex = this.setHighlightedIndex,
+        clearSelection = this.clearSelection,
+        clearItems = this.clearItems,
+        reset = this.reset,
+        setItemCount = this.setItemCount,
+        unsetItemCount = this.unsetItemCount,
+        setState = this.internalSetState;
+    return {
+      // prop getters
+      getRootProps: getRootProps,
+      getToggleButtonProps: getToggleButtonProps,
+      getLabelProps: getLabelProps,
+      getMenuProps: getMenuProps,
+      getInputProps: getInputProps,
+      getItemProps: getItemProps,
+      // actions
+      reset: reset,
+      openMenu: openMenu,
+      closeMenu: closeMenu,
+      toggleMenu: toggleMenu,
+      selectItem: selectItem,
+      selectItemAtIndex: selectItemAtIndex,
+      selectHighlightedItem: selectHighlightedItem,
+      setHighlightedIndex: setHighlightedIndex,
+      clearSelection: clearSelection,
+      clearItems: clearItems,
+      setItemCount: setItemCount,
+      unsetItemCount: unsetItemCount,
+      setState: setState,
+      // props
+      itemToString: itemToString,
+      // derived
+      id: id,
+      // state
+      highlightedIndex: highlightedIndex,
+      inputValue: inputValue,
+      isOpen: isOpen,
+      selectedItem: selectedItem
+    };
+  } //////////////////////////// ROOT
+  ;
+
+  _proto.componentDidMount = function componentDidMount() {
+    var _this5 = this;
+
+    /* istanbul ignore if (react-native) */
+    if ( true && this.getMenuProps.called && !this.getMenuProps.suppressRefError) {
+      validateGetMenuPropsCalledCorrectly(this._menuNode, this.getMenuProps);
+    }
+    /* istanbul ignore if (react-native) */
+
+
+    {
+      var targetWithinDownshift = function (target, checkActiveElement) {
+        if (checkActiveElement === void 0) {
+          checkActiveElement = true;
+        }
+
+        var document = _this5.props.environment.document;
+        return [_this5._rootNode, _this5._menuNode].some(function (contextNode) {
+          return contextNode && (isOrContainsNode(contextNode, target) || checkActiveElement && isOrContainsNode(contextNode, document.activeElement));
+        });
+      }; // this.isMouseDown helps us track whether the mouse is currently held down.
+      // This is useful when the user clicks on an item in the list, but holds the mouse
+      // down long enough for the list to disappear (because the blur event fires on the input)
+      // this.isMouseDown is used in the blur handler on the input to determine whether the blur event should
+      // trigger hiding the menu.
+
+
+      var onMouseDown = function () {
+        _this5.isMouseDown = true;
+      };
+
+      var onMouseUp = function (event) {
+        _this5.isMouseDown = false; // if the target element or the activeElement is within a downshift node
+        // then we don't want to reset downshift
+
+        var contextWithinDownshift = targetWithinDownshift(event.target);
+
+        if (!contextWithinDownshift && _this5.getState().isOpen) {
+          _this5.reset({
+            type: mouseUp
+          }, function () {
+            return _this5.props.onOuterClick(_this5.getStateAndHelpers());
+          });
+        }
+      }; // Touching an element in iOS gives focus and hover states, but touching out of
+      // the element will remove hover, and persist the focus state, resulting in the
+      // blur event not being triggered.
+      // this.isTouchMove helps us track whether the user is tapping or swiping on a touch screen.
+      // If the user taps outside of Downshift, the component should be reset,
+      // but not if the user is swiping
+
+
+      var onTouchStart = function () {
+        _this5.isTouchMove = false;
+      };
+
+      var onTouchMove = function () {
+        _this5.isTouchMove = true;
+      };
+
+      var onTouchEnd = function (event) {
+        var contextWithinDownshift = targetWithinDownshift(event.target, false);
+
+        if (!_this5.isTouchMove && !contextWithinDownshift && _this5.getState().isOpen) {
+          _this5.reset({
+            type: touchEnd
+          }, function () {
+            return _this5.props.onOuterClick(_this5.getStateAndHelpers());
+          });
+        }
+      };
+
+      this.props.environment.addEventListener('mousedown', onMouseDown);
+      this.props.environment.addEventListener('mouseup', onMouseUp);
+      this.props.environment.addEventListener('touchstart', onTouchStart);
+      this.props.environment.addEventListener('touchmove', onTouchMove);
+      this.props.environment.addEventListener('touchend', onTouchEnd);
+
+      this.cleanup = function () {
+        _this5.internalClearTimeouts();
+
+        _this5.updateStatus.cancel();
+
+        _this5.props.environment.removeEventListener('mousedown', onMouseDown);
+
+        _this5.props.environment.removeEventListener('mouseup', onMouseUp);
+
+        _this5.props.environment.removeEventListener('touchstart', onTouchStart);
+
+        _this5.props.environment.removeEventListener('touchmove', onTouchMove);
+
+        _this5.props.environment.removeEventListener('touchend', onTouchEnd);
+      };
+    }
+  };
+
+  _proto.shouldScroll = function shouldScroll(prevState, prevProps) {
+    var _ref10 = this.props.highlightedIndex === undefined ? this.getState() : this.props,
+        currentHighlightedIndex = _ref10.highlightedIndex;
+
+    var _ref11 = prevProps.highlightedIndex === undefined ? prevState : prevProps,
+        prevHighlightedIndex = _ref11.highlightedIndex;
+
+    var scrollWhenOpen = currentHighlightedIndex && this.getState().isOpen && !prevState.isOpen;
+    return scrollWhenOpen || currentHighlightedIndex !== prevHighlightedIndex;
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
+    if (true) {
+      validateControlledUnchanged(prevProps, this.props);
+      /* istanbul ignore if (react-native) */
+
+      if (this.getMenuProps.called && !this.getMenuProps.suppressRefError) {
+        validateGetMenuPropsCalledCorrectly(this._menuNode, this.getMenuProps);
+      }
+    }
+
+    if (this.isControlledProp('selectedItem') && this.props.selectedItemChanged(prevProps.selectedItem, this.props.selectedItem)) {
+      this.internalSetState({
+        type: controlledPropUpdatedSelectedItem,
+        inputValue: this.props.itemToString(this.props.selectedItem)
+      });
+    }
+
+    if (!this.avoidScrolling && this.shouldScroll(prevState, prevProps)) {
+      this.scrollHighlightedItemIntoView();
+    }
+    /* istanbul ignore else (react-native) */
+
+
+    this.updateStatus();
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.cleanup(); // avoids memory leak
+  };
+
+  _proto.render = function render() {
+    var children = unwrapArray(this.props.children, noop); // because the items are rerendered every time we call the children
+    // we clear this out each render and it will be populated again as
+    // getItemProps is called.
+
+    this.clearItems(); // we reset this so we know whether the user calls getRootProps during
+    // this render. If they do then we don't need to do anything,
+    // if they don't then we need to clone the element they return and
+    // apply the props for them.
+
+    this.getRootProps.called = false;
+    this.getRootProps.refKey = undefined;
+    this.getRootProps.suppressRefError = undefined; // we do something similar for getMenuProps
+
+    this.getMenuProps.called = false;
+    this.getMenuProps.refKey = undefined;
+    this.getMenuProps.suppressRefError = undefined; // we do something similar for getLabelProps
+
+    this.getLabelProps.called = false; // and something similar for getInputProps
+
+    this.getInputProps.called = false;
+    var element = unwrapArray(children(this.getStateAndHelpers()));
+
+    if (!element) {
+      return null;
+    }
+
+    if (this.getRootProps.called || this.props.suppressRefError) {
+      if ( true && !this.getRootProps.suppressRefError && !this.props.suppressRefError) {
+        validateGetRootPropsCalledCorrectly(element, this.getRootProps);
+      }
+
+      return element;
+    } else if (isDOMElement(element)) {
+      // they didn't apply the root props, but we can clone
+      // this and apply the props ourselves
+      return react__WEBPACK_IMPORTED_MODULE_5___default.a.cloneElement(element, this.getRootProps(getElementProps(element)));
+    }
+    /* istanbul ignore else */
+
+
+    if (true) {
+      // they didn't apply the root props, but they need to
+      // otherwise we can't query around the autocomplete
+      throw new Error('downshift: If you return a non-DOM element, you must use apply the getRootProps function');
+    }
+    /* istanbul ignore next */
+
+
+    return undefined;
+  };
+
+  return Downshift;
+}(react__WEBPACK_IMPORTED_MODULE_5__["Component"]);
+
+Downshift.defaultProps = {
+  defaultHighlightedIndex: null,
+  defaultIsOpen: false,
+  getA11yStatusMessage: getA11yStatusMessage,
+  itemToString: function itemToString(i) {
+    if (i == null) {
+      return '';
+    }
+
+    if ( true && isPlainObject(i) && !i.hasOwnProperty('toString')) {
+      // eslint-disable-next-line no-console
+      console.warn('downshift: An object was passed to the default implementation of `itemToString`. You should probably provide your own `itemToString` implementation. Please refer to the `itemToString` API documentation.', 'The object that was passed:', i);
+    }
+
+    return String(i);
+  },
+  onStateChange: noop,
+  onInputValueChange: noop,
+  onUserAction: noop,
+  onChange: noop,
+  onSelect: noop,
+  onOuterClick: noop,
+  selectedItemChanged: function selectedItemChanged(prevItem, item) {
+    return prevItem !== item;
+  },
+  environment: typeof window === 'undefined'
+  /* istanbul ignore next (ssr) */
+  ? {} : window,
+  stateReducer: function stateReducer(state, stateToSet) {
+    return stateToSet;
+  },
+  suppressRefError: false,
+  scrollIntoView: scrollIntoView
+};
+Downshift.stateChangeTypes = stateChangeTypes;
+ true ? Downshift.propTypes = {
+  children: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  defaultHighlightedIndex: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.number,
+  defaultIsOpen: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool,
+  initialHighlightedIndex: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.number,
+  initialSelectedItem: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.any,
+  initialInputValue: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  initialIsOpen: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool,
+  getA11yStatusMessage: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  itemToString: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  onChange: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  onSelect: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  onStateChange: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  onInputValueChange: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  onUserAction: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  onOuterClick: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  selectedItemChanged: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  stateReducer: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  itemCount: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.number,
+  id: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  environment: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.shape({
+    addEventListener: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+    removeEventListener: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+    document: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.shape({
+      getElementById: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+      activeElement: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.any,
+      body: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.any
+    })
+  }),
+  suppressRefError: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool,
+  scrollIntoView: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  // things we keep in state for uncontrolled components
+  // but can accept as props for controlled components
+
+  /* eslint-disable react/no-unused-prop-types */
+  selectedItem: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.any,
+  isOpen: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool,
+  inputValue: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  highlightedIndex: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.number,
+  labelId: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  inputId: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  menuId: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  getItemId: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func
+  /* eslint-enable react/no-unused-prop-types */
+
+} : undefined;
+
+function validateGetMenuPropsCalledCorrectly(node, _ref12) {
+  var refKey = _ref12.refKey;
+
+  if (!node) {
+    // eslint-disable-next-line no-console
+    console.error("downshift: The ref prop \"" + refKey + "\" from getMenuProps was not applied correctly on your menu element.");
+  }
+}
+
+function validateGetRootPropsCalledCorrectly(element, _ref13) {
+  var refKey = _ref13.refKey;
+  var refKeySpecified = refKey !== 'ref';
+  var isComposite = !isDOMElement(element);
+
+  if (isComposite && !refKeySpecified && !Object(react_is__WEBPACK_IMPORTED_MODULE_6__["isForwardRef"])(element)) {
+    // eslint-disable-next-line no-console
+    console.error('downshift: You returned a non-DOM element. You must specify a refKey in getRootProps');
+  } else if (!isComposite && refKeySpecified) {
+    // eslint-disable-next-line no-console
+    console.error("downshift: You returned a DOM element. You should not specify a refKey in getRootProps. You specified \"" + refKey + "\"");
+  }
+
+  if (!Object(react_is__WEBPACK_IMPORTED_MODULE_6__["isForwardRef"])(element) && !getElementProps(element)[refKey]) {
+    // eslint-disable-next-line no-console
+    console.error("downshift: You must apply the ref prop \"" + refKey + "\" from getRootProps onto your root element.");
+  }
+}
+
+function validateControlledUnchanged(prevProps, nextProps) {
+  var warningDescription = "This prop should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled Downshift element for the lifetime of the component. More info: https://github.com/downshift-js/downshift#control-props";
+  ['selectedItem', 'isOpen', 'inputValue', 'highlightedIndex'].forEach(function (propKey) {
+    if (prevProps[propKey] !== undefined && nextProps[propKey] === undefined) {
+      // eslint-disable-next-line no-console
+      console.error("downshift: A component has changed the controlled prop \"" + propKey + "\" to be uncontrolled. " + warningDescription);
+    } else if (prevProps[propKey] === undefined && nextProps[propKey] !== undefined) {
+      // eslint-disable-next-line no-console
+      console.error("downshift: A component has changed the uncontrolled prop \"" + propKey + "\" to be controlled. " + warningDescription);
+    }
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Downshift);
+
+
+
+/***/ }),
+
 /***/ "./node_modules/events/events.js":
 /*!***************************************!*\
   !*** ./node_modules/events/events.js ***!
@@ -18717,16 +20840,10 @@ function baseClone(value, bitmask, customizer, key, object, stack) {
     value.forEach(function(subValue) {
       result.add(baseClone(subValue, bitmask, customizer, subValue, value, stack));
     });
-
-    return result;
-  }
-
-  if (isMap(value)) {
+  } else if (isMap(value)) {
     value.forEach(function(subValue, key) {
       result.set(key, baseClone(subValue, bitmask, customizer, key, value, stack));
     });
-
-    return result;
   }
 
   var keysFunc = isFull
@@ -24070,6 +26187,7 @@ function debounce(func, wait, options) {
       }
       if (maxing) {
         // Handle invocations in a tight loop.
+        clearTimeout(timerId);
         timerId = setTimeout(timerExpired, wait);
         return invokeFunc(lastCallTime);
       }
@@ -77121,19 +79239,6 @@ function range(a, b, str) {
 
 /***/ }),
 
-/***/ "./node_modules/redux-logger/dist/redux-logger.js":
-/*!********************************************************!*\
-  !*** ./node_modules/redux-logger/dist/redux-logger.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {!function(e,t){ true?t(exports):undefined}(this,function(e){"use strict";function t(e,t){e.super_=t,e.prototype=Object.create(t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}})}function r(e,t){Object.defineProperty(this,"kind",{value:e,enumerable:!0}),t&&t.length&&Object.defineProperty(this,"path",{value:t,enumerable:!0})}function n(e,t,r){n.super_.call(this,"E",e),Object.defineProperty(this,"lhs",{value:t,enumerable:!0}),Object.defineProperty(this,"rhs",{value:r,enumerable:!0})}function o(e,t){o.super_.call(this,"N",e),Object.defineProperty(this,"rhs",{value:t,enumerable:!0})}function i(e,t){i.super_.call(this,"D",e),Object.defineProperty(this,"lhs",{value:t,enumerable:!0})}function a(e,t,r){a.super_.call(this,"A",e),Object.defineProperty(this,"index",{value:t,enumerable:!0}),Object.defineProperty(this,"item",{value:r,enumerable:!0})}function f(e,t,r){var n=e.slice((r||t)+1||e.length);return e.length=t<0?e.length+t:t,e.push.apply(e,n),e}function u(e){var t="undefined"==typeof e?"undefined":N(e);return"object"!==t?t:e===Math?"math":null===e?"null":Array.isArray(e)?"array":"[object Date]"===Object.prototype.toString.call(e)?"date":"function"==typeof e.toString&&/^\/.*\//.test(e.toString())?"regexp":"object"}function l(e,t,r,c,s,d,p){s=s||[],p=p||[];var g=s.slice(0);if("undefined"!=typeof d){if(c){if("function"==typeof c&&c(g,d))return;if("object"===("undefined"==typeof c?"undefined":N(c))){if(c.prefilter&&c.prefilter(g,d))return;if(c.normalize){var h=c.normalize(g,d,e,t);h&&(e=h[0],t=h[1])}}}g.push(d)}"regexp"===u(e)&&"regexp"===u(t)&&(e=e.toString(),t=t.toString());var y="undefined"==typeof e?"undefined":N(e),v="undefined"==typeof t?"undefined":N(t),b="undefined"!==y||p&&p[p.length-1].lhs&&p[p.length-1].lhs.hasOwnProperty(d),m="undefined"!==v||p&&p[p.length-1].rhs&&p[p.length-1].rhs.hasOwnProperty(d);if(!b&&m)r(new o(g,t));else if(!m&&b)r(new i(g,e));else if(u(e)!==u(t))r(new n(g,e,t));else if("date"===u(e)&&e-t!==0)r(new n(g,e,t));else if("object"===y&&null!==e&&null!==t)if(p.filter(function(t){return t.lhs===e}).length)e!==t&&r(new n(g,e,t));else{if(p.push({lhs:e,rhs:t}),Array.isArray(e)){var w;e.length;for(w=0;w<e.length;w++)w>=t.length?r(new a(g,w,new i(void 0,e[w]))):l(e[w],t[w],r,c,g,w,p);for(;w<t.length;)r(new a(g,w,new o(void 0,t[w++])))}else{var x=Object.keys(e),S=Object.keys(t);x.forEach(function(n,o){var i=S.indexOf(n);i>=0?(l(e[n],t[n],r,c,g,n,p),S=f(S,i)):l(e[n],void 0,r,c,g,n,p)}),S.forEach(function(e){l(void 0,t[e],r,c,g,e,p)})}p.length=p.length-1}else e!==t&&("number"===y&&isNaN(e)&&isNaN(t)||r(new n(g,e,t)))}function c(e,t,r,n){return n=n||[],l(e,t,function(e){e&&n.push(e)},r),n.length?n:void 0}function s(e,t,r){if(r.path&&r.path.length){var n,o=e[t],i=r.path.length-1;for(n=0;n<i;n++)o=o[r.path[n]];switch(r.kind){case"A":s(o[r.path[n]],r.index,r.item);break;case"D":delete o[r.path[n]];break;case"E":case"N":o[r.path[n]]=r.rhs}}else switch(r.kind){case"A":s(e[t],r.index,r.item);break;case"D":e=f(e,t);break;case"E":case"N":e[t]=r.rhs}return e}function d(e,t,r){if(e&&t&&r&&r.kind){for(var n=e,o=-1,i=r.path?r.path.length-1:0;++o<i;)"undefined"==typeof n[r.path[o]]&&(n[r.path[o]]="number"==typeof r.path[o]?[]:{}),n=n[r.path[o]];switch(r.kind){case"A":s(r.path?n[r.path[o]]:n,r.index,r.item);break;case"D":delete n[r.path[o]];break;case"E":case"N":n[r.path[o]]=r.rhs}}}function p(e,t,r){if(r.path&&r.path.length){var n,o=e[t],i=r.path.length-1;for(n=0;n<i;n++)o=o[r.path[n]];switch(r.kind){case"A":p(o[r.path[n]],r.index,r.item);break;case"D":o[r.path[n]]=r.lhs;break;case"E":o[r.path[n]]=r.lhs;break;case"N":delete o[r.path[n]]}}else switch(r.kind){case"A":p(e[t],r.index,r.item);break;case"D":e[t]=r.lhs;break;case"E":e[t]=r.lhs;break;case"N":e=f(e,t)}return e}function g(e,t,r){if(e&&t&&r&&r.kind){var n,o,i=e;for(o=r.path.length-1,n=0;n<o;n++)"undefined"==typeof i[r.path[n]]&&(i[r.path[n]]={}),i=i[r.path[n]];switch(r.kind){case"A":p(i[r.path[n]],r.index,r.item);break;case"D":i[r.path[n]]=r.lhs;break;case"E":i[r.path[n]]=r.lhs;break;case"N":delete i[r.path[n]]}}}function h(e,t,r){if(e&&t){var n=function(n){r&&!r(e,t,n)||d(e,t,n)};l(e,t,n)}}function y(e){return"color: "+F[e].color+"; font-weight: bold"}function v(e){var t=e.kind,r=e.path,n=e.lhs,o=e.rhs,i=e.index,a=e.item;switch(t){case"E":return[r.join("."),n,"→",o];case"N":return[r.join("."),o];case"D":return[r.join(".")];case"A":return[r.join(".")+"["+i+"]",a];default:return[]}}function b(e,t,r,n){var o=c(e,t);try{n?r.groupCollapsed("diff"):r.group("diff")}catch(e){r.log("diff")}o?o.forEach(function(e){var t=e.kind,n=v(e);r.log.apply(r,["%c "+F[t].text,y(t)].concat(P(n)))}):r.log("—— no diff ——");try{r.groupEnd()}catch(e){r.log("—— diff end —— ")}}function m(e,t,r,n){switch("undefined"==typeof e?"undefined":N(e)){case"object":return"function"==typeof e[n]?e[n].apply(e,P(r)):e[n];case"function":return e(t);default:return e}}function w(e){var t=e.timestamp,r=e.duration;return function(e,n,o){var i=["action"];return i.push("%c"+String(e.type)),t&&i.push("%c@ "+n),r&&i.push("%c(in "+o.toFixed(2)+" ms)"),i.join(" ")}}function x(e,t){var r=t.logger,n=t.actionTransformer,o=t.titleFormatter,i=void 0===o?w(t):o,a=t.collapsed,f=t.colors,u=t.level,l=t.diff,c="undefined"==typeof t.titleFormatter;e.forEach(function(o,s){var d=o.started,p=o.startedTime,g=o.action,h=o.prevState,y=o.error,v=o.took,w=o.nextState,x=e[s+1];x&&(w=x.prevState,v=x.started-d);var S=n(g),k="function"==typeof a?a(function(){return w},g,o):a,j=D(p),E=f.title?"color: "+f.title(S)+";":"",A=["color: gray; font-weight: lighter;"];A.push(E),t.timestamp&&A.push("color: gray; font-weight: lighter;"),t.duration&&A.push("color: gray; font-weight: lighter;");var O=i(S,j,v);try{k?f.title&&c?r.groupCollapsed.apply(r,["%c "+O].concat(A)):r.groupCollapsed(O):f.title&&c?r.group.apply(r,["%c "+O].concat(A)):r.group(O)}catch(e){r.log(O)}var N=m(u,S,[h],"prevState"),P=m(u,S,[S],"action"),C=m(u,S,[y,h],"error"),F=m(u,S,[w],"nextState");if(N)if(f.prevState){var L="color: "+f.prevState(h)+"; font-weight: bold";r[N]("%c prev state",L,h)}else r[N]("prev state",h);if(P)if(f.action){var T="color: "+f.action(S)+"; font-weight: bold";r[P]("%c action    ",T,S)}else r[P]("action    ",S);if(y&&C)if(f.error){var M="color: "+f.error(y,h)+"; font-weight: bold;";r[C]("%c error     ",M,y)}else r[C]("error     ",y);if(F)if(f.nextState){var _="color: "+f.nextState(w)+"; font-weight: bold";r[F]("%c next state",_,w)}else r[F]("next state",w);l&&b(h,w,r,k);try{r.groupEnd()}catch(e){r.log("—— log end ——")}})}function S(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=Object.assign({},L,e),r=t.logger,n=t.stateTransformer,o=t.errorTransformer,i=t.predicate,a=t.logErrors,f=t.diffPredicate;if("undefined"==typeof r)return function(){return function(e){return function(t){return e(t)}}};if(e.getState&&e.dispatch)return console.error("[redux-logger] redux-logger not installed. Make sure to pass logger instance as middleware:\n// Logger with default options\nimport { logger } from 'redux-logger'\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n// Or you can create your own logger with custom options http://bit.ly/redux-logger-options\nimport createLogger from 'redux-logger'\nconst logger = createLogger({\n  // ...options\n});\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n"),function(){return function(e){return function(t){return e(t)}}};var u=[];return function(e){var r=e.getState;return function(e){return function(l){if("function"==typeof i&&!i(r,l))return e(l);var c={};u.push(c),c.started=O.now(),c.startedTime=new Date,c.prevState=n(r()),c.action=l;var s=void 0;if(a)try{s=e(l)}catch(e){c.error=o(e)}else s=e(l);c.took=O.now()-c.started,c.nextState=n(r());var d=t.diff&&"function"==typeof f?f(r,l):t.diff;if(x(u,Object.assign({},t,{diff:d})),u.length=0,c.error)throw c.error;return s}}}}var k,j,E=function(e,t){return new Array(t+1).join(e)},A=function(e,t){return E("0",t-e.toString().length)+e},D=function(e){return A(e.getHours(),2)+":"+A(e.getMinutes(),2)+":"+A(e.getSeconds(),2)+"."+A(e.getMilliseconds(),3)},O="undefined"!=typeof performance&&null!==performance&&"function"==typeof performance.now?performance:Date,N="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},P=function(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)},C=[];k="object"===("undefined"==typeof global?"undefined":N(global))&&global?global:"undefined"!=typeof window?window:{},j=k.DeepDiff,j&&C.push(function(){"undefined"!=typeof j&&k.DeepDiff===c&&(k.DeepDiff=j,j=void 0)}),t(n,r),t(o,r),t(i,r),t(a,r),Object.defineProperties(c,{diff:{value:c,enumerable:!0},observableDiff:{value:l,enumerable:!0},applyDiff:{value:h,enumerable:!0},applyChange:{value:d,enumerable:!0},revertChange:{value:g,enumerable:!0},isConflict:{value:function(){return"undefined"!=typeof j},enumerable:!0},noConflict:{value:function(){return C&&(C.forEach(function(e){e()}),C=null),c},enumerable:!0}});var F={E:{color:"#2196F3",text:"CHANGED:"},N:{color:"#4CAF50",text:"ADDED:"},D:{color:"#F44336",text:"DELETED:"},A:{color:"#2196F3",text:"ARRAY:"}},L={level:"log",logger:console,logErrors:!0,collapsed:void 0,predicate:void 0,duration:!1,timestamp:!0,stateTransformer:function(e){return e},actionTransformer:function(e){return e},errorTransformer:function(e){return e},colors:{title:function(){return"inherit"},prevState:function(){return"#9E9E9E"},action:function(){return"#03A9F4"},nextState:function(){return"#4CAF50"},error:function(){return"#F20404"}},diff:!1,diffPredicate:void 0,transformer:void 0},T=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.dispatch,r=e.getState;return"function"==typeof t||"function"==typeof r?S()({dispatch:t,getState:r}):void console.error("\n[redux-logger v3] BREAKING CHANGE\n[redux-logger v3] Since 3.0.0 redux-logger exports by default logger with default settings.\n[redux-logger v3] Change\n[redux-logger v3] import createLogger from 'redux-logger'\n[redux-logger v3] to\n[redux-logger v3] import { createLogger } from 'redux-logger'\n")};e.defaults=L,e.createLogger=S,e.logger=T,e.default=T,Object.defineProperty(e,"__esModule",{value:!0})});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
-
-/***/ }),
-
 /***/ "./node_modules/redux-thunk/es/index.js":
 /*!**********************************************!*\
   !*** ./node_modules/redux-thunk/es/index.js ***!
@@ -77734,16 +79839,17 @@ function ownKeys(object, enumerableOnly) {
 
 function _objectSpread2(target) {
   for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
     if (i % 2) {
-      var source = arguments[i] != null ? arguments[i] : {};
       ownKeys(source, true).forEach(function (key) {
         _defineProperty(target, key, source[key]);
       });
     } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(arguments[i]));
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
     } else {
       ownKeys(source).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(arguments[i], key));
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
       });
     }
   }
@@ -80537,6 +82643,19 @@ function symbolObservablePonyfill(root) {
 
 	return result;
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/typesafe-actions/dist/typesafe-actions.umd.production.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/typesafe-actions/dist/typesafe-actions.umd.production.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(n,t){ true?t(exports):undefined}(this,function(n){"use strict";function t(n,t){return void 0===t&&(t=1),null==n}function r(n){throw void 0===n&&(n=1),new Error("Argument "+n+" is empty.")}function e(n){return"function"==typeof n&&"getType"in n}function i(n){throw void 0===n&&(n=1),new Error("Argument "+n+' is invalid, it should be an action-creator instance from "typesafe-actions"')}function o(n,t){if(null==n)throw new Error("Argument contains array with empty element at index "+t);if(null==n.getType)throw new Error("Argument contains array with invalid element at index "+t+', it should be an action-creator instance from "typesafe-actions"')}function u(n){return"string"==typeof n||"symbol"==typeof n}function c(n){return!u(n)}function a(n){throw void 0===n&&(n=1),new Error("Argument "+n+" is invalid, it should be an action type of type: string | symbol")}function f(n,t){if(null==n)throw new Error("Argument contains array with empty element at index "+t);if("string"!=typeof n&&"symbol"!=typeof n)throw new Error("Argument contains array with invalid element at index "+t+", it should be of type: string | symbol")}function s(n,e,o,u){return t(n)&&r(1),c(n)&&i(1),{type:n,payload:e,meta:o,error:u}}function y(n,e){t(n)&&r(1),c(n)&&a(1);var i=null!=e?e(n):function(){return{type:n}};return Object.assign(i,{getType:function(){return n},toString:function(){return n}})}function p(n){return t(n)&&r(1),c(n)&&a(1),Object.assign(function(){return y(n,function(n){return function(t,r){return{type:n,payload:t,meta:r}}})},{map:function(t){return y(n,function(n){return function(r,e){return Object.assign(t(r,e),{type:n})}})}})}function l(n){return t(n)&&r(1),e(n)||i(1),n.getType()}n.action=s,n.createAction=function(n,t){var r=null==t?function(){return s(n)}:t(s.bind(null,n));return Object.assign(r,{getType:function(){return n},toString:function(){return n}})},n.createActionDeprecated=function(n,t){var r;if(null!=t){if("function"!=typeof t)throw new Error("second argument is not a function");r=t}else r=function(){return{type:n}};if(null==n)throw new Error("first argument is missing");if("string"!=typeof n&&"symbol"!=typeof n)throw new Error("first argument should be type of: string | symbol");return r},n.createAsyncAction=function(n,t,r,e){return[n,t,r].forEach(f),Object.assign(function(){return{request:p(n)(),success:p(t)(),failure:p(r)(),cancel:e&&p(e)()}},{})},n.createCustomAction=y,n.createReducer=function n(t,r){void 0===r&&(r={});var i=Object.assign({},r);return Object.assign(function(n,r){if(void 0===n&&(n=t),i.hasOwnProperty(r.type)){var e=i[r.type];if("function"!=typeof e)throw Error('Reducer under "'+r.type+'" key is not a valid reducer');return e(n,r)}return n},{handlers:Object.assign({},i),handleAction:function(r,o){var c=Array.isArray(r)?r:[r],a={};return c.map(function(n){return e(n)?l(n):u(n)?n:function(n){throw void 0===n&&(n=1),new Error("Argument "+n+' is invalid, it should be an action-creator instance from "typesafe-actions" or action type of type: string | symbol')}()}).forEach(function(n){return a[n]=o}),n(t,Object.assign({},i,a))}})},n.createStandardAction=p,n.getType=l,n.isActionOf=function(n,e){t(n)&&r(1);var i=Array.isArray(n)?n:[n];i.forEach(o);var u=function(n){return i.some(function(t){return n.type===t.getType()})};return void 0===e?u:u(e)},n.isOfType=function(n,e){t(n)&&r(1);var i=Array.isArray(n)?n:[n];i.forEach(f);var o=function(n){return i.includes(n.type)};return void 0===e?o:o(e)}});
+//# sourceMappingURL=typesafe-actions.umd.production.js.map
 
 
 /***/ }),

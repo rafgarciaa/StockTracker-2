@@ -12,6 +12,7 @@ const mapStateToProps = (state: RootState) => ({
   // oneYearData: selectors.selectChartDataYear(state.quotes.chartData.oneYear),
   // fiveYearData: selectors.selectChartDataYear(state.quotes.chartData.fiveYear),
   // maxData: selectors.selectChartDataYear(state.quotes.chartData.max),
+  // fetchStatus: selectors.selectFetchingStatus(state, 'chartData'),
 
   oneDayData: state.quotes.chartDataDay,
   fiveDayData: state.quotes.chartData.fiveDay,
@@ -19,7 +20,6 @@ const mapStateToProps = (state: RootState) => ({
   oneYearData: state.quotes.chartData.oneYear,
   fiveYearData: state.quotes.chartData.fiveYear,
   maxData: state.quotes.chartData.max,
-  // fetchStatus: selectors.selectFetchingStatus(state, 'chartData'),
   fetchStatus: state.fetchStatus.chartData,
 });
 
