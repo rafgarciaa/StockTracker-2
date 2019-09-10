@@ -1,4 +1,4 @@
-## ![Adaptive Logo](https://weareadaptive.com/wp-content/themes/bh-core/assets/images/favicons/favicon-32x32.png) Stock Tracker
+## ![Adaptive Logo](https://weareadaptive.com/wp-content/themes/bh-core/assets/images/favicons/favicon-32x32.png) [Stock Tracker](https://rafgarciaa.github.io/StockTracker-2/)
 
 ### Overview
 
