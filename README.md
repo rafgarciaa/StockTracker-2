@@ -10,13 +10,17 @@ With this application, users are able to:
 
 - Search for a publicly traded company
 - Read relevant information about the searched company:
-  - Real-time stock price, change, percent change
-  - Market Status
-  - Interactive graph for different time-series
-  - Key Statistics
-  - Company Information & website
-  - News
-  - Top peers
+- Real-time stock price, change, percent change
+- Market Status
+- Interactive graph for different time-series
+- Key Statistics
+- Company Information & website
+- News
+- Top peers
+
+### Getting Started
+
+Insert startup steps
 
 **Test data displayed**
 ![App](./assets/images/app.png)
